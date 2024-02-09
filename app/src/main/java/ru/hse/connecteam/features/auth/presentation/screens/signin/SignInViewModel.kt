@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.hse.connecteam.features.auth.domain.AuthRepository
 import ru.hse.connecteam.shared.utils.CustomCallback
+import ru.hse.connecteam.shared.utils.CustomVoidCallback
 import ru.hse.connecteam.shared.utils.EMAIL_REGEX
 import javax.inject.Inject
 
@@ -43,8 +44,8 @@ class SignInViewModel @Inject constructor(private val repository: AuthRepository
             repository.signInEmail(
                 email = username,
                 password = password,
-                customCallback = object : CustomCallback<String> {
-                    override fun onSuccess(value: String?) {
+                customCallback = object : CustomVoidCallback {
+                    override fun onSuccess() {
                         singInButtonText = "Войти"
                         signInButtonEnabled = true
                         shouldMoveToMain = true
