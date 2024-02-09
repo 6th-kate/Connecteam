@@ -10,13 +10,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.delay
-import ru.hse.connecteam.features.auth.data.ServerAuthRepository
 import ru.hse.connecteam.features.auth.presentation.components.LogoLabel
-import ru.hse.connecteam.features.auth.presentation.screens.signin.SignInViewModel
 import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.buttons.TextSpanButton
@@ -28,7 +26,7 @@ import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
 fun SignUpScreen(
-    viewModel: SignUpViewModel,
+    viewModel: SignUpViewModel = hiltViewModel(),
     navController: NavController
 ) {
     Column(
@@ -112,9 +110,7 @@ fun SignUpScreenPreview() {
     ConnecteamTheme(darkTheme = true) {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            val r = ServerAuthRepository()
-            val vm = SignUpViewModel(r)
-            SignUpScreen(vm, navController = rememberNavController())
+            SignUpScreen(navController = rememberNavController())
         }
     }
 }

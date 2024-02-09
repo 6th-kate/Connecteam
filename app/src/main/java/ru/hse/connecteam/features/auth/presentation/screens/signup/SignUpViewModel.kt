@@ -3,15 +3,17 @@ package ru.hse.connecteam.features.auth.presentation.screens.signup
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
-import ru.hse.connecteam.features.auth.data.ServerAuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import ru.hse.connecteam.features.auth.domain.AuthRepository
 import ru.hse.connecteam.shared.utils.CustomCallback
 import ru.hse.connecteam.shared.utils.EMAIL_REGEX
 import ru.hse.connecteam.shared.utils.NAME_REGEX
 import ru.hse.connecteam.shared.utils.PASSWORD_REGEX
+import javax.inject.Inject
 
-class SignUpViewModel(private val repository: ServerAuthRepository) : ViewModel() {
+@HiltViewModel
+class SignUpViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel() {
     var alertText by mutableStateOf("Ошибка")
         private set
 
@@ -85,7 +87,7 @@ class SignUpViewModel(private val repository: ServerAuthRepository) : ViewModel(
 
     fun updateUsername(input: String) {
         username = input
-        usernameError = validateUsernameInput(input) == null
+        usernameError = !validateUsernameInput(input)
     }
 
     private var id: String = ""

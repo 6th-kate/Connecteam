@@ -2,22 +2,15 @@ package ru.hse.connecteam.route
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import ru.hse.connecteam.Greeting
-import ru.hse.connecteam.features.auth.data.ServerAuthRepository
 import ru.hse.connecteam.features.auth.presentation.screens.signin.SignInScreen
-import ru.hse.connecteam.features.auth.presentation.screens.signin.SignInViewModel
 import ru.hse.connecteam.features.auth.presentation.screens.signup.SignUpScreen
-import ru.hse.connecteam.features.auth.presentation.screens.signup.SignUpViewModel
 import ru.hse.connecteam.features.auth.presentation.screens.verify.VerificationScreen
-import ru.hse.connecteam.features.auth.presentation.screens.verify.VerificationViewModel
-import ru.hse.connecteam.features.auth.presentation.screens.verify.VerificationViewModelFactory
 import ru.hse.connecteam.features.profile.data.ServerProfileRepository
-import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.presentation.screens.access.AccessScreen
 import ru.hse.connecteam.features.profile.presentation.screens.access.MyTariffViewModel
 import ru.hse.connecteam.features.profile.presentation.screens.account.AccountScreen
@@ -45,30 +38,13 @@ fun AppNavHost(
         startDestination = startDestination
     ) {
         composable(NavigationItem.SignUp.route) {
-            val r = ServerAuthRepository()
-            val vm = SignUpViewModel(r)
-            SignUpScreen(vm, navController = navController)
+            SignUpScreen(navController = navController)
         }
         composable(NavigationItem.SignIn.route) {
-            val r = ServerAuthRepository()
-            val vm = SignInViewModel(r)
-            SignInScreen(vm, navController = navController)
+            SignInScreen(navController = navController)
         }
-        composable("${NavigationItem.Verification.route}/{username}/{password}/{id}") { backStackEntry ->
-            val r = ServerAuthRepository()
-            val username = backStackEntry.arguments?.getString("username")
-            val password = backStackEntry.arguments?.getString("password")
-            val id = backStackEntry.arguments?.getString("id")
-            VerificationScreen(
-                viewModel(
-                    factory = VerificationViewModelFactory(
-                        r,
-                        username ?: "",
-                        password ?: "",
-                        id ?: ""
-                    )
-                ), navController = navController
-            )
+        composable("${NavigationItem.Verification.route}/{username}/{password}/{id}") {
+            VerificationScreen(navController = navController)
         }
         composable(NavigationItem.Main.route) {
             Greeting(name = "Main Screen Mock")

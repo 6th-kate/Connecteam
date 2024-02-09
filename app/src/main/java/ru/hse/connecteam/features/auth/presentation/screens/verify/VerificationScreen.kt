@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -27,7 +28,7 @@ import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
 fun VerificationScreen(
-    viewModel: VerificationViewModel,
+    viewModel: VerificationViewModel = hiltViewModel(),
     navController: NavController
 ) {
     Column(
@@ -78,17 +79,7 @@ fun VerificationScreenPreview() {
     ConnecteamTheme(darkTheme = true) {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            val r = ServerAuthRepository()
-            VerificationScreen(
-                viewModel(
-                    factory = VerificationViewModelFactory(
-                        r,
-                        "funny_tarantula@mail.ru",
-                        "testPass1",
-                        "3"
-                    )
-                ), navController = rememberNavController()
-            )
+            VerificationScreen(navController = rememberNavController())
         }
     }
 }

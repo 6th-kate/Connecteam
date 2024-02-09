@@ -8,18 +8,41 @@ data class UserSignUp(
     val password: String,
 )
 
+data class ID(
+    val id: String,
+)
+
 data class UserSignIn(
     val email: String,
     val password: String,
+)
+
+data class UserAuth(
+    val token: String,
+    val access: String,
 )
 
 data class Email(
     val email: String,
 )
 
-data class ID(
+data class CodeVerification(
     val id: String,
     val code: String,
+)
+
+data class UserData(
+    val access: String,
+    val company_info: String,
+    val company_logo: String,
+    val company_url: String,
+    val company_name: String,
+    val description: String,
+    val email: String,
+    val first_name: String,
+    val id: String,
+    val profile_image: String,
+    val second_name: String,
 )
 
 data class PasswordChange(
@@ -37,14 +60,42 @@ data class EmailChange(
     val code: String,
 )
 
-data class UserData(
+data class UserPersonal(
     val first_name: String,
     val second_name: String,
     val description: String,
+)
+
+data class AccessChange(
+    val id: String,
+    val access: String,
 )
 
 data class CompanyData(
     val company_name: String,
     val company_url: String,
     val company_info: String,
+)
+
+data class TariffData(
+    val expiry_date: String,
+    val holder_id: String,
+    val user_id: String,
+    val plan_access: String,
+    val plan_type: String,
+)
+
+data class TariffRequest(
+    val duration: String,
+    val plan_type: String,
+)
+
+data class TariffConfirm(
+    val confirmed: String,
+    val duration: String,
+    val expiry_date: String,
+    val holder_id: String,
+    val plan_access: String,
+    val plan_type: String,
+    val user_id: String,
 )

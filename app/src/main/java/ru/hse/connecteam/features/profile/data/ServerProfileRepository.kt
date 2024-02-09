@@ -3,8 +3,9 @@ package ru.hse.connecteam.features.profile.data
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.domain.UserDomainModel
 import ru.hse.connecteam.shared.models.TariffModel
+import javax.inject.Inject
 
-class ServerProfileRepository : ProfileDataRepository{
+class ServerProfileRepository @Inject constructor() : ProfileDataRepository{
     override fun getUser(): UserDomainModel {
         TODO("Not yet implemented")
     }

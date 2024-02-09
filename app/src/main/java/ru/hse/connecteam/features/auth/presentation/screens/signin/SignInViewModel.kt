@@ -3,12 +3,15 @@ package ru.hse.connecteam.features.auth.presentation.screens.signin
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
-import ru.hse.connecteam.features.auth.data.ServerAuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import ru.hse.connecteam.features.auth.domain.AuthRepository
 import ru.hse.connecteam.shared.utils.CustomCallback
+import ru.hse.connecteam.shared.utils.EMAIL_REGEX
+import javax.inject.Inject
 
-class SignInViewModel(private val repository: ServerAuthRepository) : ViewModel() {
+@HiltViewModel
+class SignInViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel() {
     var alertText by mutableStateOf("Ошибка")
         private set
 
@@ -34,35 +37,32 @@ class SignInViewModel(private val repository: ServerAuthRepository) : ViewModel(
         private set
 
     fun signIn() {
-        if (signInButtonEnabled) {
-            validateUsernameInput(username)
+        if (signInButtonEnabled && validateUsernameInput(username)) {
             singInButtonText = "Проверяем..."
             signInButtonEnabled = false
-            if (validateUsernameInput(username) == true) {
-                repository.signInEmail(
-                    email = username,
-                    password = password,
-                    customCallback = object : CustomCallback<String> {
-                        override fun onSuccess(value: String?) {
-                            singInButtonText = "Войти"
-                            signInButtonEnabled = true
-                            shouldMoveToMain = true
-                        }
-
-                        override fun onFailure() {
-                            singInButtonText = "Войти"
-                            signInButtonEnabled = true
-                            shouldShowAlert = true
-                        }
+            repository.signInEmail(
+                email = username,
+                password = password,
+                customCallback = object : CustomCallback<String> {
+                    override fun onSuccess(value: String?) {
+                        singInButtonText = "Войти"
+                        signInButtonEnabled = true
+                        shouldMoveToMain = true
                     }
-                )
-            }
+
+                    override fun onFailure() {
+                        singInButtonText = "Войти"
+                        signInButtonEnabled = true
+                        shouldShowAlert = true
+                    }
+                }
+            )
         }
     }
 
     fun updateUsername(input: String) {
         username = input
-        usernameError = validateUsernameInput(input) == null
+        usernameError = !validateUsernameInput(input)
     }
 
     fun updatePassword(input: String) {
@@ -73,13 +73,7 @@ class SignInViewModel(private val repository: ServerAuthRepository) : ViewModel(
         shouldShowAlert = false
     }
 
-    private fun validateUsernameInput(input: String): Boolean? {
-        return if (input.matches(Regex("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}\$"))) {
-            true
-        } else if (input.isDigitsOnly() && input.length == 10) {
-            false
-        } else {
-            null
-        }
+    private fun validateUsernameInput(input: String): Boolean {
+        return input.matches(EMAIL_REGEX)
     }
 }

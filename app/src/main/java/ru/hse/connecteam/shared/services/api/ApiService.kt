@@ -1,9 +1,7 @@
 package ru.hse.connecteam.shared.services.api
 
-import okhttp3.ResponseBody
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -12,62 +10,74 @@ import ru.hse.connecteam.shared.utils.tokenHeaderName
 
 interface ApiService {
     @POST("auth/sign-up")
-    fun signUp(
+    suspend fun signUp(
         @Body user: UserSignUp
-    ): Call<ResponseBody>?
+    ): Response<ID>?
 
     @POST("auth/verify-email")
-    fun getVerificationEmail(
+    suspend fun getVerificationEmail(
         @Body email: Email
-    ): Call<ResponseBody>?
+    ): Response<ID>?
 
     @POST("auth/verify-user")
-    fun verifyUser(
-        @Body id: ID,
-    ): Call<Void>
+    suspend fun verifyUser(
+        @Body codeVerification: CodeVerification,
+    ): Response<Void>?
 
     @POST("auth/sign-in/email")
-    fun signIn(
+    suspend fun signIn(
         @Body user: UserSignIn
-    ): Call<ResponseBody>?
+    ): Response<UserAuth>?
 
     @GET("users/me")
-    fun currentUser(
+    suspend fun currentUser(
         @Header(tokenHeaderName) token: String
-    ): Call<ResponseBody>?
+    ): Response<UserData>?
+
+    @PATCH("users/change-access")
+    suspend fun changeAccess(
+        @Header(tokenHeaderName) token: String,
+        @Body change: AccessChange
+    ): Response<Void>?
 
     @PATCH("users/change-password")
-    fun changePassword(
+    suspend fun changePassword(
         @Header(tokenHeaderName) token: String,
         @Body change: PasswordChange
-    ): Call<ResponseBody>?
+    ): Response<Void>?
 
     @POST("users/verify-email")
-    fun verifyEmailChange(
+    suspend fun verifyEmailChange(
         @Header(tokenHeaderName) token: String,
         @Body change: NewEmailVerification
-    ): Call<ResponseBody>?
+    ): Response<Void>?
 
     @PATCH("users/change-email")
-    fun changeEmail(
+    suspend fun changeEmail(
         @Header(tokenHeaderName) token: String,
         @Body change: EmailChange
-    ): Call<ResponseBody>?
+    ): Response<Void>?
 
-    @PATCH("users/users/info")
-    fun editPersonalData(
+    @PATCH("users/info")
+    suspend fun editPersonalData(
         @Header(tokenHeaderName) token: String,
         @Body userData: UserData
-    ): Call<ResponseBody>?
+    ): Response<Void>?
 
     @PATCH("users/company")
-    fun editCompanyData(
+    suspend fun editCompanyData(
         @Header(tokenHeaderName) token: String,
         @Body companyData: CompanyData
-    ): Call<ResponseBody>?
+    ): Response<Void>?
 
-    @GET("users/plan")
-    fun getUserTariff(
+    @GET("plans/current")
+    suspend fun getUserTariff(
         @Header(tokenHeaderName) token: String
-    ): Call<ResponseBody>?
+    ): Response<TariffData>?
+
+    @POST("plans/purchase")
+    suspend fun purchasePlan(
+        @Header(tokenHeaderName) token: String,
+        @Body tariffRequest: TariffRequest
+    ): Response<TariffConfirm>?
 }

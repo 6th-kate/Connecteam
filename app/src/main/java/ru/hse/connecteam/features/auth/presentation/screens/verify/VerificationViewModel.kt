@@ -5,18 +5,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.runBlocking
 import ru.hse.connecteam.features.auth.data.ServerAuthRepository
 import ru.hse.connecteam.shared.utils.CustomCallback
+import ru.hse.connecteam.shared.utils.CustomVoidCallback
 import ru.hse.connecteam.shared.utils.NEW_CODE_WAITING_TIME
 import ru.hse.connecteam.shared.utils.RESEND_CODE_MAX_TIMES
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
+@HiltViewModel
 class VerificationViewModel(
     private val repository: ServerAuthRepository,
-    private val email: String,
-    private val password: String,
-    private val id: String,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    private val email = savedStateHandle.get<String>("email").orEmpty()
+    private val password = savedStateHandle.get<String>("password").orEmpty()
+    private val id = savedStateHandle.get<String>("id").orEmpty()
+
     private var sendCodeTimes by mutableIntStateOf(1)
     private var sendCodeSecondsLeft by mutableIntStateOf(NEW_CODE_WAITING_TIME)
 
@@ -44,20 +53,15 @@ class VerificationViewModel(
     var alertText by mutableStateOf("")
         private set
 
-    private var hiddenCode: String = ""
-
     private var firstCodeSent = false
 
     init {
-        Log.i("info","init called")
-        if (!firstCodeSent){
-            repository.getVerificationEmail(
+        if (!firstCodeSent) {
+            repository.sendVerificationEmail(
                 email = email,
                 customCallback = object : CustomCallback<String> {
                     override fun onSuccess(value: String?) {
                         if (value != null) {
-                            Log.i("info","on success called")
-                            hiddenCode = value
                             resendTimerIsTicking = true
                             firstCodeSent = true
                         } else {
@@ -81,18 +85,22 @@ class VerificationViewModel(
 
     fun updateCode(input: String, isFilled: Boolean): Boolean {
         code = input
-        return isFilled && !validateCode(code)
+        if (!isFilled) {
+            return false
+        }
+        return runBlocking {
+            return@runBlocking !validateCode(code)
+        }
     }
 
     fun resendCode() {
         if (!resendTimerIsTicking) {
             if (sendCodeTimes < RESEND_CODE_MAX_TIMES) {
-                repository.getVerificationEmail(
+                repository.sendVerificationEmail(
                     email = email,
                     customCallback = object : CustomCallback<String> {
                         override fun onSuccess(value: String?) {
                             if (value != null) {
-                                hiddenCode = value
                                 ++sendCodeTimes
                                 sendCodeButtonEnabled = false
                                 if (sendCodeTimes >= RESEND_CODE_MAX_TIMES) {
@@ -135,33 +143,34 @@ class VerificationViewModel(
         }
     }
 
-    private fun validateCode(code: String): Boolean {
-        if (code == hiddenCode) {
-            repository.verifyUser(
-                id = id,
-                customCallback = object : CustomCallback<Boolean> {
-                    override fun onSuccess(value: Boolean?) {
-                        repository.signInEmail(
-                            email = email,
-                            password = password,
-                            customCallback = object : CustomCallback<String> {
-                                override fun onSuccess(value: String?) {
-                                    shouldMoveToMain = true
-                                }
-
-                                override fun onFailure() {
-                                    showErrorAndPop("Ошибка")
-                                }
+    private suspend fun validateCode(code: String): Boolean = suspendCoroutine { continuation ->
+        repository.verifyUser(
+            id = id,
+            code = code,
+            customCallback = object : CustomVoidCallback {
+                override fun onSuccess() {
+                    repository.signInEmail(
+                        email = email,
+                        password = password,
+                        customCallback = object : CustomVoidCallback {
+                            override fun onSuccess() {
+                                shouldMoveToMain = true
+                                continuation.resume(true)
                             }
-                        )
-                    }
 
-                    override fun onFailure() {
-                        showErrorAndPop("Ошибка")
-                    }
+                            override fun onFailure() {
+                                showErrorAndPop("Ошибка")
+                                continuation.resume(false)
+                            }
+                        }
+                    )
                 }
-            )
-        }
-        return code == hiddenCode
+
+                override fun onFailure() {
+                    showErrorAndPop("Ошибка")
+                    continuation.resume(false)
+                }
+            }
+        )
     }
 }
