@@ -1,6 +1,5 @@
 package ru.hse.connecteam.features.profile.presentation.screens.personal
 
-import android.graphics.Bitmap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

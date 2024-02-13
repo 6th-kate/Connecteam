@@ -1,6 +1,5 @@
 package ru.hse.connecteam.ui.components.buttons
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
@@ -9,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
-import ru.hse.connecteam.ui.components.inputs.PasswordTextInput
 import ru.hse.connecteam.ui.theme.ClickableTextGrayLabel
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 

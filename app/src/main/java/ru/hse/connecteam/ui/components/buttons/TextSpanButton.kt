@@ -21,7 +21,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.hse.connecteam.ui.components.inputs.PasswordTextInput
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 import ru.hse.connecteam.ui.theme.SpanButtonGrayLabel

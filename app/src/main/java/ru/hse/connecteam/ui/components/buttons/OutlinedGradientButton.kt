@@ -1,15 +1,12 @@
 package ru.hse.connecteam.ui.components.buttons
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -23,11 +20,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.hse.connecteam.ui.components.inputs.PasswordTextInput
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 import ru.hse.connecteam.ui.theme.DisabledButtonLabel
-import ru.hse.connecteam.ui.theme.FilledButtonLabel
 import ru.hse.connecteam.ui.theme.OutlinedButtonLabel
 import ru.hse.connecteam.ui.theme.WhiteSemiTransparent25
 

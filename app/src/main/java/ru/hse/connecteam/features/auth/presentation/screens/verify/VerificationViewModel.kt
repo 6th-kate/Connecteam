@@ -87,11 +87,10 @@ class VerificationViewModel @Inject constructor(
 
     fun updateCode(input: String, isFilled: Boolean): Boolean {
         code = input
-        if (!isFilled) {
-            return false
-        }
-        CoroutineScope(Dispatchers.Main).launch {
-            validateCode(code)
+        if (isFilled) {
+            CoroutineScope(Dispatchers.Main).launch {
+                validateCode(code)
+            }
         }
         return false
     }

@@ -10,7 +10,7 @@ import androidx.activity.result.launch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -108,7 +108,7 @@ fun AvatarPicker(
         )
     }
 
-    BoxWithConstraints(
+    Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(horizontal = 130.dp, vertical = 10.dp)

@@ -5,8 +5,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
-import ru.hse.connecteam.shared.utils.NAME_REGEX
 
 abstract class GenericDataViewModel(
     initImage: Bitmap? = null,

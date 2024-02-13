@@ -2,7 +2,7 @@ package ru.hse.connecteam.features.profile.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -22,7 +22,7 @@ fun ExitButton(onClick: () -> Unit = { }) {
         borderBrush = Brush.linearGradient(colors = listOf(DefaultRed, DefaultRed)),
         trailingIcon = {
         Icon(
-            imageVector = Icons.Filled.ExitToApp,
+            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
             tint = DefaultRed,
             contentDescription = "Выйти"
         )

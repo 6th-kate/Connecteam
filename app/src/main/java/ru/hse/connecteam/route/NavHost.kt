@@ -10,21 +10,13 @@ import ru.hse.connecteam.Greeting
 import ru.hse.connecteam.features.auth.presentation.screens.signin.SignInScreen
 import ru.hse.connecteam.features.auth.presentation.screens.signup.SignUpScreen
 import ru.hse.connecteam.features.auth.presentation.screens.verify.VerificationScreen
-import ru.hse.connecteam.features.profile.data.ServerProfileRepository
 import ru.hse.connecteam.features.profile.presentation.screens.access.AccessScreen
-import ru.hse.connecteam.features.profile.presentation.screens.access.MyTariffViewModel
 import ru.hse.connecteam.features.profile.presentation.screens.account.AccountScreen
-import ru.hse.connecteam.features.profile.presentation.screens.account.AccountScreenViewModel
 import ru.hse.connecteam.features.profile.presentation.screens.account.email.EmailChangeScreen
-import ru.hse.connecteam.features.profile.presentation.screens.account.email.EmailChangeViewModel
 import ru.hse.connecteam.features.profile.presentation.screens.account.password.PasswordChangeScreen
-import ru.hse.connecteam.features.profile.presentation.screens.account.password.PasswordChangeViewModel
 import ru.hse.connecteam.features.profile.presentation.screens.company.CompanyDataScreen
-import ru.hse.connecteam.features.profile.presentation.screens.company.CompanyDataViewModel
 import ru.hse.connecteam.features.profile.presentation.screens.personal.PersonalDataScreen
-import ru.hse.connecteam.features.profile.presentation.screens.personal.PersonalDataViewModel
 import ru.hse.connecteam.features.profile.presentation.screens.profile.ProfileScreen
-import ru.hse.connecteam.features.profile.presentation.screens.profile.ProfileScreenViewModel
 
 @Composable
 fun AppNavHost(

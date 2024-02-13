@@ -4,7 +4,6 @@ import ru.hse.connecteam.shared.models.TariffInfo
 import ru.hse.connecteam.shared.models.TariffModel
 import ru.hse.connecteam.shared.services.api.TariffData
 import ru.hse.connecteam.shared.services.api.UserData
-import java.time.LocalDateTime
 
 class DTOConverter {
     companion object {

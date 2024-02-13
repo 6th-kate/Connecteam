@@ -1,3 +1,5 @@
+@file:Suppress("PropertyName")
+
 package ru.hse.connecteam.shared.services.api
 
 data class UserSignUp(

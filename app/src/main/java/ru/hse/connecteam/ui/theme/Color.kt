@@ -19,3 +19,4 @@ val DefaultRed = Color(0xFFA44040)
 
 val DefaultWhite = Color(0xFFFFFFFF)
 val WhiteSemiTransparent25 = Color(0x40FFFFFF)
+val DefaultBlack = Color(0xFF1D1D1D)

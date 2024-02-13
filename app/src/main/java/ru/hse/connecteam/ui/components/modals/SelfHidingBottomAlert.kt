@@ -29,7 +29,6 @@ import androidx.compose.ui.window.DialogWindowProvider
 import kotlinx.coroutines.delay
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
-import ru.hse.connecteam.ui.components.inputs.PasswordTextInput
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 import ru.hse.connecteam.ui.theme.OutlinedButtonLabel
