@@ -1,16 +1,41 @@
 package ru.hse.connecteam.features.profile.presentation.screens.company
 
 import android.graphics.Bitmap
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.presentation.components.datascreen.GenericDataViewModel
+import javax.inject.Inject
 
-class CompanyDataViewModel(
+@HiltViewModel
+class CompanyDataViewModel @Inject constructor(
     repository: ProfileDataRepository,
-    initImage: Bitmap?,
-    initCompanyTitle: String,
-    initCompanySite: String,
-    initAbout: String,
-) : GenericDataViewModel(initImage, initCompanyTitle, initCompanySite, initAbout) {
+) : GenericDataViewModel() {
+    private var initialized: Boolean = false
+
+    init {
+        if (!initialized) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val user = repository.getUser()
+                CoroutineScope(Dispatchers.Main).launch {
+                    if (user != null) {
+                        firstField = user.companyName
+                        secondField = user.companySite
+                        about = user.companyAbout
+                    } else {
+                        firstField = ""
+                        secondField = ""
+                        about = ""
+                    }
+                    initialized = true
+                }
+            }
+        }
+    }
+
+
     override val screenTitle: String = "О компании"
     override val firstFieldLabel: String = "Название"
     override val secondFieldLabel: String = "Сайт"

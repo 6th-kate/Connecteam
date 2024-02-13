@@ -5,12 +5,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.shared.utils.EMAIL_REGEX
+import javax.inject.Inject
 
-class EmailChangeViewModel(repository: ProfileDataRepository, initEmail: String) : ViewModel() {
-    var username by mutableStateOf(initEmail)
+@HiltViewModel
+class EmailChangeViewModel @Inject constructor(
+    private val repository: ProfileDataRepository,
+) : ViewModel() {
+    private var initialized: Boolean = false
+    var username by mutableStateOf("")
         private set
+
+    init {
+        if (!initialized) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val user = repository.getUser()
+                CoroutineScope(Dispatchers.Main).launch {
+                    username = user?.email ?: ""
+                    initialized = true
+                }
+            }
+        }
+    }
 
     var usernameError by mutableStateOf(false)
         private set

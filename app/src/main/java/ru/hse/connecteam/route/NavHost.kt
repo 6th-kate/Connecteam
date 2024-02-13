@@ -51,36 +51,25 @@ fun AppNavHost(
         }
         navigation(NavigationItem.Profile.route, "profile") {
             composable(NavigationItem.Profile.route) {
-                val vm = ProfileScreenViewModel("", null)
-                ProfileScreen(vm, navController = navController)
+                ProfileScreen(navController = navController)
             }
             composable(NavigationItem.Personal.route) {
-                val r = ServerProfileRepository()
-                val vm = PersonalDataViewModel(r, null, "", "", "")
-                PersonalDataScreen(vm)
+                PersonalDataScreen()
             }
             composable(NavigationItem.Company.route) {
-                val r = ServerProfileRepository()
-                val vm = CompanyDataViewModel(r, null, "", "", "")
-                CompanyDataScreen(vm)
+                CompanyDataScreen()
             }
             composable(NavigationItem.Account.route) {
-                val vm = AccountScreenViewModel("")
-                AccountScreen(vm, navController = navController)
+                AccountScreen(navController = navController)
             }
             composable(NavigationItem.EmailChange.route) {
-                val r = ServerProfileRepository()
-                val vm = EmailChangeViewModel(r, "")
-                EmailChangeScreen(vm, navController = navController)
+                EmailChangeScreen(navController = navController)
             }
             composable(NavigationItem.PasswordChange.route) {
-                val r = ServerProfileRepository()
-                val vm = PasswordChangeViewModel(r)
-                PasswordChangeScreen(vm)
+                PasswordChangeScreen()
             }
             composable(NavigationItem.MyTariff.route) {
-                val vm = MyTariffViewModel(null)
-                AccessScreen(vm, navController = navController)
+                AccessScreen(navController = navController)
             }
         }
     }

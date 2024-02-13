@@ -3,10 +3,16 @@ package ru.hse.connecteam.features.profile.presentation.screens.account.password
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.shared.utils.PASSWORD_REGEX
+import javax.inject.Inject
 
-class PasswordChangeViewModel(repository: ProfileDataRepository) {
+@HiltViewModel
+class PasswordChangeViewModel @Inject constructor(
+    private val repository: ProfileDataRepository
+) : ViewModel() {
     var oldPassword by mutableStateOf("")
         private set
 
@@ -61,7 +67,7 @@ class PasswordChangeViewModel(repository: ProfileDataRepository) {
     }
 
     fun onSave() {
-        if (saveEnabled && validateForm()){
+        if (saveEnabled && validateForm()) {
             saveEnabled = false
             saveButtonText = "Проверяем..."
             TODO("add password change request, then show popup and enable button")

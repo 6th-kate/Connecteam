@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.hse.connecteam.features.profile.presentation.components.ExitButton
 import ru.hse.connecteam.features.profile.presentation.components.OutlinedSettingsBaseButton
@@ -21,7 +22,10 @@ import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
-fun AccountScreen(viewModel: AccountScreenViewModel, navController: NavController) {
+fun AccountScreen(
+    viewModel: AccountScreenViewModel = hiltViewModel(),
+    navController: NavController
+) {
     Scaffold(
         topBar = { TransparentAppBar(title = "Аккаунт") }
     ) { innerPadding ->

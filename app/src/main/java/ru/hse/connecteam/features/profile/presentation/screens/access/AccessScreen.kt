@@ -13,18 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
 import ru.hse.connecteam.features.tariffs.components.PayWall
-import ru.hse.connecteam.shared.models.TariffInfo
-import ru.hse.connecteam.shared.models.TariffModel
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
-import java.util.Date
 
 @Composable
 fun AccessScreen(
-    viewModel: MyTariffViewModel,
+    viewModel: MyTariffViewModel = hiltViewModel(),
     navController: NavController,
 ) {
     Scaffold(
@@ -58,18 +56,7 @@ fun AccessScreenPreview() {
     ConnecteamTheme(darkTheme = true) {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            AccessScreen(
-                navController = rememberNavController(),
-                viewModel = MyTariffViewModel(
-                    TariffModel(
-                        TariffInfo.SIMPLE,
-                        endDate = Date(2024, 2, 1),
-                        cost = 899,
-                        participants = null,
-                        isMine = true,
-                    )
-                )
-            )
+            AccessScreen(navController = rememberNavController())
         }
     }
 }

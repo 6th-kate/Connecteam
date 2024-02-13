@@ -3,16 +3,10 @@ package ru.hse.connecteam.features.auth.data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import ru.hse.connecteam.features.auth.domain.AuthRepository
 import ru.hse.connecteam.shared.services.api.ApiClient
 import ru.hse.connecteam.shared.services.api.CodeVerification
 import ru.hse.connecteam.shared.services.api.Email
-import ru.hse.connecteam.shared.services.api.UserAuth
 import ru.hse.connecteam.shared.services.api.UserSignIn
 import ru.hse.connecteam.shared.services.api.UserSignUp
 import ru.hse.connecteam.shared.services.datastore.AuthenticationService
@@ -92,7 +86,6 @@ class ServerAuthRepository @Inject constructor(
                     customCallback.onSuccess(auth.id)
                 }
             }
-
         }
     }
 
@@ -101,7 +94,7 @@ class ServerAuthRepository @Inject constructor(
         code: String,
         customCallback: CustomVoidCallback
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
             val response = ApiClient.apiService.verifyUser(CodeVerification(id, code))
             launch(Dispatchers.Main) {
                 if (response == null || !response.isSuccessful) {

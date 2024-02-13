@@ -20,22 +20,22 @@ class SignUpViewModel @Inject constructor(private val repository: AuthRepository
     var shouldShowAlert by mutableStateOf(false)
         private set
 
-    var name by mutableStateOf("")
+    var name by mutableStateOf("Test")
         private set
 
-    var surname by mutableStateOf("")
+    var surname by mutableStateOf("Test")
         private set
 
-    var username by mutableStateOf("")
+    var username by mutableStateOf("shestakova-er@mail.ru")
         private set
 
     var usernameError by mutableStateOf(false)
         private set
 
-    var password by mutableStateOf("")
+    var password by mutableStateOf("TestPass1")
         private set
 
-    var passwordRepeat by mutableStateOf("")
+    var passwordRepeat by mutableStateOf("TestPass1")
         private set
 
     var passwordError by mutableStateOf(false)

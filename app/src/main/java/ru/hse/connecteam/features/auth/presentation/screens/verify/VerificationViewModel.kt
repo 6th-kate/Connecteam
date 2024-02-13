@@ -1,6 +1,5 @@
 package ru.hse.connecteam.features.auth.presentation.screens.verify
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -8,21 +7,24 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.auth.data.ServerAuthRepository
 import ru.hse.connecteam.shared.utils.CustomCallback
 import ru.hse.connecteam.shared.utils.CustomVoidCallback
 import ru.hse.connecteam.shared.utils.NEW_CODE_WAITING_TIME
 import ru.hse.connecteam.shared.utils.RESEND_CODE_MAX_TIMES
+import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
-class VerificationViewModel(
+class VerificationViewModel @Inject constructor(
     private val repository: ServerAuthRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    private val email = savedStateHandle.get<String>("email").orEmpty()
+    private val email = savedStateHandle.get<String>("username").orEmpty()
     private val password = savedStateHandle.get<String>("password").orEmpty()
     private val id = savedStateHandle.get<String>("id").orEmpty()
 
@@ -88,9 +90,10 @@ class VerificationViewModel(
         if (!isFilled) {
             return false
         }
-        return runBlocking {
-            return@runBlocking !validateCode(code)
+        CoroutineScope(Dispatchers.Main).launch {
+            validateCode(code)
         }
+        return false
     }
 
     fun resendCode() {

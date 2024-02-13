@@ -47,7 +47,7 @@ fun VerificationScreen(
         LaunchedEffect(viewModel.shouldMoveToMain) {
             if (viewModel.shouldMoveToMain) {
                 delay(1000L)
-                navController.navigate(NavigationItem.Main.route)
+                navController.navigate(NavigationItem.Profile.route)
             }
         }
         LaunchedEffect(viewModel.resendTimerIsTicking) {

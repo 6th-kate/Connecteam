@@ -9,10 +9,10 @@ import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.shared.utils.NAME_REGEX
 
 abstract class GenericDataViewModel(
-    initImage: Bitmap?,
-    initFirstField: String,
-    initSecondField: String,
-    initAbout: String
+    initImage: Bitmap? = null,
+    initFirstField: String = "Загружаем...",
+    initSecondField: String = "Загружаем...",
+    initAbout: String = "Загружаем..."
 ) : ViewModel() {
     abstract val screenTitle: String
     abstract val firstFieldLabel: String

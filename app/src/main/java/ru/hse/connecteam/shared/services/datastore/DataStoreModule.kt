@@ -13,11 +13,30 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.osipxd.security.crypto.createEncrypted
+import ru.hse.connecteam.features.auth.data.ServerAuthRepository
+import ru.hse.connecteam.features.auth.domain.AuthRepository
+import ru.hse.connecteam.features.profile.data.ServerProfileRepository
+import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class DataStoreModule {
+    @Provides
+    fun provideAuthenticationService(dataStore: DataStore<Preferences>): AuthenticationService {
+        return AuthenticationService(dataStore)
+    }
+
+    @Provides
+    fun provideAuthRepository(authenticationService: AuthenticationService): AuthRepository {
+        return ServerAuthRepository(authenticationService)
+    }
+
+    @Provides
+    fun provideProfileRepository(authenticationService: AuthenticationService): ProfileDataRepository {
+        return ServerProfileRepository(authenticationService)
+    }
+
     @Provides
     @Singleton
     fun provideDataStoreManager(@ApplicationContext context: Context): DataStore<Preferences> {
