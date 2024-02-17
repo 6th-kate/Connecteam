@@ -7,9 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import ru.hse.connecteam.Greeting
-import ru.hse.connecteam.features.auth.presentation.screens.signin.SignInScreen
-import ru.hse.connecteam.features.auth.presentation.screens.signup.SignUpScreen
-import ru.hse.connecteam.features.auth.presentation.screens.verify.VerificationScreen
 import ru.hse.connecteam.features.profile.presentation.screens.access.AccessScreen
 import ru.hse.connecteam.features.profile.presentation.screens.account.AccountScreen
 import ru.hse.connecteam.features.profile.presentation.screens.account.email.EmailChangeScreen
@@ -19,25 +16,16 @@ import ru.hse.connecteam.features.profile.presentation.screens.personal.Personal
 import ru.hse.connecteam.features.profile.presentation.screens.profile.ProfileScreen
 
 @Composable
-fun AppNavHost(
+fun MainNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = NavigationItem.SignUp.route,
+    startDestination: String = NavigationItem.Profile.route,
 ) {
     NavHost(
         modifier = modifier,
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(NavigationItem.SignUp.route) {
-            SignUpScreen(navController = navController)
-        }
-        composable(NavigationItem.SignIn.route) {
-            SignInScreen(navController = navController)
-        }
-        composable("${NavigationItem.Verification.route}/{username}/{password}/{id}") {
-            VerificationScreen(navController = navController)
-        }
         composable(NavigationItem.Main.route) {
             Greeting(name = "Main Screen Mock")
         }
@@ -46,10 +34,10 @@ fun AppNavHost(
                 ProfileScreen(navController = navController)
             }
             composable(NavigationItem.Personal.route) {
-                PersonalDataScreen()
+                PersonalDataScreen(navController = navController)
             }
             composable(NavigationItem.Company.route) {
-                CompanyDataScreen()
+                CompanyDataScreen(navController = navController)
             }
             composable(NavigationItem.Account.route) {
                 AccountScreen(navController = navController)
@@ -58,7 +46,7 @@ fun AppNavHost(
                 EmailChangeScreen(navController = navController)
             }
             composable(NavigationItem.PasswordChange.route) {
-                PasswordChangeScreen()
+                PasswordChangeScreen(navController = navController)
             }
             composable(NavigationItem.MyTariff.route) {
                 AccessScreen(navController = navController)

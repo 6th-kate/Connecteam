@@ -7,13 +7,14 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import ru.hse.connecteam.shared.models.UserAuthState
 import javax.inject.Inject
 
 class AuthenticationService @Inject constructor(private val dataStore: DataStore<Preferences>) {
-    fun isAuthenticated(): Flow<Boolean> {
+    fun isAuthenticated(): Flow<UserAuthState> {
         // flow of token existence from dataStore
         return dataStore.data.map {
-            it.contains(KEY_TOKEN)
+            if (it.contains(KEY_TOKEN)) UserAuthState.AUTHENTICATED else UserAuthState.UNAUTHENTICATED
         }
     }
 

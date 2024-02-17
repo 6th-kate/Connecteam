@@ -7,14 +7,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import ru.hse.connecteam.features.profile.presentation.components.datascreen.GenericDataScreen
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
 fun PersonalDataScreen(
     viewModel: PersonalDataViewModel = hiltViewModel(),
+    navController: NavController,
 ) {
-   GenericDataScreen(viewModel = viewModel)
+    GenericDataScreen(viewModel = viewModel, navController = navController)
 }
 
 @Preview

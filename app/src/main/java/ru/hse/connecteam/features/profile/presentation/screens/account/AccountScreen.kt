@@ -23,12 +23,14 @@ import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
 fun AccountScreen(
-    viewModel: AccountScreenViewModel = hiltViewModel(),
-    navController: NavController
+    viewModel: AccountScreenViewModel = hiltViewModel(), navController: NavController
 ) {
-    Scaffold(
-        topBar = { TransparentAppBar(title = "Аккаунт") }
-    ) { innerPadding ->
+    Scaffold(topBar = {
+        TransparentAppBar(
+            title = "Аккаунт",
+            navController = navController
+        )
+    }) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
@@ -40,10 +42,8 @@ fun AccountScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            {
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 OutlinedSettingsBaseButton(text = viewModel.email, onClick = {
                     navController.navigate(NavigationItem.EmailChange.route)
                 })

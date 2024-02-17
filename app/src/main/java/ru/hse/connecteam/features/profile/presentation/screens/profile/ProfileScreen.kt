@@ -25,12 +25,13 @@ import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileScreenViewModel = hiltViewModel(),
-    navController: NavController
+    viewModel: ProfileScreenViewModel = hiltViewModel(), navController: NavController
 ) {
-    Scaffold(
-        topBar = { TransparentAppBar(title = "") }
-    ) { innerPadding ->
+    Scaffold(topBar = {
+        TransparentAppBar(
+            title = "", hasNavIcon = false, navController = navController
+        )
+    }) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier

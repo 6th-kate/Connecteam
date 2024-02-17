@@ -27,9 +27,12 @@ fun EmailChangeScreen(
     viewModel: EmailChangeViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-    Scaffold(
-        topBar = { TransparentAppBar(title = "Смена почты") }
-    ) { innerPadding ->
+    Scaffold(topBar = {
+        TransparentAppBar(
+            title = "Смена почты",
+            navController = navController
+        )
+    }) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
@@ -38,8 +41,7 @@ fun EmailChangeScreen(
                 .padding(innerPadding)
                 .padding(bottom = 15.dp)
         ) {
-            LaunchedEffect(viewModel.moveToVerification)
-            {
+            LaunchedEffect(viewModel.moveToVerification) {
                 if (viewModel.moveToVerification) {
                     TODO("add navigation")
                 }
@@ -47,23 +49,19 @@ fun EmailChangeScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            {
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 PhoneEmailTextInput(
                     text = viewModel.username,
                     error = "Некорректный формат",
                     onValueChanged = { viewModel.updateUsername(it) },
                     isError = viewModel.usernameError
                 )// add vm
-                PasswordTextInput(
-                    text = viewModel.password,
+                PasswordTextInput(text = viewModel.password,
                     label = "Пароль",
                     onValueChanged = { viewModel.updatePassword(it) })// add vm
             }
-            GradientFilledButton(
-                text = viewModel.saveButtonText,
+            GradientFilledButton(text = viewModel.saveButtonText,
                 enabled = viewModel.saveEnabled,
                 onClick = { viewModel.onSave() })
         }

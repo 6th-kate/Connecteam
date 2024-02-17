@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.inputs.PasswordTextInput
@@ -21,11 +22,15 @@ import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
 fun PasswordChangeScreen(
-    viewModel: PasswordChangeViewModel = hiltViewModel()
+    viewModel: PasswordChangeViewModel = hiltViewModel(),
+    navController: NavController,
 ) {
-    Scaffold(
-        topBar = { TransparentAppBar(title = "Смена пароля") }
-    ) { innerPadding ->
+    Scaffold(topBar = {
+        TransparentAppBar(
+            title = "Смена пароля",
+            navController = navController
+        )
+    }) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
@@ -37,30 +42,24 @@ fun PasswordChangeScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            {
-                PasswordTextInput(
-                    text = viewModel.oldPassword,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                PasswordTextInput(text = viewModel.oldPassword,
                     label = "Введите текущий пароль",
                     onValueChanged = { viewModel.updateOldPassword(it) })
-                PasswordTextInput(
-                    text = viewModel.newPassword,
+                PasswordTextInput(text = viewModel.newPassword,
                     label = "Введите новый пароль",
                     isError = viewModel.newPasswordError,
                     error = "Недостаточно надёжный пароль",
                     onValueChanged = { viewModel.updateNewPassword(it) })
-                PasswordTextInput(
-                    text = viewModel.newPasswordRepeat,
+                PasswordTextInput(text = viewModel.newPasswordRepeat,
                     label = "Повторите новый пароль",
                     error = "Пароли не совпадают",
                     enabled = viewModel.newPasswordRepeatEnabled,
                     isError = viewModel.newPasswordRepeatError,
                     onValueChanged = { viewModel.updatePasswordRepeat(it) })
             }
-            GradientFilledButton(
-                text = viewModel.saveButtonText,
+            GradientFilledButton(text = viewModel.saveButtonText,
                 enabled = viewModel.saveEnabled,
                 onClick = { viewModel.onSave() })
         }

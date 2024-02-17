@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.images.AvatarPicker
@@ -24,9 +25,10 @@ import ru.hse.connecteam.ui.theme.ConnecteamTheme
 @Composable
 fun GenericDataScreen(
     viewModel: GenericDataViewModel,
+    navController: NavController,
 ) {
     Scaffold(
-        topBar = { TransparentAppBar(title = viewModel.screenTitle) }
+        topBar = { TransparentAppBar(title = viewModel.screenTitle, navController = navController) }
     ) { innerPadding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

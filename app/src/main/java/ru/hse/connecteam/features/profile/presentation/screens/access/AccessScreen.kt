@@ -26,7 +26,7 @@ fun AccessScreen(
     navController: NavController,
 ) {
     Scaffold(
-        topBar = { TransparentAppBar(title = "Доступ") }
+        topBar = { TransparentAppBar(title = "Доступ", navController = navController) }
     ) { innerPadding ->
         if (viewModel.hasTariff) {
             Column(

@@ -24,7 +24,11 @@ class ServerProfileRepository @Inject constructor(
             val response = ApiClient.apiService.currentUser("Bearer $token")
             launch(Dispatchers.Main) {
                 if (response == null || !response.isSuccessful || response.body() == null) {
-                    continuation.resume(null)
+                    if (response != null && response.code() == 401) {
+                        authenticationService.onLogout()
+                    } else {
+                        continuation.resume(null)
+                    }
                 } else {
                     continuation.resume(DTOConverter.convert(response.body()))
                 }
