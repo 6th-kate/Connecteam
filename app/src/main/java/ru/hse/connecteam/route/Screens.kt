@@ -11,6 +11,7 @@ enum class Screen {
     ACCOUNT,
     PASSWORD_CHANGE,
     EMAIL_CHANGE,
+    VERIFY_EMAIL_CHANGE,
     MY_TARIFF,
 }
 
@@ -25,5 +26,6 @@ sealed class NavigationItem(val route: String) {
     data object Account : NavigationItem(Screen.ACCOUNT.name)
     data object PasswordChange : NavigationItem(Screen.PASSWORD_CHANGE.name)
     data object EmailChange : NavigationItem(Screen.EMAIL_CHANGE.name)
+    data object VerifyEmailChange : NavigationItem(Screen.VERIFY_EMAIL_CHANGE.name)
     data object MyTariff : NavigationItem(Screen.MY_TARIFF.name)
 }

@@ -63,14 +63,18 @@ class EmailChangeViewModel @Inject constructor(
     }
 
     private fun validateForm(): Boolean {
-        return validateUsernameInput(username)
+        return !validateUsernameInput(username)
+    }
+
+    fun getVerificationParameters(): String {
+        return "$username/$password"
     }
 
     fun onSave() {
         if (saveEnabled && validateForm()) {
             saveButtonText = "Проверяем"
             saveEnabled = false
-            TODO("add password change request, then show popup and enable button")
+            moveToVerification = true
         }
     }
 }

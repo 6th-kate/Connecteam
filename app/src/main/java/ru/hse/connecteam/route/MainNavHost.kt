@@ -10,6 +10,7 @@ import ru.hse.connecteam.Greeting
 import ru.hse.connecteam.features.profile.presentation.screens.access.AccessScreen
 import ru.hse.connecteam.features.profile.presentation.screens.account.AccountScreen
 import ru.hse.connecteam.features.profile.presentation.screens.account.email.EmailChangeScreen
+import ru.hse.connecteam.features.profile.presentation.screens.account.email.verify.VerifyEmailChangeScreen
 import ru.hse.connecteam.features.profile.presentation.screens.account.password.PasswordChangeScreen
 import ru.hse.connecteam.features.profile.presentation.screens.company.CompanyDataScreen
 import ru.hse.connecteam.features.profile.presentation.screens.personal.PersonalDataScreen
@@ -44,6 +45,9 @@ fun MainNavHost(
             }
             composable(NavigationItem.EmailChange.route) {
                 EmailChangeScreen(navController = navController)
+            }
+            composable("${NavigationItem.VerifyEmailChange.route}/{username}/{password}") {
+                VerifyEmailChangeScreen(navController = navController)
             }
             composable(NavigationItem.PasswordChange.route) {
                 PasswordChangeScreen(navController = navController)

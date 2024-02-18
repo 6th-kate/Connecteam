@@ -3,11 +3,18 @@ package ru.hse.connecteam.features.profile.data
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.domain.DTOConverter
+import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.domain.UserDomainModel
+import ru.hse.connecteam.shared.models.ResponseInfo
+import ru.hse.connecteam.shared.models.StatusInfo
 import ru.hse.connecteam.shared.models.TariffModel
 import ru.hse.connecteam.shared.services.api.ApiClient
+import ru.hse.connecteam.shared.services.api.CompanyData
+import ru.hse.connecteam.shared.services.api.EmailChange
+import ru.hse.connecteam.shared.services.api.NewEmailVerification
+import ru.hse.connecteam.shared.services.api.PasswordChange
+import ru.hse.connecteam.shared.services.api.UserPersonal
 import ru.hse.connecteam.shared.services.datastore.AuthenticationService
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -53,4 +60,121 @@ class ServerProfileRepository @Inject constructor(
             }
         }
     }
+
+    override suspend fun editPersonalData(
+        name: String,
+        surname: String,
+        description: String
+    ): ResponseInfo = suspendCoroutine { continuation ->
+        CoroutineScope(Dispatchers.IO).launch {
+            val token = authenticationService.getToken()
+            val response = ApiClient.apiService.editPersonalData(
+                "Bearer $token",
+                UserPersonal(name, surname, description)
+            )
+            launch(Dispatchers.Main) {
+                if (response == null || !response.isSuccessful) {
+                    continuation.resume(ResponseInfo(StatusInfo.ERROR, response?.message()))
+                } else {
+                    continuation.resume(ResponseInfo(StatusInfo.OK))
+                }
+            }
+        }
+    }
+
+    override suspend fun editCompanyData(
+        name: String,
+        url: String,
+        description: String
+    ): ResponseInfo = suspendCoroutine { continuation ->
+        CoroutineScope(Dispatchers.IO).launch {
+            val token = authenticationService.getToken()
+            val response = ApiClient.apiService.editCompanyData(
+                "Bearer $token",
+                CompanyData(name, url, description)
+            )
+            launch(Dispatchers.Main) {
+                if (response == null || !response.isSuccessful) {
+                    continuation.resume(ResponseInfo(StatusInfo.ERROR, response?.message()))
+                } else {
+                    continuation.resume(ResponseInfo(StatusInfo.OK))
+                }
+            }
+        }
+    }
+
+    override suspend fun logOut(): ResponseInfo = suspendCoroutine { continuation ->
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                authenticationService.onLogout()
+                launch(Dispatchers.Main) {
+                    continuation.resume(ResponseInfo(StatusInfo.OK))
+                }
+            } catch (e: Exception) {
+                launch(Dispatchers.Main) {
+                    continuation.resume(ResponseInfo(StatusInfo.ERROR, e.message))
+                }
+            }
+        }
+    }
+
+    override suspend fun changePassword(oldPassword: String, newPassword: String): ResponseInfo =
+        suspendCoroutine { continuation ->
+            CoroutineScope(Dispatchers.IO).launch {
+                val token = authenticationService.getToken()
+                val response = ApiClient.apiService.changePassword(
+                    "Bearer $token",
+                    PasswordChange(newPassword, oldPassword)
+                )
+                launch(Dispatchers.Main) {
+                    if (response == null || !response.isSuccessful) {
+                        continuation.resume(ResponseInfo(StatusInfo.ERROR, response?.message()))
+                    } else {
+                        continuation.resume(ResponseInfo(StatusInfo.OK))
+                    }
+                }
+            }
+        }
+
+    override suspend fun sendChangeEmailCode(newEmail: String, password: String): ResponseInfo =
+        suspendCoroutine { continuation ->
+            CoroutineScope(Dispatchers.IO).launch {
+                val token = authenticationService.getToken()
+                val response = ApiClient.apiService.verifyEmailChange(
+                    "Bearer $token",
+                    NewEmailVerification(newEmail, password)
+                )
+                launch(Dispatchers.Main) {
+                    if (response == null || !response.isSuccessful) {
+                        continuation.resume(ResponseInfo(StatusInfo.ERROR, response?.message()))
+                    } else {
+                        continuation.resume(ResponseInfo(StatusInfo.OK))
+                    }
+                }
+            }
+        }
+
+    override suspend fun confirmEmailChange(newEmail: String, code: String): ResponseInfo =
+        suspendCoroutine { continuation ->
+            CoroutineScope(Dispatchers.IO).launch {
+                val token = authenticationService.getToken()
+                val response = ApiClient.apiService.changeEmail(
+                    "Bearer $token",
+                    EmailChange(newEmail, code)
+                )
+                launch(Dispatchers.Main) {
+                    if (response == null || !response.isSuccessful) {
+                        if (response?.errorBody()?.string()
+                                ?.contains("Wrong verification code") == true
+                        ) {
+                            continuation.resume(ResponseInfo(StatusInfo.UNAUTHORISED))
+                        } else {
+                            continuation.resume(ResponseInfo(StatusInfo.ERROR, response?.message()))
+                        }
+                    } else {
+                        continuation.resume(ResponseInfo(StatusInfo.OK))
+                    }
+                }
+            }
+        }
 }

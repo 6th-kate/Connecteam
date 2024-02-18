@@ -61,7 +61,7 @@ interface ApiService {
     @PATCH("users/info")
     suspend fun editPersonalData(
         @Header(tokenHeaderName) token: String,
-        @Body userData: UserData
+        @Body userData: UserPersonal
     ): Response<Void>?
 
     @PATCH("users/company")

@@ -9,16 +9,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import kotlinx.coroutines.delay
 import ru.hse.connecteam.features.profile.presentation.components.ExitButton
 import ru.hse.connecteam.features.profile.presentation.components.OutlinedSettingsBaseButton
 import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
 import ru.hse.connecteam.route.NavigationItem
+import ru.hse.connecteam.ui.components.modals.SelfHidingBottomAlert
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
@@ -31,6 +34,16 @@ fun AccountScreen(
             navController = navController
         )
     }) { innerPadding ->
+        LaunchedEffect(viewModel.shouldShowAlert) {
+            if (viewModel.shouldShowAlert) {
+                delay(1000L)
+                viewModel.stopAlert()
+            }
+        }
+        if (viewModel.shouldShowAlert) {
+            SelfHidingBottomAlert(viewModel.alertText)
+        }
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
@@ -51,7 +64,7 @@ fun AccountScreen(
                     navController.navigate(NavigationItem.PasswordChange.route)
                 })
             }
-            ExitButton()
+            ExitButton(onClick = { viewModel.logOut() })
         }
     }
 }

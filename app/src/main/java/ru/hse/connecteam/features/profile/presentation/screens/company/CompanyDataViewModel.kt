@@ -6,11 +6,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.presentation.components.datascreen.GenericDataViewModel
+import ru.hse.connecteam.shared.models.StatusInfo
 import javax.inject.Inject
 
 @HiltViewModel
 class CompanyDataViewModel @Inject constructor(
-    repository: ProfileDataRepository,
+    private val repository: ProfileDataRepository,
 ) : GenericDataViewModel() {
     private var initialized: Boolean = false
 
@@ -42,8 +43,21 @@ class CompanyDataViewModel @Inject constructor(
 
     override fun onSave() {
         if (saveEnabled) {
-            saveEnabled = false
             saveButtonText = "Сохраняем..."
+            saveEnabled = false
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = repository.editCompanyData(firstField, secondField, about)
+                CoroutineScope(Dispatchers.Main).launch {
+                    if (response.status == StatusInfo.OK) {
+                        alertText = "Данные успешно сохранены"
+                    } else {
+                        saveEnabled = true
+                        alertText = "Ошибка сохранения"
+                    }
+                    shouldShowAlert = true
+                    saveButtonText = "Сохранить"
+                }
+            }
         }
     }
 }

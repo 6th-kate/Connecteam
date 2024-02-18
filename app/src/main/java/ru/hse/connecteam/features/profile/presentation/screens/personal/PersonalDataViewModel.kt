@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.presentation.components.datascreen.GenericDataViewModel
+import ru.hse.connecteam.shared.models.StatusInfo
 import ru.hse.connecteam.shared.utils.NAME_REGEX
 import javax.inject.Inject
 
@@ -54,7 +55,19 @@ class PersonalDataViewModel @Inject constructor(
         if (saveEnabled) {
             saveButtonText = "Сохраняем..."
             saveEnabled = false
-            TODO("add password change request, then show popup and enable button")
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = repository.editPersonalData(firstField, secondField, about)
+                CoroutineScope(Dispatchers.Main).launch {
+                    if (response.status == StatusInfo.OK) {
+                        alertText = "Данные успешно сохранены"
+                    } else {
+                        saveEnabled = true
+                        alertText = "Ошибка сохранения"
+                    }
+                    shouldShowAlert = true
+                    saveButtonText = "Сохранить"
+                }
+            }
         }
     }
 }

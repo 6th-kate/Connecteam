@@ -18,6 +18,14 @@ abstract class GenericDataViewModel(
     abstract val aboutLabel: String
     abstract fun onSave()
 
+    var shouldShowAlert by mutableStateOf(false)
+        protected set
+    var alertText by mutableStateOf("")
+        protected set
+    fun stopAlert() {
+        shouldShowAlert = false
+    }
+
     var firstField by mutableStateOf(initFirstField)
         protected set
 

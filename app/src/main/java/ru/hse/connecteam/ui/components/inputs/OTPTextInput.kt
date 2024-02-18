@@ -27,6 +27,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import ru.hse.connecteam.ui.components.animated.Shaker
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
@@ -47,6 +49,9 @@ fun OtpTextField(
             onValueChange = {
                 if (it.text.length <= otpCount) {
                     if (onOtpTextChange.invoke(it.text, it.text.length == otpCount)) {
+                        runBlocking {
+                            delay(1000)
+                        }
                         trigger = System.currentTimeMillis()
                         Handler().postDelayed({
                             onOtpTextChange.invoke("", false)

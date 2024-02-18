@@ -5,7 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
+import ru.hse.connecteam.shared.models.StatusInfo
 import ru.hse.connecteam.shared.utils.PASSWORD_REGEX
 import javax.inject.Inject
 
@@ -37,6 +41,16 @@ class PasswordChangeViewModel @Inject constructor(
     var saveEnabled by mutableStateOf(false)
         private set
 
+    var shouldShowAlert by mutableStateOf(false)
+        private set
+
+    var alertText by mutableStateOf("")
+        private set
+
+    fun stopAlert() {
+        shouldShowAlert = false
+    }
+
     fun updateOldPassword(input: String) {
         oldPassword = input
     }
@@ -51,11 +65,13 @@ class PasswordChangeViewModel @Inject constructor(
             newPasswordRepeatEnabled = false
             newPasswordRepeat = ""
         }
+        saveEnabled = newPasswordRepeatEnabled && !newPasswordRepeatError && !newPasswordError
     }
 
     fun updatePasswordRepeat(input: String) {
         newPasswordRepeat = input
         newPasswordRepeatError = !validatePasswordRepeat(newPassword, newPasswordRepeat)
+        saveEnabled = newPasswordRepeatEnabled && !newPasswordRepeatError && !newPasswordError
     }
 
     private fun validatePasswordRepeat(password: String, passwordRepeat: String): Boolean {
@@ -70,7 +86,19 @@ class PasswordChangeViewModel @Inject constructor(
         if (saveEnabled && validateForm()) {
             saveEnabled = false
             saveButtonText = "Проверяем..."
-            TODO("add password change request, then show popup and enable button")
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = repository.changePassword(oldPassword, newPassword)
+                CoroutineScope(Dispatchers.Main).launch {
+                    if (response.status == StatusInfo.OK) {
+                        alertText = "Данные успешно сохранены"
+                    } else {
+                        saveEnabled = true
+                        alertText = "Ошибка сохранения"
+                    }
+                    shouldShowAlert = true
+                    saveButtonText = "Сохранить"
+                }
+            }
         }
     }
 

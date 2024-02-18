@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
+import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.inputs.PasswordTextInput
 import ru.hse.connecteam.ui.components.inputs.PhoneEmailTextInput
@@ -43,7 +44,9 @@ fun EmailChangeScreen(
         ) {
             LaunchedEffect(viewModel.moveToVerification) {
                 if (viewModel.moveToVerification) {
-                    TODO("add navigation")
+                    navController.navigate(
+                        "${NavigationItem.VerifyEmailChange.route}/${viewModel.getVerificationParameters()}"
+                    )
                 }
             }
             Column(
