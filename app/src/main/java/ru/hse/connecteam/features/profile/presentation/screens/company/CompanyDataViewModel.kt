@@ -1,8 +1,10 @@
 package ru.hse.connecteam.features.profile.presentation.screens.company
 
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.presentation.components.datascreen.GenericDataViewModel
@@ -13,23 +15,18 @@ import javax.inject.Inject
 class CompanyDataViewModel @Inject constructor(
     private val repository: ProfileDataRepository,
 ) : GenericDataViewModel() {
-    private var initialized: Boolean = false
 
     init {
-        if (!initialized) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val user = repository.getUser()
-                CoroutineScope(Dispatchers.Main).launch {
-                    if (user != null) {
-                        firstField = user.companyName
-                        secondField = user.companySite
-                        about = user.companyAbout
-                    } else {
-                        firstField = ""
-                        secondField = ""
-                        about = ""
-                    }
-                    initialized = true
+        viewModelScope.launch {
+            repository.getUserFlow().collectLatest { user ->
+                if (user != null) {
+                    firstField = user.companyName
+                    secondField = user.companySite
+                    about = user.companyAbout
+                } else {
+                    firstField = ""
+                    secondField = ""
+                    about = ""
                 }
             }
         }

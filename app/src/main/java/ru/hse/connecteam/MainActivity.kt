@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,7 @@ import ru.hse.connecteam.route.LoginNavHost
 import ru.hse.connecteam.route.MainNavHost
 import ru.hse.connecteam.shared.models.UserAuthState
 import ru.hse.connecteam.shared.services.datastore.AuthenticationService
+import ru.hse.connecteam.ui.components.animated.LoadingAnimation
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 import ru.hse.connecteam.ui.theme.OutlinedButtonLabel
 import javax.inject.Inject
@@ -52,7 +54,9 @@ class MainActivity : ComponentActivity() {
 
                     lifecycleScope.launch {
                         repeatOnLifecycle(Lifecycle.State.STARTED) {
-                            authenticationService.isAuthenticated().collect { userAuthState = it }
+                            authenticationService.isAuthenticated().collect {
+                                userAuthState = it
+                            }
                         }
                     }
                     when (userAuthState) {
@@ -68,7 +72,12 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        UserAuthState.UNKNOWN -> {/*HERE BE LOADING SCREEN*/
+                        UserAuthState.UNKNOWN -> {
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                Box(modifier = Modifier.align(Alignment.Center)) {
+                                    LoadingAnimation()
+                                }
+                            }
                         }
                     }
                 }

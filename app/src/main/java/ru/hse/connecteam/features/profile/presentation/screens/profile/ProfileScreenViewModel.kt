@@ -1,10 +1,13 @@
 package ru.hse.connecteam.features.profile.presentation.screens.profile
 
 import android.graphics.Bitmap
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import javax.inject.Inject
@@ -13,21 +16,18 @@ import javax.inject.Inject
 class ProfileScreenViewModel @Inject constructor(
     private val repository: ProfileDataRepository,
 ) : ViewModel() {
-    private var initialized: Boolean = false
-    var fullName: String = "Загружаем..."
-    var image: Bitmap? = null
+    var fullName: String by mutableStateOf("Загружаем...")
+        private set
+    var image: Bitmap? by mutableStateOf(null)
+        private set
 
     init {
-        if (!initialized) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val user = repository.getUser()
-                CoroutineScope(Dispatchers.Main).launch {
-                    fullName = if (user != null) {
-                        user.firstName + " " + user.surname
-                    } else {
-                        "Ошибка"
-                    }
-                    initialized = true
+        viewModelScope.launch {
+            repository.getUserFlow().collectLatest { user ->
+                fullName = if (user != null) {
+                    user.firstName + " " + user.surname
+                } else {
+                    "Ошибка"
                 }
             }
         }

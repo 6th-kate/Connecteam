@@ -17,6 +17,7 @@ import ru.hse.connecteam.features.auth.data.ServerAuthRepository
 import ru.hse.connecteam.features.auth.domain.AuthRepository
 import ru.hse.connecteam.features.profile.data.ServerProfileRepository
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
+import ru.hse.connecteam.shared.services.user.UserService
 import javax.inject.Singleton
 
 @Module
@@ -33,8 +34,17 @@ class DataStoreModule {
     }
 
     @Provides
-    fun provideProfileRepository(authenticationService: AuthenticationService): ProfileDataRepository {
-        return ServerProfileRepository(authenticationService)
+    @Singleton
+    fun provideUserService(authenticationService: AuthenticationService): UserService {
+        return UserService(authenticationService)
+    }
+
+    @Provides
+    fun provideProfileRepository(
+        authenticationService: AuthenticationService,
+        userService: UserService
+    ): ProfileDataRepository {
+        return ServerProfileRepository(authenticationService, userService)
     }
 
     @Provides

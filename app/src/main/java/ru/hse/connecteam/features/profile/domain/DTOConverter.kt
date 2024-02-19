@@ -2,6 +2,7 @@ package ru.hse.connecteam.features.profile.domain
 
 import ru.hse.connecteam.shared.models.TariffInfo
 import ru.hse.connecteam.shared.models.TariffModel
+import ru.hse.connecteam.shared.models.UserModel
 import ru.hse.connecteam.shared.services.api.TariffData
 import ru.hse.connecteam.shared.services.api.UserData
 
@@ -21,6 +22,23 @@ class DTOConverter {
                 userData.company_name,
                 userData.company_url,
                 userData.company_info
+            )
+        }
+
+        fun convert(userData: UserModel?): UserDomainModel? {
+            if (userData == null) {
+                return null
+            }
+            return UserDomainModel(
+                userData.firstName,
+                userData.surname,
+                null,
+                userData.email,
+                userData.about,
+                null,
+                userData.companyName,
+                userData.companySite,
+                userData.companyAbout
             )
         }
 

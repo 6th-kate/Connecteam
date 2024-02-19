@@ -2,6 +2,10 @@ package ru.hse.connecteam.features.profile.data
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.DTOConverter
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
@@ -9,6 +13,7 @@ import ru.hse.connecteam.features.profile.domain.UserDomainModel
 import ru.hse.connecteam.shared.models.ResponseInfo
 import ru.hse.connecteam.shared.models.StatusInfo
 import ru.hse.connecteam.shared.models.TariffModel
+import ru.hse.connecteam.shared.models.UserModel
 import ru.hse.connecteam.shared.services.api.ApiClient
 import ru.hse.connecteam.shared.services.api.CompanyData
 import ru.hse.connecteam.shared.services.api.EmailChange
@@ -16,12 +21,14 @@ import ru.hse.connecteam.shared.services.api.NewEmailVerification
 import ru.hse.connecteam.shared.services.api.PasswordChange
 import ru.hse.connecteam.shared.services.api.UserPersonal
 import ru.hse.connecteam.shared.services.datastore.AuthenticationService
+import ru.hse.connecteam.shared.services.user.UserService
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class ServerProfileRepository @Inject constructor(
-    private val authenticationService: AuthenticationService
+    private val authenticationService: AuthenticationService,
+    private val userService: UserService,
 ) :
     ProfileDataRepository {
     override suspend fun getUser(
@@ -43,8 +50,18 @@ class ServerProfileRepository @Inject constructor(
         }
     }
 
-    override fun tryChangePassword(oldPassword: String, newPassword: String) {
-        TODO("Not yet implemented")
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun getUserFlow(): Flow<UserDomainModel?> {
+        userService.forceUpdateUserFlow()
+        return userService.user.flatMapLatest { value: UserModel? ->
+            flow {
+                emit(
+                    DTOConverter.convert(
+                        value
+                    )
+                )
+            }
+        }
     }
 
     override suspend fun getTariff(): TariffModel? = suspendCoroutine { continuation ->
@@ -76,6 +93,7 @@ class ServerProfileRepository @Inject constructor(
                 if (response == null || !response.isSuccessful) {
                     continuation.resume(ResponseInfo(StatusInfo.ERROR, response?.message()))
                 } else {
+                    userService.forceUpdateUserFlow()
                     continuation.resume(ResponseInfo(StatusInfo.OK))
                 }
             }

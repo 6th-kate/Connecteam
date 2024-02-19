@@ -4,9 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.shared.models.StatusInfo
@@ -16,17 +18,12 @@ import javax.inject.Inject
 class AccountScreenViewModel @Inject constructor(
     private val repository: ProfileDataRepository
 ) : ViewModel() {
-    private var initialized: Boolean = false
     var email: String = "Загружаем..."
 
     init {
-        if (!initialized) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val user = repository.getUser()
-                CoroutineScope(Dispatchers.Main).launch {
-                    email = user?.email ?: "Ошибка"
-                    initialized = true
-                }
+        viewModelScope.launch {
+            repository.getUserFlow().collectLatest { user ->
+                email = user?.email ?: "Ошибка"
             }
         }
     }
