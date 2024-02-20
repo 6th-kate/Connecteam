@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
-import ru.hse.connecteam.shared.models.StatusInfo
+import ru.hse.connecteam.shared.models.response.StatusInfo
 import ru.hse.connecteam.shared.utils.PASSWORD_REGEX
 import javax.inject.Inject
 

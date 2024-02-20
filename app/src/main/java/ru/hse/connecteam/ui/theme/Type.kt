@@ -61,6 +61,24 @@ val OutlinedButtonLabel = TextStyle(
     brush = BaseGradientBrush,
 )
 
+val BigWhiteLabel37 = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 37.sp,
+    lineHeight = 37.sp,
+    letterSpacing = 0.5.sp,
+    color = DefaultWhite,
+)
+
+val BigGradientLabel = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 37.sp,
+    lineHeight = 37.sp,
+    letterSpacing = 0.5.sp,
+    brush = BaseGradientBrush,
+)
+
 val DisabledButtonLabel = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Medium,
@@ -84,6 +102,15 @@ val BigWhiteLabel = TextStyle(
     fontWeight = FontWeight.Bold,
     fontSize = 23.sp,
     lineHeight = 18.sp,
+    letterSpacing = 0.5.sp,
+    color = DefaultWhite,
+)
+
+val MediumWhiteLabel = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 20.sp,
+    lineHeight = 20.sp,
     letterSpacing = 0.5.sp,
     color = DefaultWhite,
 )

@@ -2,19 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AccessScreenPreview">
-        <State />
-      </entry>
       <entry key="BottomBarPreview">
         <State />
       </entry>
-      <entry key="BottomBarPreview (1)">
+      <entry key="PendingTariffPreview">
         <State />
       </entry>
-      <entry key="LoadingPreview">
+      <entry key="ShareButtonPreview">
         <State />
       </entry>
-      <entry key="PayWallPreview">
+      <entry key="TariffListScreenPreview">
+        <State />
+      </entry>
+      <entry key="TariffPurchaseScreenPreview">
         <State />
       </entry>
       <entry key="app">

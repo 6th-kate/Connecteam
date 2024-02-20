@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
-import ru.hse.connecteam.shared.models.StatusInfo
+import ru.hse.connecteam.shared.models.response.StatusInfo
 import ru.hse.connecteam.shared.utils.NEW_CODE_WAITING_TIME
 import ru.hse.connecteam.shared.utils.RESEND_CODE_MAX_TIMES
 import javax.inject.Inject

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import ru.hse.connecteam.shared.models.UserAuthState
+import ru.hse.connecteam.shared.models.user.UserAuthState
 import javax.inject.Inject
 
 class AuthenticationService @Inject constructor(private val dataStore: DataStore<Preferences>) {

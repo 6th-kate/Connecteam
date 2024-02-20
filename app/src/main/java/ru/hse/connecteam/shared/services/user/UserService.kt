@@ -3,7 +3,7 @@ package ru.hse.connecteam.shared.services.user
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
-import ru.hse.connecteam.shared.models.UserModel
+import ru.hse.connecteam.shared.models.user.UserModel
 import ru.hse.connecteam.shared.services.api.ApiClient
 import ru.hse.connecteam.shared.services.api.UserData
 import ru.hse.connecteam.shared.services.datastore.AuthenticationService

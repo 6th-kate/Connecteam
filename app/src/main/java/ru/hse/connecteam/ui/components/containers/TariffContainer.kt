@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ru.hse.connecteam.shared.models.TariffInfo
+import ru.hse.connecteam.shared.models.tariffs.TariffInfo
 import ru.hse.connecteam.ui.components.utils.coloredShadow
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
 import ru.hse.connecteam.ui.theme.BigWhiteLabel
@@ -99,11 +99,11 @@ fun TariffContainer(
 
 @Preview
 @Composable
-fun OutlinedGradientButtonPreview() {
+fun TariffContainerPreview() {
     ConnecteamTheme(darkTheme = true) {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            TariffContainer(tariff = TariffInfo.SIMPLE, isToggled = true)
+            TariffContainer(tariff = TariffInfo.ADVANCED, isToggled = true)
         }
     }
 }

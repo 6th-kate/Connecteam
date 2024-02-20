@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.route.LoginNavHost
 import ru.hse.connecteam.route.MainNavHost
-import ru.hse.connecteam.shared.models.UserAuthState
+import ru.hse.connecteam.shared.models.user.UserAuthState
 import ru.hse.connecteam.shared.services.datastore.AuthenticationService
 import ru.hse.connecteam.ui.components.animated.LoadingAnimation
 import ru.hse.connecteam.ui.theme.ConnecteamTheme

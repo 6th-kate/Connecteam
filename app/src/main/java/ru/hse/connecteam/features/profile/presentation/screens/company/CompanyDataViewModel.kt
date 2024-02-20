@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.presentation.components.datascreen.GenericDataViewModel
-import ru.hse.connecteam.shared.models.StatusInfo
+import ru.hse.connecteam.shared.models.response.StatusInfo
 import javax.inject.Inject
 
 @HiltViewModel

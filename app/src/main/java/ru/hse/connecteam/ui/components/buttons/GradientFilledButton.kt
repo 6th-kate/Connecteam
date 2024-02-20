@@ -30,6 +30,7 @@ import ru.hse.connecteam.ui.theme.WhiteSemiTransparent25
 @Composable
 fun GradientFilledButton(
     text: String,
+    hasDefaultPadding: Boolean = true,
     onClick: () -> Unit = { },
     enabled: Boolean = true,
 ) {
@@ -43,7 +44,10 @@ fun GradientFilledButton(
             }
         },
 
-        contentPadding = PaddingValues(horizontal = 15.dp, vertical = 5.dp),
+        contentPadding = if (hasDefaultPadding) PaddingValues(
+            horizontal = 15.dp,
+            vertical = 5.dp
+        ) else PaddingValues(all = 0.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
         Box(

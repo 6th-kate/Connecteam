@@ -7,8 +7,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
-import ru.hse.connecteam.shared.models.TariffInfo
-import ru.hse.connecteam.shared.models.TariffModel
+import ru.hse.connecteam.features.profile.domain.TariffDomainModel
+import ru.hse.connecteam.shared.models.tariffs.TariffInfo
 import java.util.Locale
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class MyTariffViewModel @Inject constructor(
     private val repository: ProfileDataRepository,
 ) : ViewModel() {
     private var initialized: Boolean = false
-    private var tariffModel: TariffModel? = null
+    private var tariffModel: TariffDomainModel? = null
 
     init {
         if (!initialized) {

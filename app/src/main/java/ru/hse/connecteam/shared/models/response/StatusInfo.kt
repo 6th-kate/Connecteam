@@ -1,4 +1,4 @@
-package ru.hse.connecteam.shared.models
+package ru.hse.connecteam.shared.models.response
 
 enum class StatusInfo {
     OK,

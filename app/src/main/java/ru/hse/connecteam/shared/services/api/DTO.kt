@@ -85,6 +85,7 @@ data class TariffData(
     val user_id: String,
     val plan_access: String,
     val plan_type: String,
+    val confirmed: String,
 )
 
 data class TariffRequest(

@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.DTOConverter
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
+import ru.hse.connecteam.features.profile.domain.TariffDomainModel
 import ru.hse.connecteam.features.profile.domain.UserDomainModel
-import ru.hse.connecteam.shared.models.ResponseInfo
-import ru.hse.connecteam.shared.models.StatusInfo
-import ru.hse.connecteam.shared.models.TariffModel
-import ru.hse.connecteam.shared.models.UserModel
+import ru.hse.connecteam.shared.models.response.ResponseInfo
+import ru.hse.connecteam.shared.models.response.StatusInfo
+import ru.hse.connecteam.shared.models.user.UserModel
 import ru.hse.connecteam.shared.services.api.ApiClient
 import ru.hse.connecteam.shared.services.api.CompanyData
 import ru.hse.connecteam.shared.services.api.EmailChange
@@ -31,8 +31,7 @@ class ServerProfileRepository @Inject constructor(
     private val userService: UserService,
 ) :
     ProfileDataRepository {
-    override suspend fun getUser(
-    ): UserDomainModel? = suspendCoroutine { continuation ->
+    override suspend fun getUser(): UserDomainModel? = suspendCoroutine { continuation ->
         CoroutineScope(Dispatchers.IO).launch {
             val token = authenticationService.getToken()
             val response = ApiClient.apiService.currentUser("Bearer $token")
@@ -64,7 +63,7 @@ class ServerProfileRepository @Inject constructor(
         }
     }
 
-    override suspend fun getTariff(): TariffModel? = suspendCoroutine { continuation ->
+    override suspend fun getTariff(): TariffDomainModel? = suspendCoroutine { continuation ->
         CoroutineScope(Dispatchers.IO).launch {
             val token = authenticationService.getToken()
             val response = ApiClient.apiService.getUserTariff(token)
@@ -115,6 +114,7 @@ class ServerProfileRepository @Inject constructor(
                 if (response == null || !response.isSuccessful) {
                     continuation.resume(ResponseInfo(StatusInfo.ERROR, response?.message()))
                 } else {
+                    userService.forceUpdateUserFlow()
                     continuation.resume(ResponseInfo(StatusInfo.OK))
                 }
             }
@@ -190,6 +190,7 @@ class ServerProfileRepository @Inject constructor(
                             continuation.resume(ResponseInfo(StatusInfo.ERROR, response?.message()))
                         }
                     } else {
+                        userService.forceUpdateUserFlow()
                         continuation.resume(ResponseInfo(StatusInfo.OK))
                     }
                 }
