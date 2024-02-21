@@ -5,13 +5,13 @@
       <entry key="BottomBarPreview">
         <State />
       </entry>
-      <entry key="PendingTariffPreview">
-        <State />
-      </entry>
       <entry key="ShareButtonPreview">
         <State />
       </entry>
       <entry key="TariffListScreenPreview">
+        <State />
+      </entry>
+      <entry key="TariffParticipantsScreenPreview">
         <State />
       </entry>
       <entry key="TariffPurchaseScreenPreview">

@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
@@ -64,7 +65,11 @@ fun GradientFilledButton(
                 .padding(start = 15.dp, end = 15.dp, top = 13.dp, bottom = 13.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(text = text, style = if (enabled) FilledButtonLabel else DisabledButtonLabel)
+            Text(
+                text = text,
+                textAlign = TextAlign.Center,
+                style = if (enabled) FilledButtonLabel else DisabledButtonLabel
+            )
         }
     }
 }

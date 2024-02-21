@@ -3,37 +3,31 @@ package ru.hse.connecteam.features.profile.presentation.screens.access.participa
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import ru.hse.connecteam.features.profile.presentation.components.OutlinedSettingsBaseButton
 import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
-import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
-import ru.hse.connecteam.ui.components.buttons.ShareButtons
-import ru.hse.connecteam.ui.theme.BigWhiteLabel
+import ru.hse.connecteam.ui.components.modals.SelfHidingBottomAlert
+import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TariffParticipantsScreen(
     viewModel: TariffParticipantsViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val deleteSheetState = rememberModalBottomSheetState()
-    val addSheetState = rememberModalBottomSheetState()
     Scaffold(
         topBar = { TransparentAppBar(title = "Участники тарифа", navController = navController) }
     ) { innerPadding ->
@@ -47,9 +41,6 @@ fun TariffParticipantsScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(5.dp),
-                modifier = Modifier
-                    .verticalScroll(state = rememberScrollState())
-                    .weight(weight = 1f, fill = false)
             ) {
                 viewModel.participants.forEach { participant ->
                     OutlinedSettingsBaseButton(
@@ -59,52 +50,44 @@ fun TariffParticipantsScreen(
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(15.dp))
-            GradientFilledButton(text = "Добавить участника")
-            if (viewModel.showDeleteBottomSheet) {
-                ModalBottomSheet(
-                    onDismissRequest = { viewModel.hideDeleteParticipantDialog() },
-                    sheetState = deleteSheetState
-                ) {
-                    GradientFilledButton(
-                        text = "Удалить участника ${viewModel.selectedParticipant?.fullName}",
-                        onClick = {
-                            viewModel.deleteSelectedParticipant()
-                            viewModel.hideDeleteParticipantDialog()
-                        }
-                    )
-                    OutlinedGradientButton(
-                        text = "Отмена",
-                        onClick = { viewModel.hideDeleteParticipantDialog() }
-                    )
-                }
+            Spacer(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(weight = 1f)
+            )
+            if (viewModel.canAddMoreParticipants) {
+                GradientFilledButton(
+                    text = "Добавить участника",
+                    onClick = { viewModel.addParticipant() })
+            } else {
+                GradientFilledButton(
+                    enabled = false,
+                    text = "Достигнуто максимальное число участников"
+                )
             }
-            if (viewModel.showAddBottomSheet) {
-                ModalBottomSheet(
-                    onDismissRequest = { viewModel.hideAddParticipantDialog() },
-                    sheetState = addSheetState
-                ) {
-                    if (viewModel.canAddMoreParticipants) {
-                        Text(
-                            text = "В тариф больше нельзя добавить участников",
-                            style = BigWhiteLabel,
-                        )
-                        ShareButtons(
-                            subject = viewModel.subject,
-                            copyText = viewModel.getCopyText()
-                        )
-                        OutlinedGradientButton(
-                            text = "Отмена",
-                            onClick = { viewModel.hideAddParticipantDialog() }
-                        )
-                    } else {
-                        Text(
-                            text = "В тариф больше нельзя добавить участников",
-                            style = BigWhiteLabel,
-                        )
-                    }
-                }
-            }
+        }
+        if (viewModel.showDeleteBottomSheet) {
+            DeleteParticipantBottomSheet(viewModel)
+        }
+        if (viewModel.showAddBottomSheet) {
+            AddParticipantBottomSheet(viewModel)
+        }
+        if (viewModel.showError) {
+            SelfHidingBottomAlert(viewModel.errorText)
+        }
+    }
+}
+
+
+@Preview
+@Composable
+fun TariffParticipantsScreenPreview() {
+    ConnecteamTheme(darkTheme = true) {
+        // A surface container using the 'background' color from the theme
+        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+            TariffParticipantsScreen(
+                navController = rememberNavController()
+            )
         }
     }
 }

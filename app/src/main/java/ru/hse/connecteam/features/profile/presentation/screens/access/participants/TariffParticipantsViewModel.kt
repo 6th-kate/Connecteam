@@ -1,27 +1,47 @@
 package ru.hse.connecteam.features.profile.presentation.screens.access.participants
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.hse.connecteam.features.tariffs.domain.TariffDataRepository
-import ru.hse.connecteam.shared.models.tariffs.TariffInfo
 import ru.hse.connecteam.shared.models.tariffs.TariffParticipant
 import javax.inject.Inject
 
 @HiltViewModel
 class TariffParticipantsViewModel @Inject constructor(
     private val repository: TariffDataRepository
-) :
-    ViewModel() {
-    private val participantModels: List<TariffParticipant> = listOf(
-        TariffParticipant("PLayer", "Playerson1", "player_playerson1@mail.ru"),
-        TariffParticipant("PLayer", "Playerson2", "player_playerson1@mail.ru"),
-        TariffParticipant("PLayer", "Playerson3", "player_playerson1@mail.ru"),
-    )
-
+) : ViewModel() {
     class ParticipantViewModel(val fullName: String, val email: String, val modelIndex: Int)
+
+    private var initialized: Boolean = false
+    var showError by mutableStateOf(false)
+        private set
+    var errorText by mutableStateOf("Ошибка")
+        private set
+
+    var canAddMoreParticipants by mutableStateOf(false)
+        private set
+
+    private var participantModels: List<TariffParticipant> = mutableStateListOf()
+
+    init {
+        if (!initialized) {
+            //TODO(add server)
+            participantModels = listOf(
+                TariffParticipant("PLayer", "Playerson1", "player_playerson1@mail.ru"),
+                TariffParticipant("PLayer", "Playerson2", "player_playerson1@mail.ru"),
+                TariffParticipant("PLayer", "Playerson3", "player_playerson1@mail.ru"),
+            )
+            //if (got error)
+            //errorText = "Не удалось загрузить участников тарифа"
+            //showError = true
+            //canAddMoreParticipants = participantModels.count() >= maxAvailable
+            initialized = true
+        }
+    }
 
     val participants: List<ParticipantViewModel> =
         participantModels.mapIndexed { index, tariffParticipant ->
@@ -36,8 +56,6 @@ class TariffParticipantsViewModel @Inject constructor(
         private set
     var showAddBottomSheet by mutableStateOf(false)
         private set
-    var canAddMoreParticipants by mutableStateOf(true)
-        private set
 
     val subject: String = "Подключение к тарифу"
     private val linkText: String =
@@ -46,11 +64,6 @@ class TariffParticipantsViewModel @Inject constructor(
     fun getCopyText(): String {
         return linkText
     }
-
-    var showError by mutableStateOf(false)
-        private set
-    var errorText by mutableStateOf("Ошибка")
-        private set
 
     var selectedParticipant: ParticipantViewModel? by mutableStateOf(null)
 
@@ -62,7 +75,7 @@ class TariffParticipantsViewModel @Inject constructor(
 
     fun deleteSelectedParticipant() {
         if (selectedParticipant != null) {
-            TODO("repository.deleteParticipant(participantModels[selectedParticipant!!.modelIndex])") // TODO(trycatch)
+            //TODO("repository.deleteParticipant(participantModels[selectedParticipant!!.modelIndex])") // TODO(trycatch)
         }
     }
 
@@ -70,7 +83,7 @@ class TariffParticipantsViewModel @Inject constructor(
         selectedParticipant = null
         showDeleteBottomSheet = false
         showAddBottomSheet = true
-        TODO("repository.generateInvitation()") // TODO(trycatch)
+        //TODO("repository.generateInvitation()") // TODO(trycatch)
     }
 
     fun hideAddParticipantDialog() {
