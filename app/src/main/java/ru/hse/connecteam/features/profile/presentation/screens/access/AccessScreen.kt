@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
 import ru.hse.connecteam.features.tariffs.components.PayWall
+import ru.hse.connecteam.features.tariffs.components.PendingTariff
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
@@ -28,16 +29,7 @@ fun AccessScreen(
     Scaffold(
         topBar = { TransparentAppBar(title = "Доступ", navController = navController) }
     ) { innerPadding ->
-        if (viewModel.hasTariff) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .padding(top = 10.dp, bottom = 15.dp)
-            ) {
-                MyTariff(navController = navController, viewModel)
-            }
-        } else {
+        if (!viewModel.hasTariff || viewModel.tariffInfo == null) {
             Column(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
@@ -45,6 +37,24 @@ fun AccessScreen(
             ) {
                 PayWall(navController = navController, message = "У вас ещё нет тарифа")
                 Spacer(modifier = Modifier.height(50.dp))
+            }
+        } else if (!viewModel.confirmed) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(top = 10.dp, bottom = 15.dp)
+            ) {
+                PendingTariff(navController, tariffInfo = viewModel.tariffInfo)
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(top = 10.dp, bottom = 15.dp)
+            ) {
+                MyTariff(navController = navController, viewModel)
             }
         }
     }

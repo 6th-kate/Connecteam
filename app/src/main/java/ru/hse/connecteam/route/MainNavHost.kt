@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import ru.hse.connecteam.Greeting
 import ru.hse.connecteam.features.profile.presentation.screens.access.AccessScreen
+import ru.hse.connecteam.features.profile.presentation.screens.access.participants.TariffParticipantsScreen
 import ru.hse.connecteam.features.profile.presentation.screens.account.AccountScreen
 import ru.hse.connecteam.features.profile.presentation.screens.account.email.EmailChangeScreen
 import ru.hse.connecteam.features.profile.presentation.screens.account.email.verify.VerifyEmailChangeScreen
@@ -15,6 +16,8 @@ import ru.hse.connecteam.features.profile.presentation.screens.account.password.
 import ru.hse.connecteam.features.profile.presentation.screens.company.CompanyDataScreen
 import ru.hse.connecteam.features.profile.presentation.screens.personal.PersonalDataScreen
 import ru.hse.connecteam.features.profile.presentation.screens.profile.ProfileScreen
+import ru.hse.connecteam.features.tariffs.presentation.purchase.TariffPurchaseScreen
+import ru.hse.connecteam.features.tariffs.presentation.tarifflist.TariffListScreen
 
 @Composable
 fun MainNavHost(
@@ -29,6 +32,12 @@ fun MainNavHost(
     ) {
         composable(NavigationItem.Main.route) {
             Greeting(name = "Main Screen Mock")
+        }
+        composable("${NavigationItem.TariffList.route}/{hasTariff}") {
+            TariffListScreen(navController = navController)
+        }
+        composable("${NavigationItem.TariffPurchase.route}/{tariff}") {
+            TariffPurchaseScreen(navController = navController)
         }
         navigation(NavigationItem.Profile.route, "profile") {
             composable(NavigationItem.Profile.route) {
@@ -54,6 +63,9 @@ fun MainNavHost(
             }
             composable(NavigationItem.MyTariff.route) {
                 AccessScreen(navController = navController)
+            }
+            composable(NavigationItem.TariffParticipants.route) {
+                TariffParticipantsScreen(navController = navController)
             }
         }
     }

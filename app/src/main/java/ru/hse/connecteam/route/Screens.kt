@@ -13,6 +13,9 @@ enum class Screen {
     EMAIL_CHANGE,
     VERIFY_EMAIL_CHANGE,
     MY_TARIFF,
+    TARIFF_LIST,
+    TARIFF_PURCHASE,
+    TARIFF_PARTICIPANTS,
 }
 
 sealed class NavigationItem(val route: String) {
@@ -28,4 +31,7 @@ sealed class NavigationItem(val route: String) {
     data object EmailChange : NavigationItem(Screen.EMAIL_CHANGE.name)
     data object VerifyEmailChange : NavigationItem(Screen.VERIFY_EMAIL_CHANGE.name)
     data object MyTariff : NavigationItem(Screen.MY_TARIFF.name)
+    data object TariffList : NavigationItem(Screen.TARIFF_LIST.name)
+    data object TariffPurchase : NavigationItem(Screen.TARIFF_PURCHASE.name)
+    data object TariffParticipants : NavigationItem(Screen.TARIFF_PARTICIPANTS.name)
 }

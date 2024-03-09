@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.theme.BigWhiteLabel
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
@@ -33,7 +34,7 @@ fun PayWall(navController: NavController, message: String) {
         Spacer(modifier = Modifier.height(20.dp))
         GradientFilledButton(
             text = "Выбрать тариф",
-            onClick = { TODO("navigate on choose tariff page") },
+            onClick = { navController.navigate("${NavigationItem.TariffList.route}/${false}") },
         )
     }
 }

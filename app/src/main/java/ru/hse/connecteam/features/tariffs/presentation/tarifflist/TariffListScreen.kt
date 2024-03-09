@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
+import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
 import ru.hse.connecteam.ui.components.buttons.SmallClickableText
 import ru.hse.connecteam.ui.components.containers.TariffContainer
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
@@ -50,10 +52,23 @@ fun TariffListScreen(
             }
         }
         Spacer(modifier = Modifier.height(15.dp))
-        GradientFilledButton(text = "Выбрать")
-        SmallClickableText(
-            text = "Продолжить без тарифа",
-            onClick = { navController.popBackStack() })
+        GradientFilledButton(
+            text = "Выбрать",
+            onClick = {
+                navController.navigate(
+                    "${NavigationItem.TariffPurchase.route}/${viewModel.getPathParameters()}"
+                )
+            })
+        if (viewModel.alreadyHasTariff) {
+            OutlinedGradientButton(text = "Назад", onClick = { navController.popBackStack() })
+            SmallClickableText(
+                text = "Отказаться от тарифа",
+                onClick = { navController.popBackStack() })
+        } else {
+            SmallClickableText(
+                text = "Продолжить без тарифа",
+                onClick = { navController.popBackStack() })
+        }
     }
 }
 
@@ -63,7 +78,10 @@ fun TariffListScreenPreview() {
     ConnecteamTheme(darkTheme = true) {
         // A surface container using the 'background' color from the theme
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            TariffListScreen(viewModel = TariffListViewModel(), navController = rememberNavController())
+            TariffListScreen(
+                //viewModel = TariffListViewModel(),
+                navController = rememberNavController()
+            )
         }
     }
 }

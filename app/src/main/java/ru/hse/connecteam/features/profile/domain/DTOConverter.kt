@@ -58,7 +58,7 @@ class DTOConverter {
                 tariffInfo,
                 toDateTime(tariffData.expiry_date),
                 isMine = tariffData.holder_id == tariffData.user_id,
-                null,
+                //null,
                 confirmed = tariffData.confirmed.lowercase().contains("true")
             )
             // TODO("add participants")

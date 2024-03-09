@@ -32,8 +32,9 @@ class MyTariffViewModel @Inject constructor(
     }
 
     val hasTariff: Boolean = tariffModel != null
+    val confirmed: Boolean = tariffModel?.confirmed == true
     val tariffInfo: TariffInfo? = tariffModel?.tariffInfo
-    val hasParticipants: Boolean = !tariffModel?.participants.isNullOrEmpty()
+    val hasParticipants: Boolean = tariffModel?.tariffInfo?.hasParticipants == true
     val isMyTariff: Boolean? = tariffModel?.isMine
     val endDate: String =
         if (tariffModel != null)

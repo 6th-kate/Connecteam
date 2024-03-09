@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TariffParticipantsViewModel @Inject constructor(
-    private val repository: TariffDataRepository
+    //private val repository: TariffDataRepository
 ) : ViewModel() {
     class ParticipantViewModel(val fullName: String, val email: String, val modelIndex: Int)
 

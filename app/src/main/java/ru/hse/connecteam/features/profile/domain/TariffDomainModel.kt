@@ -8,6 +8,6 @@ data class TariffDomainModel(
     val tariffInfo: TariffInfo,
     val endDate: Date?,
     val isMine: Boolean,
-    val participants: List<TariffParticipant>?,
+    //val participants: List<TariffParticipant>?,
     val confirmed: Boolean,
 )

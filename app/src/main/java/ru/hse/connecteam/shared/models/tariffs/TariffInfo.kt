@@ -9,6 +9,7 @@ enum class TariffInfo {
                     "- Возможность добавлять в одну игру не более 4 игроков\n"
         override val tariffName: String = "Простой"
         override val standardCost: Int = 399
+        override val hasParticipants: Boolean = false
     },
     ADVANCED {
         override val possibilities: String =
@@ -19,6 +20,7 @@ enum class TariffInfo {
                     "- Возможность выбора тем для конкретной игры\n"
         override val tariffName: String = "Расширенный"
         override val standardCost: Int = 599
+        override val hasParticipants: Boolean = false
     },
     WIDE {
         override val possibilities: String =
@@ -31,9 +33,11 @@ enum class TariffInfo {
                     "- Возможность выбора тем для конкретной игры\n"
         override val tariffName: String = "Широкий"
         override val standardCost: Int = 899
+        override val hasParticipants: Boolean = true
     };
 
     abstract val possibilities: String
     abstract val tariffName: String
     abstract val standardCost: Int
+    abstract val hasParticipants: Boolean
 }

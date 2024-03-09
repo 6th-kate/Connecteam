@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
 import ru.hse.connecteam.ui.components.containers.TariffContainer
@@ -47,8 +48,9 @@ fun MyTariff(
             )
             TariffContainer(tariff = viewModel.tariffInfo!!)
             if (viewModel.hasParticipants) {
-                OutlinedGradientButton(text = "Участники тарифа",
-                    onClick = { TODO("nav to participants screen") })
+                OutlinedGradientButton(
+                    text = "Участники тарифа",
+                    onClick = { navController.navigate(NavigationItem.TariffParticipants.route) })
             }
             Text(
                 text = "Доступен до: ${viewModel.endDate}",
@@ -65,13 +67,14 @@ fun MyTariff(
             modifier = Modifier.fillMaxWidth()
         ) {
             if (viewModel.isMyTariff!!) {
-                OutlinedGradientButton(text = "Сменить тариф",
-                    onClick = { TODO("nav to change tariff screen") })
-                GradientFilledButton(text = "Продлить тариф",
-                    onClick = {
-                        TODO("nav to elongate tariff screen")
-                    }
-                )
+                OutlinedGradientButton(
+                    text = "Сменить тариф",
+                    onClick = { navController.navigate("${NavigationItem.TariffList.route}/${true}") })
+                //GradientFilledButton(text = "Продлить тариф",
+                //    onClick = {
+                //        TODO("remove elongate tariff screen")
+                //    }
+                //)
             } else {
                 Text(
                     "Вы являетесь участником этого тарифа",
