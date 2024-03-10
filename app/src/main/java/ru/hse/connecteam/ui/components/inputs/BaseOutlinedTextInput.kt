@@ -48,6 +48,7 @@ fun BaseOutlinedTextInput(
     hasSmallClickable: Boolean = false,
     smallClickableText: String = "",
     smallClickableClick: () -> Unit = { },
+    readOnly: Boolean = false,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -55,6 +56,7 @@ fun BaseOutlinedTextInput(
         BasicTextField(
             value = text,
             enabled = enabled,
+            readOnly = readOnly,
             minLines = minLines,
             textStyle = OutlinedButtonLabel,
             visualTransformation = visualTransformation,
@@ -118,7 +120,6 @@ fun BaseOutlinedTextInput(
                 )
             }
         }
-
     }
 }
 
