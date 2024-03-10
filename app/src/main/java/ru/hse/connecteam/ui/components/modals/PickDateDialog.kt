@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerColors
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,10 +23,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import ru.hse.connecteam.shared.utils.getDate
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
+/**
+ * The date picker dialog itself.
+ *
+ * Preferably use onStandardDateSelected and convert it to String in BL-layer instead.
+ * `onDateSelected` param is deprecated.
+ * @param onStandardDateSelected takes Long
+ * @param onDateSelected takes formatted to dd.MM.yyyy Date
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PickDateDialog(
-    onDateSelected: (String) -> Unit,
+    onDateSelected: (String) -> Unit = {},
+    onStandardDateSelected: (Long?) -> Unit = {},
     onDismiss: () -> Unit,
     isSelectableDate: (Long) -> Boolean = {
         it >= (System.currentTimeMillis() - 24 * 60 * 60 * 1000)
@@ -48,6 +56,7 @@ fun PickDateDialog(
         confirmButton = {
             Button(onClick = {
                 onDateSelected(selectedDate)
+                onStandardDateSelected(datePickerState.selectedDateMillis)
                 onDismiss()
             }) {
                 Text(text = "OK")

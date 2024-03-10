@@ -36,6 +36,7 @@ fun BaseOutlinedTextInput(
     text: String,
     onValueChanged: (String) -> Unit,
     label: String? = null,
+    placeholder: String? = null,
     error: String = "",
     isError: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -94,6 +95,11 @@ fun BaseOutlinedTextInput(
                     label = if (label != null) {
                         {
                             Text(label)
+                        }
+                    } else null,
+                    placeholder = if (placeholder != null) {
+                        {
+                            Text(placeholder)
                         }
                     } else null,
                     colors = OutlinedTextFieldDefaults.colors(

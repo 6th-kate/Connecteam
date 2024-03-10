@@ -2,7 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="CreateScreenPreview">
+      <entry key="FiltersDialogPreview">
         <State />
       </entry>
       <entry key="PickDateDialogPreview">
@@ -11,10 +11,10 @@
       <entry key="PlayerDropDownPreview">
         <State />
       </entry>
-      <entry key="ShakerPreview">
+      <entry key="RangeDatePickerPreview">
         <State />
       </entry>
-      <entry key="TariffParticipantsScreenPreview">
+      <entry key="ShakerPreview">
         <State />
       </entry>
       <entry key="app">

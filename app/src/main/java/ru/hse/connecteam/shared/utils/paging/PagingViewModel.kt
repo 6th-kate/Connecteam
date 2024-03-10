@@ -9,17 +9,10 @@ import androidx.lifecycle.ViewModel
 abstract class PagingViewModel<T> : ViewModel() {
     val dataList = mutableStateListOf<T>()
 
-    private var offset by mutableStateOf(1)
+    protected var offset by mutableStateOf(1)
     var canPaginate by mutableStateOf(false)
-    var initialized by mutableStateOf(false)
+    protected var initialized by mutableStateOf(false)
     var listState by mutableStateOf(PaginationState.IDLE)
-
-
-    init {
-        if (!initialized) {
-            getData()
-        }
-    }
 
     abstract fun getData()
 

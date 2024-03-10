@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,10 +55,10 @@ fun PlayersDropDown(
     selectedItem: String,
     onItemSelected: (SimplePlayer) -> Unit,
     paginationState: PaginationState,
+    lazyColumnListState: LazyListState,
     modifier: Modifier = Modifier
 ) {
-    var expanded by remember { mutableStateOf(true) }
-    val lazyColumnListState = rememberLazyListState()
+    var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -75,7 +76,7 @@ fun PlayersDropDown(
                     text = selectedItem,
                     onValueChanged = {},
                     label = "Имя игрока",
-                    //readOnly = true,
+                    readOnly = true,
                     trailingIcon = {
                         IconButton(onClick = { }) {
                             GradientIcon(
@@ -169,6 +170,7 @@ fun PlayerDropDownPreview() {
             var selectedItem by remember {
                 mutableStateOf("${items[2].name} ${items[2].surname}")
             }
+            val lazyColumnListState = rememberLazyListState()
             Column {
                 PlayersDropDown(
                     items = items,
@@ -178,6 +180,7 @@ fun PlayerDropDownPreview() {
                         items.add(SimplePlayer("player", "playerson7"))
                         Log.i("info", "changed selectedItem to $selectedItem")
                     },
+                    lazyColumnListState = lazyColumnListState,
                     paginationState = PaginationState.LOADING
                 )
                 BaseOutlinedTextInput(text = "", onValueChanged = {})
