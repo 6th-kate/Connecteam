@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import ru.hse.connecteam.features.profile.presentation.components.ExitButton
 import ru.hse.connecteam.features.profile.presentation.components.OutlinedSettingsBaseButton
-import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
+import ru.hse.connecteam.ui.components.bars.TransparentAppBar
 import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.modals.SelfHidingBottomAlert
 import ru.hse.connecteam.ui.theme.ConnecteamTheme

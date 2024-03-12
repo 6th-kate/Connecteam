@@ -7,3 +7,4 @@ const val NEW_CODE_WAITING_TIME = 59
 const val tokenHeaderName: String = "Authorization"
 
 const val PLAYERS_CHUNK_LIMIT = 10
+const val GAMES_CHUNK_LIMIT = 15

@@ -16,9 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
-import ru.hse.connecteam.features.tariffs.components.PayWall
-import ru.hse.connecteam.features.tariffs.components.PendingTariff
+import ru.hse.connecteam.ui.components.bars.TransparentAppBar
+import ru.hse.connecteam.features.tariffs.presentation.components.PayWall
+import ru.hse.connecteam.features.tariffs.presentation.components.PendingTariff
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable

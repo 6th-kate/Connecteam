@@ -16,6 +16,10 @@ abstract class PagingViewModel<T> : ViewModel() {
 
     abstract fun getData()
 
+    fun clearList() {
+        dataList.clear()
+    }
+
     override fun onCleared() {
         offset = 1
         listState = PaginationState.IDLE

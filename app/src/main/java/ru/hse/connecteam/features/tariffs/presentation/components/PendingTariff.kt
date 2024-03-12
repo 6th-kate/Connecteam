@@ -1,4 +1,4 @@
-package ru.hse.connecteam.features.tariffs.components
+package ru.hse.connecteam.features.tariffs.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +23,6 @@ import ru.hse.connecteam.shared.models.tariffs.TariffInfo
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.buttons.SmallClickableText
 import ru.hse.connecteam.ui.components.containers.TariffContainer
-import ru.hse.connecteam.ui.theme.BigWhiteLabel
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 import ru.hse.connecteam.ui.theme.MediumWhiteLabel
 

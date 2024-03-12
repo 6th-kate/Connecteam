@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
-import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
+import ru.hse.connecteam.ui.components.bars.TransparentAppBar
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.images.AvatarPicker
 import ru.hse.connecteam.ui.components.inputs.BaseOutlinedTextInput

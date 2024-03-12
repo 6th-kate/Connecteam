@@ -10,6 +10,13 @@ val BaseGradientBrush = Brush.horizontalGradient(
     )
 )
 
+val BaseGrayBrush = Brush.horizontalGradient(
+    listOf(
+        WhiteSemiTransparent25,
+        WhiteSemiTransparent25,
+    )
+)
+
 val BaseSweepGradientBrush = Brush.sweepGradient(
     listOf(
         LightGreenGradient,

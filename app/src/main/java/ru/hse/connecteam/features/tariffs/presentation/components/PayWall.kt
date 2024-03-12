@@ -1,4 +1,4 @@
-package ru.hse.connecteam.features.tariffs.components
+package ru.hse.connecteam.features.tariffs.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

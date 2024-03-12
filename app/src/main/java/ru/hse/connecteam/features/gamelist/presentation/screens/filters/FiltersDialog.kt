@@ -26,9 +26,9 @@ import ru.hse.connecteam.features.gamelist.data.GameStaticRepositoryImpl
 import ru.hse.connecteam.features.gamelist.domain.FiltersDomainModel
 import ru.hse.connecteam.features.gamelist.presentation.screens.filters.components.PlayersDropDown
 import ru.hse.connecteam.features.gamelist.presentation.screens.filters.components.RangeDatePicker
-import ru.hse.connecteam.features.gamelist.presentation.screens.filters.components.TopBar
 import ru.hse.connecteam.shared.models.game.SimplePlayer
 import ru.hse.connecteam.shared.utils.paging.PaginationState
+import ru.hse.connecteam.ui.components.bars.TransparentAppBar
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.images.GradientIcon
 import ru.hse.connecteam.ui.components.inputs.BaseOutlinedTextInput
@@ -56,7 +56,7 @@ fun FiltersDialog(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar { onPopBack() } }
+        topBar = { TransparentAppBar(title = "Фильтры", onPopBack = { onPopBack() }) }
     ) { paddingValues ->
         Column(
             horizontalAlignment = Alignment.Start,

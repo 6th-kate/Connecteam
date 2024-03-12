@@ -11,6 +11,23 @@ import javax.inject.Inject
 class CreateViewModel @Inject constructor(
     // TODO: add repository
 ) : ViewModel() {
+    var hasTariff by mutableStateOf(false)
+        private set
+    var inputDisabled by mutableStateOf(false)
+        private set
+    var created by mutableStateOf(false)
+        private set
+    var createEnabled by mutableStateOf(false)
+        private set
+
+    init {
+        hasTariff = true
+        if (!hasTariff) {
+            inputDisabled = true
+            createEnabled = false
+        }
+    }
+
     var showDatePicker by mutableStateOf(false)
         private set
     var dateValue by mutableStateOf("")
@@ -20,13 +37,8 @@ class CreateViewModel @Inject constructor(
     var gameTitleValue by mutableStateOf("")
         private set
 
-    var createEnabled by mutableStateOf(false)
-        private set
-
-    var created by mutableStateOf(false)
-        private set
-
     fun onCreate() {
+        inputDisabled = true
         created = true
     }
 

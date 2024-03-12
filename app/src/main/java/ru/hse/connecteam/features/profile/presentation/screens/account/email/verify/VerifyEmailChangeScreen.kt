@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
-import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
+import ru.hse.connecteam.ui.components.bars.TransparentAppBar
 import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
 import ru.hse.connecteam.ui.components.inputs.OtpTextField
 import ru.hse.connecteam.ui.components.modals.SelfHidingBottomAlert

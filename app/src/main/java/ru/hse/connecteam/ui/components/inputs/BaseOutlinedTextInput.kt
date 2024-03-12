@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import ru.hse.connecteam.ui.components.buttons.SmallClickableText
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
+import ru.hse.connecteam.ui.theme.DisabledButtonLabel
 import ru.hse.connecteam.ui.theme.ErrorInputLabel
 import ru.hse.connecteam.ui.theme.OutlinedButtonLabel
 import ru.hse.connecteam.ui.theme.WhiteSemiTransparent10
@@ -59,7 +60,7 @@ fun BaseOutlinedTextInput(
             enabled = enabled,
             readOnly = readOnly,
             minLines = minLines,
-            textStyle = OutlinedButtonLabel,
+            textStyle = if (enabled) OutlinedButtonLabel else DisabledButtonLabel,
             visualTransformation = visualTransformation,
             onValueChange = {
                 //text = it

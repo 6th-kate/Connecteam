@@ -18,12 +18,12 @@ import ru.hse.connecteam.shared.utils.paging.PagingViewModel
 class FiltersViewModel(
     initState: FiltersDomainModel,
     private val repository: GameStaticRepository
-) :
-    PagingViewModel<SimplePlayer>() {
+) : PagingViewModel<SimplePlayer>() {
 
     private val limit: Int = PLAYERS_CHUNK_LIMIT
     private var startDateLong: Long? by mutableStateOf(initState.startDate)
     private var endDateLong: Long? by mutableStateOf(initState.endDate)
+
     var startDate by mutableStateOf(
         if (initState.startDate != null) getDate(
             initState.startDate,
@@ -31,6 +31,7 @@ class FiltersViewModel(
         ) else ""
     )
         private set
+
     var endDate by mutableStateOf(
         if (initState.endDate != null) getDate(
             initState.endDate,
@@ -38,6 +39,7 @@ class FiltersViewModel(
         ) else ""
     )
         private set
+
     var gameTitle by mutableStateOf(initState.gameTitle ?: "")
         private set
     var filtersChangeEnabled by mutableStateOf(false)

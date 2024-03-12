@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import ru.hse.connecteam.features.profile.presentation.components.TransparentAppBar
+import ru.hse.connecteam.ui.components.bars.TransparentAppBar
 import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.inputs.PasswordTextInput

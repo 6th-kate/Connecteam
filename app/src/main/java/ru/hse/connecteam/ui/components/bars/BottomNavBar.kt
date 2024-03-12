@@ -1,4 +1,4 @@
-package ru.hse.connecteam.ui.components.bottombar
+package ru.hse.connecteam.ui.components.bars
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

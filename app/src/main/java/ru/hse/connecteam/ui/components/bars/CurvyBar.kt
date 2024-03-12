@@ -1,4 +1,4 @@
-package ru.hse.connecteam.ui.components.bottombar
+package ru.hse.connecteam.ui.components.bars
 
 import android.graphics.PointF
 import androidx.compose.foundation.Canvas

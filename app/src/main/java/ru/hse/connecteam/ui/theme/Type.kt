@@ -34,15 +34,6 @@ val Typography = Typography(
     */
 )
 
-val TextInputStyle = TextStyle(
-    fontFamily = FontFamily.Default,
-    fontWeight = FontWeight.Medium,
-    fontSize = 15.sp,
-    lineHeight = 16.sp,
-    letterSpacing = 0.5.sp,
-    brush = BaseGradientBrush,
-)
-
 val FilledButtonLabel = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Bold,
@@ -101,7 +92,7 @@ val BigWhiteLabel = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Bold,
     fontSize = 23.sp,
-    lineHeight = 18.sp,
+    lineHeight = 23.sp,
     letterSpacing = 0.5.sp,
     color = DefaultWhite,
 )
@@ -113,6 +104,15 @@ val MediumWhiteLabel = TextStyle(
     lineHeight = 20.sp,
     letterSpacing = 0.5.sp,
     color = DefaultWhite,
+)
+
+val MediumGrayLabel = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 20.sp,
+    lineHeight = 20.sp,
+    letterSpacing = 0.5.sp,
+    color = WhiteSemiTransparent25,
 )
 
 val DefaultRedLabel17 = TextStyle(
