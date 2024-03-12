@@ -2,9 +2,12 @@ package ru.hse.connecteam.shared.services.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.MasterKey
 import dagger.Module
@@ -68,5 +71,13 @@ class DataStoreModule {
                 EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
             ).build()
         }
+    }
+
+    @Singleton
+    @Provides
+    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.create(
+            corruptionHandler = ReplaceFileCorruptionHandler(produceNewData = { emptyPreferences() }),
+            produceFile = { context.preferencesDataStoreFile("state_preferences") })
     }
 }

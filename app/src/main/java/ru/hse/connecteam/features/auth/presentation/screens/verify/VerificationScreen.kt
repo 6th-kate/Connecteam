@@ -18,7 +18,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.delay
 import ru.hse.connecteam.features.auth.presentation.components.LogoLabel
-import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
 import ru.hse.connecteam.ui.components.inputs.OtpTextField
 import ru.hse.connecteam.ui.components.modals.SelfHidingBottomAlert
@@ -45,7 +44,7 @@ fun VerificationScreen(
         LaunchedEffect(viewModel.shouldMoveToMain) {
             if (viewModel.shouldMoveToMain) {
                 delay(1000L)
-                navController.navigate(NavigationItem.Profile.route)
+                navController.popBackStack()
             }
         }
         LaunchedEffect(viewModel.resendTimerIsTicking) {

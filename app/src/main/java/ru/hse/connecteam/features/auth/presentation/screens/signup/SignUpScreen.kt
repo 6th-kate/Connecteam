@@ -47,7 +47,7 @@ fun SignUpScreen(
                 viewModel.stopAlert()
             }
         }
-        LogoLabel(text = "Регистрация")
+        LogoLabel(text = viewModel.inviteText ?: "Регистрация")
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

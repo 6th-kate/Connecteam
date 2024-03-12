@@ -24,7 +24,7 @@ import ru.hse.connecteam.ui.components.modals.SelfHidingBottomAlert
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
-fun SignInScreen (
+fun SignInScreen(
     navController: NavController,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
@@ -44,7 +44,7 @@ fun SignInScreen (
                 navController.navigate(NavigationItem.Profile.route)
             }
         }
-        LogoLabel(text = "Вход")
+        LogoLabel(text = viewModel.inviteText ?: "Вход")
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

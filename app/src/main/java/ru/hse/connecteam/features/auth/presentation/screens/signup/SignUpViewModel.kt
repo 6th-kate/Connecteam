@@ -3,6 +3,7 @@ package ru.hse.connecteam.features.auth.presentation.screens.signup
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.hse.connecteam.features.auth.domain.AuthRepository
@@ -13,29 +14,38 @@ import ru.hse.connecteam.shared.utils.PASSWORD_REGEX
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel() {
+class SignUpViewModel @Inject constructor(
+    private val repository: AuthRepository,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+    val inviteText = savedStateHandle.get<String>("invite")
+
+    val enabledButtonText =
+        if (inviteText.isNullOrEmpty()) "Зарегистрироваться"
+        else "Присоединиться"
+
     var alertText by mutableStateOf("Ошибка")
         private set
 
     var shouldShowAlert by mutableStateOf(false)
         private set
 
-    var name by mutableStateOf("Test")
+    var name by mutableStateOf("")
         private set
 
-    var surname by mutableStateOf("Test")
+    var surname by mutableStateOf("")
         private set
 
-    var username by mutableStateOf("shestakova-er@mail.ru")
+    var username by mutableStateOf("")
         private set
 
     var usernameError by mutableStateOf(false)
         private set
 
-    var password by mutableStateOf("TestPass1")
+    var password by mutableStateOf("")
         private set
 
-    var passwordRepeat by mutableStateOf("TestPass1")
+    var passwordRepeat by mutableStateOf("")
         private set
 
     var passwordError by mutableStateOf(false)
@@ -47,7 +57,7 @@ class SignUpViewModel @Inject constructor(private val repository: AuthRepository
     var passwordRepeatError by mutableStateOf(false)
         private set
 
-    var singUpButtonText by mutableStateOf("Зарегистрироваться")
+    var singUpButtonText by mutableStateOf(enabledButtonText)
         private set
 
     var signUpButtonEnabled by mutableStateOf(true)
@@ -108,19 +118,20 @@ class SignUpViewModel @Inject constructor(private val repository: AuthRepository
                 customCallback = object : CustomCallback<String> {
                     override fun onSuccess(value: String?) {
                         if (value != null) {
+                            // TODO(save invitekey to preferences)
                             id = value
-                            singUpButtonText = "Зарегистрироваться"
+                            singUpButtonText = enabledButtonText
                             signUpButtonEnabled = true
                             moveToVerification = true
                         } else {
-                            singUpButtonText = "Зарегистрироваться"
+                            singUpButtonText = enabledButtonText
                             signUpButtonEnabled = true
                             shouldShowAlert = true
                         }
                     }
 
                     override fun onFailure() {
-                        singUpButtonText = "Зарегистрироваться"
+                        singUpButtonText = enabledButtonText
                         signUpButtonEnabled = true
                         shouldShowAlert = true
                     }

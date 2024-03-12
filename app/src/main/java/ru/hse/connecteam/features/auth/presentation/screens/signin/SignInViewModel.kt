@@ -3,6 +3,7 @@ package ru.hse.connecteam.features.auth.presentation.screens.signin
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.hse.connecteam.features.auth.domain.AuthRepository
@@ -11,9 +12,18 @@ import ru.hse.connecteam.shared.utils.EMAIL_REGEX
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel() {
+class SignInViewModel @Inject constructor(
+    private val repository: AuthRepository,
+    savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+    val inviteText = savedStateHandle.get<String>("invite")
+
     var alertText by mutableStateOf("Ошибка")
         private set
+
+    val enabledButtonText =
+        if (inviteText.isNullOrEmpty()) "Войти"
+        else "Присоединиться"
 
     var shouldShowAlert by mutableStateOf(false)
         private set
@@ -30,7 +40,7 @@ class SignInViewModel @Inject constructor(private val repository: AuthRepository
     var password by mutableStateOf("")
         private set
 
-    var singInButtonText by mutableStateOf("Войти")
+    var singInButtonText by mutableStateOf(enabledButtonText)
         private set
 
     var signInButtonEnabled by mutableStateOf(true)
@@ -45,13 +55,14 @@ class SignInViewModel @Inject constructor(private val repository: AuthRepository
                 password = password,
                 customCallback = object : CustomVoidCallback {
                     override fun onSuccess() {
-                        singInButtonText = "Войти"
+                        // TODO(save invitekey to preferences)
+                        singInButtonText = enabledButtonText
                         signInButtonEnabled = true
                         shouldMoveToMain = true
                     }
 
                     override fun onFailure() {
-                        singInButtonText = "Войти"
+                        singInButtonText = enabledButtonText
                         signInButtonEnabled = true
                         shouldShowAlert = true
                     }
