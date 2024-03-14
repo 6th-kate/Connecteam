@@ -2,16 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ClickablePlayerResultPreview">
+      <entry key="EvaluationPreview">
         <State />
       </entry>
-      <entry key="EvalStarsPreview">
+      <entry key="LoadingPreview">
         <State />
       </entry>
-      <entry key="ResultsTablePreview">
+      <entry key="PlayerResultsPreview">
         <State />
       </entry>
-      <entry key="TimerPreview">
+      <entry key="RoundEndedPreview">
+        <State />
+      </entry>
+      <entry key="SumResultsPreview">
         <State />
       </entry>
       <entry key="app">

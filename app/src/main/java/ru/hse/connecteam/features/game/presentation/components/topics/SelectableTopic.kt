@@ -21,7 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.hse.connecteam.features.game.domain.SelectableTopicViewModel
+import ru.hse.connecteam.features.game.domain.SelectableTopicDomainModel
 import ru.hse.connecteam.features.game.domain.TopicDomainModel
 import ru.hse.connecteam.ui.components.utils.coloredShadow
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
@@ -35,7 +35,7 @@ import ru.hse.connecteam.ui.theme.WhiteSemiTransparent25
 
 @Composable
 fun SelectableTopic(
-    topic: SelectableTopicViewModel,
+    topic: SelectableTopicDomainModel,
     onClick: () -> Unit = {},
 ) {
     Button(
@@ -94,27 +94,27 @@ fun SelectableTopicPreview() {
     ConnecteamTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column {
-                SelectableTopic(SelectableTopicViewModel(TopicDomainModel("topic 1")))
+                SelectableTopic(SelectableTopicDomainModel(TopicDomainModel("topic 1")))
                 SelectableTopic(
-                    SelectableTopicViewModel(
+                    SelectableTopicDomainModel(
                         TopicDomainModel("topic 1vxfjk;dngjk;fnlj,."),
                         selected = true
                     )
                 )
                 SelectableTopic(
-                    SelectableTopicViewModel(
+                    SelectableTopicDomainModel(
                         TopicDomainModel("topic 1nfdlk;nmk;"),
                         selected = true
                     )
                 )
                 SelectableTopic(
-                    SelectableTopicViewModel(
+                    SelectableTopicDomainModel(
                         TopicDomainModel("topic 1"),
                         enabled = false
                     )
                 )
                 SelectableTopic(
-                    SelectableTopicViewModel(
+                    SelectableTopicDomainModel(
                         TopicDomainModel("topic 1fbdm;klg"),
                         enabled = false,
                         selected = true

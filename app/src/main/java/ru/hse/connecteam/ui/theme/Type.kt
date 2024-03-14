@@ -79,6 +79,15 @@ val BigGradientLabel = TextStyle(
     brush = BaseGradientBrush,
 )
 
+val BigGradientLabel23 = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 23.sp,
+    lineHeight = 23.sp,
+    letterSpacing = 0.5.sp,
+    brush = BaseGradientBrush,
+)
+
 val DisabledButtonLabel = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Medium,

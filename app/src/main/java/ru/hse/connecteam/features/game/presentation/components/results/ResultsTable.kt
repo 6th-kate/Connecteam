@@ -26,8 +26,7 @@ import ru.hse.connecteam.ui.theme.SpanButtonWhiteLabel
 @Composable
 fun ResultsTable(
     items: List<PlayerSumResultDomainModel>,
-    onItemClick: (PlayerDomainModel) -> Unit = {},
-    clickable: Boolean = false
+    onResultClick: ((PlayerDomainModel) -> Unit)? = null,
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     Column(
@@ -36,10 +35,10 @@ fun ResultsTable(
     ) {
         items.forEach { item ->
             Row(verticalAlignment = Alignment.CenterVertically) {
-                if (clickable) {
+                if (onResultClick != null) {
                     ClickablePlayerResult(
                         player = item.playerDomainModel,
-                        onClick = { onItemClick(it) })
+                        onClick = { onResultClick(it) })
                 } else {
                     Box(modifier = Modifier.width((screenWidth * 0.5f).dp)) {
                         Text(
@@ -97,7 +96,6 @@ fun ResultsTablePreview() {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 ResultsTable(
-                    clickable = true,
                     items = listOf(
                         PlayerSumResultDomainModel(
                             PlayerDomainModel(
