@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserStatePreferences @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    @DataStoreModule.StateDataStore private val dataStore: DataStore<Preferences>
 ) {
     companion object {
         private const val GAME_INVITE = "GameInvite"

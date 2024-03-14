@@ -17,7 +17,7 @@ import ru.hse.connecteam.ui.theme.BaseGradientBrush
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
-fun GradientIcon(image: ImageVector, description: String? = null) {
+fun GradientIcon(image: ImageVector, modifier: Modifier = Modifier, description: String? = null) {
     Icon(
         imageVector = image, description,
         modifier = Modifier
@@ -27,7 +27,8 @@ fun GradientIcon(image: ImageVector, description: String? = null) {
                     drawContent()
                     drawRect(BaseGradientBrush, blendMode = BlendMode.SrcAtop)
                 }
-            },
+            }
+            .then(modifier),
     )
 }
 

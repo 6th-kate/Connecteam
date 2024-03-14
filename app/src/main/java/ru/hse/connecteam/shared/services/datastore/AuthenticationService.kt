@@ -12,7 +12,9 @@ import kotlinx.coroutines.withContext
 import ru.hse.connecteam.shared.models.user.UserAuthState
 import javax.inject.Inject
 
-class AuthenticationService @Inject constructor(private val dataStore: DataStore<Preferences>) {
+class AuthenticationService @Inject constructor(
+    @DataStoreModule.EncryptedDataStore private val dataStore: DataStore<Preferences>
+) {
     suspend fun isAuthenticated(): Flow<UserAuthState> {
         // flow of token existence from dataStore
         return dataStore.data.map {

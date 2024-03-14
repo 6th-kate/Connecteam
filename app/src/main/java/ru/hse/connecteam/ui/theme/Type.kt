@@ -52,6 +52,15 @@ val OutlinedButtonLabel = TextStyle(
     brush = BaseGradientBrush,
 )
 
+val GradientMediumLabel20 = TextStyle(
+    fontFamily = FontFamily.Default,
+    fontWeight = FontWeight.Bold,
+    fontSize = 20.sp,
+    lineHeight = 20.sp,
+    letterSpacing = 0.5.sp,
+    brush = BaseGradientBrush,
+)
+
 val BigWhiteLabel37 = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Bold,

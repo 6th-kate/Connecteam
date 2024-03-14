@@ -23,13 +23,22 @@ import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.tariffs.data.ServerTariffRepository
 import ru.hse.connecteam.features.tariffs.domain.TariffDataRepository
 import ru.hse.connecteam.shared.services.user.UserService
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class DataStoreModule {
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class EncryptedDataStore
+
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class StateDataStore
+
     @Provides
-    fun provideAuthenticationService(dataStore: DataStore<Preferences>): AuthenticationService {
+    fun provideAuthenticationService(@EncryptedDataStore dataStore: DataStore<Preferences>): AuthenticationService {
         return AuthenticationService(dataStore)
     }
 
@@ -57,8 +66,9 @@ class DataStoreModule {
         return ServerTariffRepository(authenticationService)
     }
 
-    @Provides
     @Singleton
+    @Provides
+    @EncryptedDataStore
     fun provideDataStoreManager(@ApplicationContext context: Context): DataStore<Preferences> {
         return PreferenceDataStoreFactory.createEncrypted {
             EncryptedFile.Builder(
@@ -75,6 +85,7 @@ class DataStoreModule {
 
     @Singleton
     @Provides
+    @StateDataStore
     fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
         return PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler(produceNewData = { emptyPreferences() }),
