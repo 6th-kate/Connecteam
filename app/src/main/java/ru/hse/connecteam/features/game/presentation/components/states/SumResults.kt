@@ -46,7 +46,16 @@ fun SumResults(
                 style = BigWhiteLabel
             )
             Spacer(modifier = Modifier.height(60.dp))
-            ResultsTable(items = state.results, onResultClick = onResultClick)
+            if (onResultClick == null) {
+                ResultsTable(
+                    items = state.results
+                )
+            } else {
+                ResultsTable(
+                    items = state.results,
+                    onResultClick = { onResultClick(it) }
+                )
+            }
         }
         GradientFilledButton(
             text = if (onResultClick != null) "Закрыть" else "Продолжить",

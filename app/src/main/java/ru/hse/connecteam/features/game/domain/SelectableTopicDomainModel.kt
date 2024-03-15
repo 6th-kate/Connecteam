@@ -2,6 +2,6 @@ package ru.hse.connecteam.features.game.domain
 
 data class SelectableTopicDomainModel(
     val topic: TopicDomainModel,
-    val selected: Boolean = false,
-    val enabled: Boolean = true
+    var selected: Boolean = false,
+    var enabled: Boolean = true
 )

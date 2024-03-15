@@ -10,11 +10,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
 import ru.hse.connecteam.features.game.domain.PlayerDomainModel
 import ru.hse.connecteam.features.game.domain.QuestionDomainModel
 import ru.hse.connecteam.features.game.domain.TopicDomainModel
@@ -29,7 +31,18 @@ import ru.hse.connecteam.ui.theme.GradientMediumLabel20
 import ru.hse.connecteam.ui.theme.SpanButtonWhiteLabel
 
 @Composable
-fun Question(state: Question, onContinue: () -> Unit = {}, timer: Int = 180) {
+fun Question(
+    state: Question,
+    onContinue: () -> Unit = {},
+    onTimerTick: () -> Unit = {},
+    timer: Int = 180
+) {
+    LaunchedEffect(timer) {
+        if (timer > 0) {
+            delay(1000)
+            onTimerTick()
+        }
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -57,7 +70,7 @@ fun Question(state: Question, onContinue: () -> Unit = {}, timer: Int = 180) {
             Spacer(modifier = Modifier.height(60.dp))
             Timer(timerSeconds = timer)
             Spacer(modifier = Modifier.height(30.dp))
-            if (!state.player.isMe){
+            if (!state.player.isMe) {
                 Text(
                     text = "Отвечает игрок ${state.player.name} ${state.player.surname}",
                     style = GradientMediumLabel20,

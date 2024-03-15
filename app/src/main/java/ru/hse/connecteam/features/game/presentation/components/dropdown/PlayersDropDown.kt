@@ -41,7 +41,8 @@ fun PlayersDropDown(
     asOwner: Boolean,
     gameTitle: String,
     players: List<PlayerDomainModel>,
-    onExit: () -> Unit = {}
+    onExit: () -> Unit = {},
+    onDelete: (PlayerDomainModel) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
@@ -97,7 +98,7 @@ fun PlayersDropDown(
                             .height(2.dp)
                             .background(brush = BaseGradientBrush)
                     )
-                    PlayerItem(asOwner, player)
+                    PlayerItem(asOwner, player, onDelete = { onDelete(it) })
                 }
                 HorizontalDivider(thickness = 2.dp, color = DefaultRed)
                 Text(
