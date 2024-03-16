@@ -18,7 +18,11 @@ class SignUpViewModel @Inject constructor(
     private val repository: AuthRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    val inviteText = savedStateHandle.get<String>("invite")
+    val inviteText: String? =
+        if (savedStateHandle.get<String>("invite").isNullOrEmpty() ||
+            savedStateHandle.get<String>("invite").equals("none")
+        ) null
+        else savedStateHandle.get<String>("invite")
 
     val enabledButtonText =
         if (inviteText.isNullOrEmpty()) "Зарегистрироваться"

@@ -92,7 +92,7 @@ fun SignUpScreen(
                 onClick = { viewModel.signUp() })
             TextSpanButton(textMain = "У вас есть аккаунт? ", textAdditional = "Войти", onClick = {
                 navController.navigate(
-                    NavigationItem.SignIn.route
+                    "${NavigationItem.SignIn.route}/${viewModel.inviteText ?: "none"}"
                 ) {
                     popUpTo(0)
                 }

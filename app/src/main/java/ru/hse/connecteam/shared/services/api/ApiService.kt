@@ -2,10 +2,12 @@ package ru.hse.connecteam.shared.services.api
 
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Path
 import ru.hse.connecteam.shared.utils.tokenHeaderName
 
 interface ApiService {
@@ -70,6 +72,11 @@ interface ApiService {
         @Body companyData: CompanyData
     ): Response<Void>?
 
+    @GET("users/{id}")
+    suspend fun getUserById(
+        @Path("id") id: ID,
+    ): Response<UserByIdData>?
+
     @GET("plans/current")
     suspend fun getUserTariff(
         @Header(tokenHeaderName) token: String
@@ -80,4 +87,72 @@ interface ApiService {
         @Header(tokenHeaderName) token: String,
         @Body tariffRequest: TariffRequest
     ): Response<TariffConfirm>?
+
+    @POST("plans/trial")
+    suspend fun activateTrial(
+        @Header(tokenHeaderName) token: String,
+    ): Response<TrialData>?
+
+    @GET("validate/plan/{code}")
+    suspend fun validateTariffInvite(
+        @Path("code") code: Code,
+    ): Response<ID>?
+
+    @GET("plans/members/{code}")
+    suspend fun getTariffMembers(
+        @Path("code") code: String,
+        @Header(tokenHeaderName) token: String,
+    ): Response<List<TariffMember>>?
+
+    @POST("plans/join/{code}")
+    suspend fun joinTariff(
+        @Path("code") code: String,
+        @Header(tokenHeaderName) token: String,
+    ): Response<JoinTariffData>?
+
+    @DELETE("plans/{user_id}")
+    suspend fun deleteTariffMember(
+        @Path("user_id") userId: String,
+        @Header(tokenHeaderName) token: String,
+    ): Response<Status>?
+
+    @POST("games/")
+    suspend fun createGame(
+        @Header(tokenHeaderName) token: String,
+        @Body createGame: CreateGame
+    ): Response<GameCreated>?
+
+    @DELETE("games/{id}")
+    suspend fun deleteGame(
+        @Path("id") id: ID,
+        @Header(tokenHeaderName) token: String,
+    ): Response<Status>?
+
+    @GET("games/created/{page}")
+    suspend fun getMyGames(
+        @Path("page") page: Page,
+        @Header(tokenHeaderName) token: String,
+    ): Response<List<GameBasic>>?
+
+    @GET("games/all/{page}")
+    suspend fun getParticipatedGames(
+        @Path("page") page: Page,
+        @Header(tokenHeaderName) token: String,
+    ): Response<List<GameBasic>>?
+
+    @POST("games/{code}")
+    suspend fun addToGame(
+        @Path("code") code: Code,
+    ): Response<Status>?
+
+    @GET("validate/game/{code}")
+    suspend fun validateGameInvite(
+        @Path("code") code: Code,
+    ): Response<GameCreated>?
+
+    @GET("games/{id}")
+    suspend fun getGameByID(
+        @Path("id") id: ID,
+        @Header(tokenHeaderName) token: String,
+    ): Response<GameCreated>?
 }

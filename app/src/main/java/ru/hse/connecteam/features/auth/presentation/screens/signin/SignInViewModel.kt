@@ -16,7 +16,10 @@ class SignInViewModel @Inject constructor(
     private val repository: AuthRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    val inviteText = savedStateHandle.get<String>("invite")
+    val inviteText: String? =
+        if (savedStateHandle.get<String>("invite").isNullOrEmpty() ||
+        savedStateHandle.get<String>("invite").equals("none")) null
+        else savedStateHandle.get<String>("invite")
 
     var alertText by mutableStateOf("Ошибка")
         private set
@@ -55,7 +58,6 @@ class SignInViewModel @Inject constructor(
                 password = password,
                 customCallback = object : CustomVoidCallback {
                     override fun onSuccess() {
-                        // TODO(save invitekey to preferences)
                         singInButtonText = enabledButtonText
                         signInButtonEnabled = true
                         shouldMoveToMain = true

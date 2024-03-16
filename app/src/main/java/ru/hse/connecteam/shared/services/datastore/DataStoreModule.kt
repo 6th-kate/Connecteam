@@ -43,8 +43,16 @@ class DataStoreModule {
     }
 
     @Provides
-    fun provideAuthRepository(authenticationService: AuthenticationService): AuthRepository {
-        return ServerAuthRepository(authenticationService)
+    fun provideUserStatePreferences(@StateDataStore dataStore: DataStore<Preferences>): UserStatePreferences {
+        return UserStatePreferences(dataStore)
+    }
+
+    @Provides
+    fun provideAuthRepository(
+        authenticationService: AuthenticationService,
+        userStatePreferences: UserStatePreferences
+    ): AuthRepository {
+        return ServerAuthRepository(authenticationService, userStatePreferences)
     }
 
     @Provides

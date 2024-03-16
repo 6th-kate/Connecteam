@@ -1,6 +1,9 @@
 package ru.hse.connecteam.route
 
 enum class Screen {
+    GAME_INVITE_LOADING_UNAUTH,
+    GAME_INVITE_UNAUTH,
+    TARIFF_INVITE_LOADING_UNAUTH,
     SIGN_IN,
     SIGN_UP,
     VERIFICATION,
@@ -18,7 +21,15 @@ enum class Screen {
     TARIFF_PARTICIPANTS,
 }
 
+object DeeplinkUri {
+    const val inviteUriHttp = "http://connecteam.ru/invite"
+    const val inviteUriHttps = "https://connecteam.ru/invite"
+}
+
 sealed class NavigationItem(val route: String) {
+    data object GameInviteLoadingUnauth : NavigationItem(Screen.GAME_INVITE_LOADING_UNAUTH.name)
+    data object GameInviteUnauth : NavigationItem(Screen.GAME_INVITE_UNAUTH.name)
+    data object TariffInviteLoadingUnauth : NavigationItem(Screen.TARIFF_INVITE_LOADING_UNAUTH.name)
     data object SignIn : NavigationItem(Screen.SIGN_IN.name)
     data object SignUp : NavigationItem(Screen.SIGN_UP.name)
     data object Verification : NavigationItem(Screen.VERIFICATION.name)

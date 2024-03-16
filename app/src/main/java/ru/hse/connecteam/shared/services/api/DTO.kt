@@ -33,6 +33,10 @@ data class CodeVerification(
     val code: String,
 )
 
+data class Status(
+    val status: String,
+)
+
 data class UserData(
     val access: String,
     val company_info: String,
@@ -80,12 +84,15 @@ data class CompanyData(
 )
 
 data class TariffData(
+    val id: String,
     val expiry_date: String,
     val holder_id: String,
     val user_id: String,
     val plan_access: String,
     val plan_type: String,
-    val confirmed: String,
+    val status: String,
+    val invitation_code: String,
+    val is_trial: String,
 )
 
 data class TariffRequest(
@@ -94,11 +101,79 @@ data class TariffRequest(
 )
 
 data class TariffConfirm(
-    val confirmed: String,
+    val status: String,
     val duration: String,
     val expiry_date: String,
     val holder_id: String,
     val plan_access: String,
     val plan_type: String,
     val user_id: String,
+)
+
+data class TrialData(
+    val status: String,
+    val duration: String,
+    val expiry_date: String,
+    val holder_id: String,
+    val plan_access: String,
+    val plan_type: String,
+    val user_id: String,
+    val is_trial: String,
+)
+
+data class Code(
+    val code: String,
+)
+
+data class TariffMember(
+    val id: String,
+    val first_name: String,
+    val second_name: String,
+    val email: String,
+)
+
+data class UserId(
+    val user_id: String,
+)
+
+data class JoinTariffData(
+    val id: String,
+    val status: String,
+    val duration: String,
+    val expiry_date: String,
+    val holder_id: String,
+    val plan_access: String,
+    val plan_type: String,
+    val user_id: String,
+)
+
+data class UserByIdData(
+    val first_name: String,
+    val second_name: String,
+)
+
+data class CreateGame(
+    val name: String,
+    val start_date: String,
+)
+
+data class Page(
+    val page: String
+)
+
+data class GameCreated(
+    val id: String,
+    val name: String,
+    val start_date: String,
+    val status: String,
+    val invitation_code: String,
+)
+
+data class GameBasic(
+    val id: String,
+    val creator_id: String,
+    val name: String,
+    val start_date: String,
+    val status: String,
+    val invitation_code: String,
 )

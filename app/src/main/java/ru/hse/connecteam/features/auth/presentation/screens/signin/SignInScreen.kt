@@ -73,7 +73,9 @@ fun SignInScreen(
                 textMain = "Нет аккаунта? ",
                 textAdditional = "Зарегистрироваться",
                 onClick = {
-                    navController.navigate(NavigationItem.SignUp.route) {
+                    navController.navigate(
+                        "${NavigationItem.SignUp.route}/${viewModel.inviteText ?: "none"}"
+                    ) {
                         popUpTo(0)
                     }
                 },

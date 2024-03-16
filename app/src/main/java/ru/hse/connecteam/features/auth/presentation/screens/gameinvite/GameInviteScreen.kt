@@ -30,13 +30,13 @@ fun GameInviteScreen(
                 viewModel.stopAlert()
             }
         }
-        /*LaunchedEffect(viewModel.shouldMoveToGame) {
+        LaunchedEffect(viewModel.shouldMoveToGame) {
             if (viewModel.shouldMoveToGame) {
                 delay(1000L)
-                //navController.navigate(NavigationItem.Profile.route)
+                //navController.navigate(NavigationItem.Game.route)
             }
-        }*/
-        LogoLabel(text = viewModel.inviteText)
+        }
+        LogoLabel(text = viewModel.inviteText ?: "Ошибка загрузки приглашения")
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -62,7 +62,9 @@ fun GameInviteScreen(
                 textMain = "Есть аккаунт? ",
                 textAdditional = "Войти",
                 onClick = {
-                    navController.navigate(NavigationItem.SignIn.route) {
+                    navController.navigate(
+                        "${NavigationItem.SignIn.route}/${viewModel.inviteText ?: "none"}"
+                    ) {
                         popUpTo(0)
                     }
                 },

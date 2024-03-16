@@ -2,7 +2,6 @@ package ru.hse.connecteam.features.profile.domain
 
 import android.content.res.Resources
 import android.icu.text.SimpleDateFormat
-import androidx.compose.ui.text.toLowerCase
 import androidx.core.os.ConfigurationCompat
 import ru.hse.connecteam.shared.models.tariffs.TariffInfo
 import ru.hse.connecteam.shared.models.user.UserModel
@@ -10,7 +9,6 @@ import ru.hse.connecteam.shared.services.api.TariffData
 import ru.hse.connecteam.shared.services.api.UserData
 import java.text.ParseException
 import java.util.Date
-import java.util.Locale
 
 
 class DTOConverter {
@@ -59,7 +57,7 @@ class DTOConverter {
                 toDateTime(tariffData.expiry_date),
                 isMine = tariffData.holder_id == tariffData.user_id,
                 //null,
-                confirmed = tariffData.confirmed.lowercase().contains("true")
+                confirmed = tariffData.status.lowercase().contains("active")
             )
             // TODO("add participants")
         }

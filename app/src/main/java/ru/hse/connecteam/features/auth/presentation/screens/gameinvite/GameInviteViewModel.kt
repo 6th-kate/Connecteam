@@ -5,7 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.auth.domain.AuthRepository
 import ru.hse.connecteam.shared.utils.NAME_REGEX
 import javax.inject.Inject
@@ -15,13 +17,19 @@ class GameInviteViewModel @Inject constructor(
     private val repository: AuthRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-    val inviteText = savedStateHandle.get<String>("invite").orEmpty()
+    val inviteText =
+        if (savedStateHandle.get<String>("invite").isNullOrEmpty() ||
+            savedStateHandle.get<String>("invite").equals("none")
+        ) null
+        else savedStateHandle.get<String>("invite")
 
     var name by mutableStateOf("")
         private set
     var surname by mutableStateOf("")
         private set
     var shouldShowAlert by mutableStateOf(false)
+        private set
+    var shouldMoveToGame by mutableStateOf(false)
         private set
     var alertText by mutableStateOf("Ошибка")
         private set
@@ -45,12 +53,18 @@ class GameInviteViewModel @Inject constructor(
     }
 
     private fun validateFields(): Boolean {
-        return name.isNotEmpty() && surname.isNotEmpty()
+        return !inviteText.isNullOrEmpty() && name.isNotEmpty() && surname.isNotEmpty()
     }
 
     fun accept() {
-        acceptButtonEnabled = false
-        acceptButtonText = "Загружаем..."
-        TODO("accept")
+        TODO("ADD GAME JOIN CODE")
+        if (acceptButtonEnabled) {
+            acceptButtonEnabled = false
+            acceptButtonText = "Загружаем..."
+            viewModelScope.launch {
+                val joined = repository.joinGame(name, surname)
+                shouldMoveToGame = joined
+            }
+        }
     }
 }

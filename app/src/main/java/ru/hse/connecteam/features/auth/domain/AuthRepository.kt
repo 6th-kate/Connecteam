@@ -15,4 +15,12 @@ interface AuthRepository {
 
     fun sendVerificationEmail(email: String, customCallback: CustomCallback<String>)
     fun verifyUser(id: String, code: String, customCallback: CustomVoidCallback)
+
+    suspend fun verifyGameInvite(inviteCode: String): GameDomainModel?
+    suspend fun verifyTariffInvite(inviteCode: String): TariffDomainModel?
+    suspend fun joinGame(
+        //inviteCode: String,
+        name: String,
+        surname: String
+    ): Boolean
 }
