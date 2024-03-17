@@ -8,31 +8,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.hse.connecteam.features.main.data.GameStaticRepositoryImpl
 import ru.hse.connecteam.features.main.domain.FiltersDomainModel
 import ru.hse.connecteam.features.main.presentation.screens.filters.components.PlayersDropDown
 import ru.hse.connecteam.features.main.presentation.screens.filters.components.RangeDatePicker
-import ru.hse.connecteam.shared.models.game.SimplePlayer
 import ru.hse.connecteam.shared.utils.paging.PaginationState
 import ru.hse.connecteam.ui.components.bars.TransparentAppBar
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.images.GradientIcon
 import ru.hse.connecteam.ui.components.inputs.BaseOutlinedTextInput
-import ru.hse.connecteam.ui.theme.ConnecteamTheme
 import ru.hse.connecteam.ui.theme.FilledButtonLabel
 
 @Composable
@@ -120,6 +112,7 @@ fun FiltersDialog(
     }
 }
 
+/*
 @Preview
 @Composable
 fun FiltersDialogPreview() {
@@ -146,4 +139,4 @@ fun FiltersDialogPreview() {
             )
         }
     }
-}
+}*/

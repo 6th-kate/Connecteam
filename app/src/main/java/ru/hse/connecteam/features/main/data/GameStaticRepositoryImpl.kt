@@ -15,7 +15,6 @@ import ru.hse.connecteam.features.main.domain.GameDomainModel
 import ru.hse.connecteam.features.main.domain.GameStaticRepository
 import ru.hse.connecteam.features.main.domain.TariffDomainModel
 import ru.hse.connecteam.features.main.domain.UserDomainModel
-import ru.hse.connecteam.shared.models.game.GameStatus
 import ru.hse.connecteam.shared.models.game.SimpleGame
 import ru.hse.connecteam.shared.models.game.SimplePlayer
 import ru.hse.connecteam.shared.models.tariffs.TariffModel
@@ -29,9 +28,7 @@ import ru.hse.connecteam.shared.services.datastore.AuthenticationService
 import ru.hse.connecteam.shared.services.datastore.UserStatePreferences
 import ru.hse.connecteam.shared.services.user.TariffService
 import ru.hse.connecteam.shared.services.user.UserService
-import ru.hse.connecteam.shared.utils.GAMES_CHUNK_LIMIT
 import ru.hse.connecteam.shared.utils.PLAYERS_CHUNK_LIMIT
-import java.util.Date
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -70,33 +67,58 @@ class GameStaticRepositoryImpl @Inject constructor(
             null
     }
 
-    override suspend fun loadMyGamesChunk(offset: Int): List<SimpleGame>? {
-        return if (offset < GAMES_CHUNK_LIMIT * 3) {
-            val games = mutableListOf<SimpleGame>()
-            for (i in offset..<offset + GAMES_CHUNK_LIMIT) {
-                games.add(SimpleGame("My Game $i", status = GameStatus.entries[i % 3], Date()))
-            }
-            games
-        } else
-            null
-    }
-
-    override suspend fun loadParticipatedGamesChunk(offset: Int): List<SimpleGame>? {
-        return if (offset < GAMES_CHUNK_LIMIT * 3) {
-            val games = mutableListOf<SimpleGame>()
-            for (i in offset..<offset + GAMES_CHUNK_LIMIT) {
-                games.add(
-                    SimpleGame(
-                        "Participated in Game $i",
-                        status = GameStatus.entries[i % 3],
-                        Date()
-                    )
+    override suspend fun loadMyGamesChunk(offset: Int): List<SimpleGame>? =
+        suspendCoroutine { continuation ->
+            CoroutineScope(Dispatchers.IO).launch {
+                val token = authenticationService.getToken()
+                val response = ApiClient.apiService.getMyGames(
+                    offset.toString(),
+                    "Bearer $token",
                 )
+                launch(Dispatchers.Main) {
+                    val gameList = response?.body()
+                    if (response == null || !response.isSuccessful || gameList == null) {
+                        if (response != null && response.code() == 401) {
+                            authenticationService.onLogout()
+                        }
+                        withContext(Dispatchers.Main) {
+                            continuation.resume(null)
+                        }
+                    } else {
+                        continuation.resume(gameList.map {
+                            DTOConverter.convert(it)
+                        })
+                    }
+                }
             }
-            games
-        } else
-            null
-    }
+        }
+
+
+    override suspend fun loadParticipatedGamesChunk(offset: Int): List<SimpleGame>? =
+        suspendCoroutine { continuation ->
+            CoroutineScope(Dispatchers.IO).launch {
+                val token = authenticationService.getToken()
+                val response = ApiClient.apiService.getParticipatedGames(
+                    offset.toString(),
+                    "Bearer $token",
+                )
+                launch(Dispatchers.Main) {
+                    val gameList = response?.body()
+                    if (response == null || !response.isSuccessful || gameList == null) {
+                        if (response != null && response.code() == 401) {
+                            authenticationService.onLogout()
+                        }
+                        withContext(Dispatchers.Main) {
+                            continuation.resume(null)
+                        }
+                    } else {
+                        continuation.resume(gameList.map {
+                            DTOConverter.convert(it)
+                        })
+                    }
+                }
+            }
+        }
 
     override suspend fun createGame(
         name: String,

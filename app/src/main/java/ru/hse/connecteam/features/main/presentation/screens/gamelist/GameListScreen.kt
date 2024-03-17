@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ru.hse.connecteam.features.main.presentation.screens.filters.FiltersDialog
 import ru.hse.connecteam.features.main.presentation.screens.gamelist.components.GameList
 import ru.hse.connecteam.features.main.presentation.screens.gamelist.components.GamesTabRow
 import ru.hse.connecteam.features.tariffs.presentation.components.PayWall
@@ -32,7 +31,7 @@ fun GameListScreen(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             GamesTabRow(
-                onFiltersOpen = { viewModel.openFilters() },
+                //onFiltersOpen = { viewModel.openFilters() },
                 selectedTabIndex = viewModel.tabIndex,
                 moveToTab = { viewModel.indexChanged(it) }
             )
@@ -58,13 +57,13 @@ fun GameListScreen(
             }
         }
     }
-    if (viewModel.filtersOpen) {
+    /*if (viewModel.filtersOpen) {
         FiltersDialog(
             onPopBack = { viewModel.hideFilters() },
             onFiltersChosen = { viewModel.applyFilters(it) },
-            viewModel = viewModel.filtersViewModel
+            viewModel = hiltViewModel<FiltersViewModel>()
         )
-    }
+    }*/
 }
 
 @Preview

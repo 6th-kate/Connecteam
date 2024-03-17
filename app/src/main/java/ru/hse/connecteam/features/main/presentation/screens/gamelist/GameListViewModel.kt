@@ -5,27 +5,29 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.hse.connecteam.features.main.data.GameStaticRepositoryImpl
-import ru.hse.connecteam.features.main.domain.FiltersDomainModel
-import ru.hse.connecteam.features.main.presentation.screens.filters.FiltersViewModel
+import ru.hse.connecteam.features.main.domain.GameStaticRepository
 import ru.hse.connecteam.shared.models.game.SimpleGame
 import ru.hse.connecteam.shared.utils.GAMES_CHUNK_LIMIT
 import ru.hse.connecteam.shared.utils.paging.PaginationState
+import javax.inject.Inject
 
-//@HiltViewModel@Inject
-class GameListViewModel constructor(
-    private val repository: GameStaticRepositoryImpl
+@HiltViewModel
+class GameListViewModel @Inject constructor(
+    private val repository: GameStaticRepository
 ) : ViewModel() {
     private val limit = GAMES_CHUNK_LIMIT
     var tabIndex: Int by mutableStateOf(0)
         private set
     var hasTariff: Boolean by mutableStateOf(false)
         private set
-    var filtersOpen: Boolean by mutableStateOf(false)
+    /*var filtersOpen: Boolean by mutableStateOf(false)
         private set
 
     var currentFilters by mutableStateOf(FiltersDomainModel())
@@ -36,35 +38,32 @@ class GameListViewModel constructor(
     }
 
     var filtersViewModel by mutableStateOf(
-        FiltersViewModel(
-            initState = currentFilters,
-            repository = GameStaticRepositoryImpl()
-        )
-    )
+         FiltersViewModel(
+             initState = currentFilters,
+             repository = GameStaticRepositoryImpl()
+         )
+     )
 
-    fun hideFilters() {
-        filtersOpen = false
-    }
+     fun hideFilters() {
+         filtersOpen = false
+     }
 
-    fun applyFilters(filters: FiltersDomainModel) {
-        currentFilters = filters
-        filtersViewModel.clearList()
-        filtersViewModel =  FiltersViewModel(
-            initState = filters,
-            repository = GameStaticRepositoryImpl()
-        )
-        resetLists()
-        getMyGames()
-        getParticipatedGames()
-    }
+     fun applyFilters(filters: FiltersDomainModel) {
+         currentFilters = filters
+         filtersViewModel.clearList()
+         filtersViewModel =  hiltViewModel()
+         resetLists()
+         getMyGames()
+         getParticipatedGames()
+     }*/
 
     private var initialized by mutableStateOf(false)
 
     val myGamesList = mutableStateListOf<SimpleGame>()
     val participatedGamesList = mutableStateListOf<SimpleGame>()
 
-    private var offsetMyGames by mutableStateOf(1)
-    private var offsetParticipatedGames by mutableStateOf(1)
+    private var offsetMyGames by mutableStateOf(0)
+    private var offsetParticipatedGames by mutableStateOf(0)
 
     var canPaginateMyGames by mutableStateOf(false)
     var canPaginateParticipatedGames by mutableStateOf(false)
@@ -73,12 +72,12 @@ class GameListViewModel constructor(
     var listStateParticipatedGame by mutableStateOf(PaginationState.IDLE)
 
     fun getMyGames() {
-        if (offsetMyGames == 1 ||
-            (offsetMyGames != 1 && canPaginateMyGames) &&
+        if (offsetMyGames == 0 ||
+            (offsetMyGames != 0 && canPaginateMyGames) &&
             listStateMyGames == PaginationState.IDLE
         ) {
             listStateMyGames =
-                if (offsetMyGames == 1) PaginationState.LOADING
+                if (offsetMyGames == 0) PaginationState.LOADING
                 else PaginationState.PAGINATING
             val offsetIO = offsetMyGames
             CoroutineScope(Dispatchers.IO).launch {
@@ -87,7 +86,7 @@ class GameListViewModel constructor(
                     if (!gamesList.isNullOrEmpty()) {
                         canPaginateMyGames = gamesList.size == limit
 
-                        if (offsetMyGames == 1) {
+                        if (offsetMyGames == 0) {
                             myGamesList.clear()
                             myGamesList.addAll(gamesList)
                         } else {
@@ -100,7 +99,7 @@ class GameListViewModel constructor(
                             offsetMyGames += limit
                     } else {
                         listStateMyGames =
-                            if (offsetMyGames == 1) PaginationState.ERROR
+                            if (offsetMyGames == 0) PaginationState.ERROR
                             else PaginationState.PAGINATION_EXHAUST
                     }
                 }
@@ -109,12 +108,12 @@ class GameListViewModel constructor(
     }
 
     fun getParticipatedGames() {
-        if (offsetParticipatedGames == 1 ||
-            (offsetParticipatedGames != 1 && canPaginateParticipatedGames)
+        if (offsetParticipatedGames == 0 ||
+            (offsetParticipatedGames != 0 && canPaginateParticipatedGames)
             && listStateParticipatedGame == PaginationState.IDLE
         ) {
             listStateParticipatedGame =
-                if (offsetParticipatedGames == 1) PaginationState.LOADING
+                if (offsetParticipatedGames == 0) PaginationState.LOADING
                 else PaginationState.PAGINATING
             val offsetIO = offsetParticipatedGames
             CoroutineScope(Dispatchers.IO).launch {
@@ -123,7 +122,7 @@ class GameListViewModel constructor(
                     if (!gamesList.isNullOrEmpty()) {
                         canPaginateParticipatedGames = gamesList.size == limit
 
-                        if (offsetParticipatedGames == 1) {
+                        if (offsetParticipatedGames == 0) {
                             participatedGamesList.clear()
                             participatedGamesList.addAll(gamesList)
                         } else {
@@ -136,7 +135,7 @@ class GameListViewModel constructor(
                             offsetParticipatedGames += limit
                     } else {
                         listStateParticipatedGame =
-                            if (offsetParticipatedGames == 1) PaginationState.ERROR
+                            if (offsetParticipatedGames == 0) PaginationState.ERROR
                             else PaginationState.PAGINATION_EXHAUST
                     }
                 }
@@ -146,15 +145,19 @@ class GameListViewModel constructor(
 
     init {
         if (!initialized) {
-            hasTariff = true
-            getParticipatedGames()
-            if (hasTariff) {
-                tabIndex = 0
-                getMyGames()
-            } else {
-                tabIndex = 1
+            viewModelScope.launch {
+                repository.getTariffFlow().collectLatest { tariff ->
+                    hasTariff = tariff != null
+                    getParticipatedGames()
+                    if (hasTariff) {
+                        tabIndex = 0
+                        getMyGames()
+                    } else {
+                        tabIndex = 1
+                    }
+                }
+                initialized = true
             }
-            initialized = true
         }
     }
 
@@ -163,8 +166,8 @@ class GameListViewModel constructor(
     }
 
     private fun resetLists() {
-        offsetMyGames = 1
-        offsetParticipatedGames = 1
+        offsetMyGames = 0
+        offsetParticipatedGames = 0
         listStateMyGames = PaginationState.IDLE
         listStateParticipatedGame = PaginationState.IDLE
         canPaginateMyGames = false
