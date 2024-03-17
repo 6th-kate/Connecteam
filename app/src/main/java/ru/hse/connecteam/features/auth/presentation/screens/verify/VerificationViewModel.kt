@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.auth.data.ServerAuthRepository
+import ru.hse.connecteam.features.auth.domain.AuthRepository
 import ru.hse.connecteam.shared.utils.CustomCallback
 import ru.hse.connecteam.shared.utils.CustomVoidCallback
 import ru.hse.connecteam.shared.utils.NEW_CODE_WAITING_TIME
@@ -21,7 +22,7 @@ import kotlin.coroutines.suspendCoroutine
 
 @HiltViewModel
 class VerificationViewModel @Inject constructor(
-    private val repository: ServerAuthRepository,
+    private val repository: AuthRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val email = savedStateHandle.get<String>("username").orEmpty()

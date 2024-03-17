@@ -27,7 +27,10 @@ class LoadingGameInviteViewModel @Inject constructor(
                 viewModelScope.launch {
                     val game = repository.verifyGameInvite(inviteCode)
                     if (game != null) {
-                        signInParams = "Вас приглашают присоединиться к игре ${game.name}"
+                        signInParams = "Вас приглашают присоединиться к игре ${game.name.replace(
+                            "/",
+                            ""
+                        )}"
                     } else {
                         signInParams = "none"
                         error = "Ошибка загрузки приглашения"

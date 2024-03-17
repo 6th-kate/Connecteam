@@ -6,21 +6,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.animated.LoadingAnimation
 
 @Composable
 fun LoadingScreen(
     navController: NavController,
-    inviteCode: String
+    viewModel: LoadingViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(true) {
-        TODO(
-            "loading" +
-                    "if game was in process" +
-                    "if an invite was pending" +
-                    "open them and main otherwise"
-        )
+    LaunchedEffect(viewModel.shouldMove) {
+        navController.navigate(viewModel.movePath) {
+            popUpTo(0)
+        }
     }
     Box(modifier = Modifier.fillMaxSize()) {
         Box(modifier = Modifier.align(Alignment.Center)) {

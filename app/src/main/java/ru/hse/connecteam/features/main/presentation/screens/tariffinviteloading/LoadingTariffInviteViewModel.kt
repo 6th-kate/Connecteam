@@ -1,4 +1,4 @@
-package ru.hse.connecteam.features.auth.presentation.screens.loadingtariffinvite
+package ru.hse.connecteam.features.main.presentation.screens.tariffinviteloading
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import ru.hse.connecteam.features.auth.domain.AuthRepository
+import ru.hse.connecteam.features.main.domain.GameStaticRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class LoadingTariffInviteViewModel @Inject constructor(
-    private val repository: AuthRepository,
+    private val repository: GameStaticRepository,
 ) : ViewModel() {
     var isLoading by mutableStateOf(true)
         private set
@@ -28,14 +28,12 @@ class LoadingTariffInviteViewModel @Inject constructor(
                     val owner = repository.verifyTariffInvite(inviteCode)
                     if (owner != null) {
                         signInParams =
-                            "Пользователь ${
-                                owner.ownerFullName.replace(
-                                    "/",
-                                    ""
-                                )
-                            } приглашает Вас присоединиться к тарифу"
+                            "Пользователь ${owner.ownerFullName.replace(
+                                "/",
+                                ""
+                            )} приглашает Вас присоединиться к тарифу/${inviteCode}"
                     } else {
-                        signInParams = "none"
+                        signInParams = "none/none"
                         error = "Ошибка загрузки приглашения"
                     }
                     isLoading = false

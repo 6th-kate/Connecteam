@@ -121,7 +121,7 @@ class ServerAuthRepository @Inject constructor(
     override suspend fun verifyGameInvite(inviteCode: String): GameDomainModel? =
         suspendCoroutine { continuation ->
             CoroutineScope(Dispatchers.IO).launch {
-                val response = ApiClient.apiService.validateGameInvite(Code(inviteCode))
+                val response = ApiClient.apiService.validateGameInvite(inviteCode)
                 if (response == null || !response.isSuccessful ||
                     response.body() == null || response.body() !is GameCreated
                 ) {
@@ -149,7 +149,7 @@ class ServerAuthRepository @Inject constructor(
     override suspend fun verifyTariffInvite(inviteCode: String): TariffDomainModel? =
         suspendCoroutine { continuation ->
             CoroutineScope(Dispatchers.IO).launch {
-                val response = ApiClient.apiService.validateTariffInvite(Code(inviteCode))
+                val response = ApiClient.apiService.validateTariffInvite(inviteCode)
                 if (response == null || !response.isSuccessful ||
                     response.body() == null || response.body() !is ID
                 ) {
@@ -157,7 +157,7 @@ class ServerAuthRepository @Inject constructor(
                         continuation.resume(null)
                     }
                 } else {
-                    val ownerResponse = ApiClient.apiService.getUserById(response.body()!!)
+                    val ownerResponse = ApiClient.apiService.getUserById(response.body()!!.id)
                     if (ownerResponse == null || !ownerResponse.isSuccessful ||
                         ownerResponse.body() == null || ownerResponse.body() !is UserByIdData
                     ) {

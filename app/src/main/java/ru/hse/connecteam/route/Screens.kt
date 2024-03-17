@@ -4,10 +4,14 @@ enum class Screen {
     GAME_INVITE_LOADING_UNAUTH,
     GAME_INVITE_UNAUTH,
     TARIFF_INVITE_LOADING_UNAUTH,
+    GAME_INVITE_LOADING_AUTH,
+    GAME_INVITE_AUTH,
+    TARIFF_INVITE_LOADING_AUTH,
+    TARIFF_INVITE_AUTH,
+    LOADING,
     SIGN_IN,
     SIGN_UP,
     VERIFICATION,
-    MAIN,
     PROFILE,
     PERSONAL,
     COMPANY,
@@ -19,6 +23,7 @@ enum class Screen {
     TARIFF_LIST,
     TARIFF_PURCHASE,
     TARIFF_PARTICIPANTS,
+    CREATE_GAME
 }
 
 object DeeplinkUri {
@@ -27,13 +32,18 @@ object DeeplinkUri {
 }
 
 sealed class NavigationItem(val route: String) {
+    data object Loading : NavigationItem(Screen.LOADING.name)
+    data object GameInviteLoadingAuth : NavigationItem(Screen.GAME_INVITE_LOADING_AUTH.name)
+    data object GameInviteAuth : NavigationItem(Screen.GAME_INVITE_AUTH.name)
+    data object TariffInviteLoadingAuth : NavigationItem(Screen.TARIFF_INVITE_LOADING_AUTH.name)
+    data object TariffInviteAuth : NavigationItem(Screen.TARIFF_INVITE_AUTH.name)
+    data object CreateGame : NavigationItem(Screen.CREATE_GAME.name)
     data object GameInviteLoadingUnauth : NavigationItem(Screen.GAME_INVITE_LOADING_UNAUTH.name)
     data object GameInviteUnauth : NavigationItem(Screen.GAME_INVITE_UNAUTH.name)
     data object TariffInviteLoadingUnauth : NavigationItem(Screen.TARIFF_INVITE_LOADING_UNAUTH.name)
     data object SignIn : NavigationItem(Screen.SIGN_IN.name)
     data object SignUp : NavigationItem(Screen.SIGN_UP.name)
     data object Verification : NavigationItem(Screen.VERIFICATION.name)
-    data object Main : NavigationItem(Screen.MAIN.name)
     data object Profile : NavigationItem(Screen.PROFILE.name)
     data object Personal : NavigationItem(Screen.PERSONAL.name)
     data object Company : NavigationItem(Screen.COMPANY.name)

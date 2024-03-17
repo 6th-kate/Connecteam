@@ -15,15 +15,13 @@ class UserStatePreferences @Inject constructor(
     @DataStoreModule.StateDataStore private val dataStore: DataStore<Preferences>
 ) {
     companion object {
-        private const val HAS_TARIFF = "HasTariff"
         private const val GAME_INVITE = "GameInvite"
         private const val TARIFF_INVITE = "TariffInvite"
         val gameInviteKey = stringPreferencesKey(GAME_INVITE)
         val tariffInviteKey = stringPreferencesKey(TARIFF_INVITE)
-        val hasTariff = booleanPreferencesKey(HAS_TARIFF)
     }
 
-    fun hasGameInvite(): Flow<String> {
+    fun getGameInvite(): Flow<String> {
         return dataStore.data.catch {
             emit(emptyPreferences())
         }.map { preferences ->
@@ -48,20 +46,6 @@ class UserStatePreferences @Inject constructor(
     suspend fun setTariffInvite(tariffInvite: String) {
         dataStore.edit { preference ->
             preference[tariffInviteKey] = tariffInvite
-        }
-    }
-
-    fun hasTariff(): Flow<Boolean> {
-        return dataStore.data.catch {
-            emit(emptyPreferences())
-        }.map { preferences ->
-            preferences[hasTariff] ?: false
-        }
-    }
-
-    suspend fun setHasTariff(tariffEnabled: Boolean) {
-        dataStore.edit { preference ->
-            preference[hasTariff] = tariffEnabled
         }
     }
 }

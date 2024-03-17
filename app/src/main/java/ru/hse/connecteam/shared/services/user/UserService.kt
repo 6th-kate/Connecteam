@@ -40,6 +40,7 @@ class UserService @Inject constructor(
             return null
         }
         return UserModel(
+            userData.id,
             userData.first_name,
             userData.second_name,
             null,

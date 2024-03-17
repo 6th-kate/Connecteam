@@ -5,8 +5,15 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import ru.hse.connecteam.Greeting
+import ru.hse.connecteam.features.main.presentation.screens.create.CreateScreen
+import ru.hse.connecteam.features.main.presentation.screens.gameinvite.InviteScreen
+import ru.hse.connecteam.features.main.presentation.screens.gameinviteloading.LoadingGameInviteScreen
+import ru.hse.connecteam.features.main.presentation.screens.loading.LoadingScreen
+import ru.hse.connecteam.features.main.presentation.screens.tariffinvite.TariffInviteScreen
+import ru.hse.connecteam.features.main.presentation.screens.tariffinviteloading.LoadingTariffInviteScreen
 import ru.hse.connecteam.features.profile.presentation.screens.access.AccessScreen
 import ru.hse.connecteam.features.profile.presentation.screens.access.participants.TariffParticipantsScreen
 import ru.hse.connecteam.features.profile.presentation.screens.account.AccountScreen
@@ -30,8 +37,8 @@ fun MainNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(NavigationItem.Main.route) {
-            Greeting(name = "Main Screen Mock")
+        composable(NavigationItem.Loading.route) {
+            LoadingScreen(navController = navController)
         }
         composable("${NavigationItem.TariffList.route}/{hasTariff}") {
             TariffListScreen(navController = navController)
@@ -67,6 +74,37 @@ fun MainNavHost(
             composable(NavigationItem.TariffParticipants.route) {
                 TariffParticipantsScreen(navController = navController)
             }
+        }
+        composable(
+            NavigationItem.GameInviteLoadingAuth.route,
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "${DeeplinkUri.inviteUriHttps}/game/{invite}" },
+                navDeepLink { uriPattern = "${DeeplinkUri.inviteUriHttp}/game/{invite}" }
+            )
+        ) { backStackEntry ->
+            LoadingGameInviteScreen(
+                navController = navController,
+                backStackEntry.arguments?.getString("invite")
+            )
+        }
+        composable(NavigationItem.TariffInviteLoadingAuth.route,
+            deepLinks = listOf(
+                navDeepLink { uriPattern = "${DeeplinkUri.inviteUriHttps}/plan/{invite}" },
+                navDeepLink { uriPattern = "${DeeplinkUri.inviteUriHttp}/plan/{invite}" }
+            )) { backStackEntry ->
+            LoadingTariffInviteScreen(
+                navController = navController,
+                backStackEntry.arguments?.getString("invite")
+            )
+        }
+        composable("${NavigationItem.GameInviteAuth.route}/{invite}/{code}") {
+            InviteScreen(navController = navController)
+        }
+        composable("${NavigationItem.TariffInviteAuth.route}/{invite}/{code}") {
+            TariffInviteScreen(navController = navController)
+        }
+        composable(NavigationItem.CreateGame.route) {
+            CreateScreen(navController = navController)
         }
     }
 }

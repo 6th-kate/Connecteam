@@ -1,4 +1,4 @@
-package ru.hse.connecteam.features.main.presentation.screens.invite
+package ru.hse.connecteam.features.main.presentation.screens.tariffinvite
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,14 +9,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
 import ru.hse.connecteam.features.auth.presentation.components.LogoLabel
+import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
-import ru.hse.connecteam.ui.components.inputs.BaseOutlinedTextInput
+import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
 import ru.hse.connecteam.ui.components.modals.SelfHidingBottomAlert
 
 @Composable
-fun InviteScreen(
+fun TariffInviteScreen(
     navController: NavController,
-    viewModel: InviteViewModel = hiltViewModel()
+    viewModel: TariffInviteViewModel = hiltViewModel()
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -28,35 +29,33 @@ fun InviteScreen(
                 viewModel.stopAlert()
             }
         }
-        /*LaunchedEffect(viewModel.shouldMoveToGame) {
-            if (viewModel.shouldMoveToGame) {
+        LaunchedEffect(viewModel.shouldMoveToMain) {
+            if (viewModel.shouldMoveToMain) {
                 delay(1000L)
-                //navController.navigate(NavigationItem.Profile.route)
+                navController.navigate(NavigationItem.CreateGame.route) {
+                    popUpTo(0)
+                }
             }
-        }*/
-        LogoLabel(text = viewModel.inviteText)
+        }
+        LogoLabel(text = viewModel.inviteText ?: "Ошибка загрузки приглашения")
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            BaseOutlinedTextInput(
-                viewModel.name,
-                onValueChanged = { },
-                label = "Имя",
-                readOnly = true
+            GradientFilledButton(
+                text = viewModel.acceptButtonText,
+                enabled = viewModel.acceptButtonEnabled,
+                onClick = { viewModel.accept() }
             )
-            BaseOutlinedTextInput(
-                viewModel.surname,
-                onValueChanged = { },
-                label = "Фамилия",
-                readOnly = true
+            OutlinedGradientButton(
+                text = "Отклонить",
+                onClick = {
+                    navController.navigate(NavigationItem.CreateGame.route) {
+                        popUpTo(0)
+                    }
+                }
             )
         }
-
-        GradientFilledButton(
-            text = viewModel.acceptButtonText,
-            enabled = viewModel.acceptButtonEnabled,
-            onClick = { viewModel.accept() }
-        )
 
         if (viewModel.shouldShowAlert) {
             SelfHidingBottomAlert(viewModel.alertText)

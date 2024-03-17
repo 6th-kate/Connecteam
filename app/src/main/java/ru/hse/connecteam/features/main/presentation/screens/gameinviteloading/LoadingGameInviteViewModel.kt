@@ -1,4 +1,4 @@
-package ru.hse.connecteam.features.auth.presentation.screens.loadingtariffinvite
+package ru.hse.connecteam.features.main.presentation.screens.gameinviteloading
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,12 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import ru.hse.connecteam.features.auth.domain.AuthRepository
+import ru.hse.connecteam.features.main.domain.GameStaticRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class LoadingTariffInviteViewModel @Inject constructor(
-    private val repository: AuthRepository,
+class LoadingGameInviteViewModel @Inject constructor(
+    private val repository: GameStaticRepository,
 ) : ViewModel() {
     var isLoading by mutableStateOf(true)
         private set
@@ -25,17 +25,17 @@ class LoadingTariffInviteViewModel @Inject constructor(
         if (isLoading) {
             if (inviteCode != null) {
                 viewModelScope.launch {
-                    val owner = repository.verifyTariffInvite(inviteCode)
-                    if (owner != null) {
+                    val game = repository.verifyGameInvite(inviteCode)
+                    if (game != null) {
                         signInParams =
-                            "Пользователь ${
-                                owner.ownerFullName.replace(
+                            "Вас приглашают присоединиться к игре ${
+                                game.name.replace(
                                     "/",
                                     ""
                                 )
-                            } приглашает Вас присоединиться к тарифу"
+                            }/${inviteCode}"
                     } else {
-                        signInParams = "none"
+                        signInParams = "none/none"
                         error = "Ошибка загрузки приглашения"
                     }
                     isLoading = false

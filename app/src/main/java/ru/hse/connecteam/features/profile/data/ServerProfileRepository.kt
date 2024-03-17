@@ -53,13 +53,7 @@ class ServerProfileRepository @Inject constructor(
     override suspend fun getUserFlow(): Flow<UserDomainModel?> {
         userService.forceUpdateUserFlow()
         return userService.user.flatMapLatest { value: UserModel? ->
-            flow {
-                emit(
-                    DTOConverter.convert(
-                        value
-                    )
-                )
-            }
+            flow { emit(DTOConverter.convert(value)) }
         }
     }
 

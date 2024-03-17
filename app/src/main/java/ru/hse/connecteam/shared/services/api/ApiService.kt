@@ -74,7 +74,7 @@ interface ApiService {
 
     @GET("users/{id}")
     suspend fun getUserById(
-        @Path("id") id: ID,
+        @Path("id") id: String,
     ): Response<UserByIdData>?
 
     @GET("plans/current")
@@ -95,7 +95,7 @@ interface ApiService {
 
     @GET("validate/plan/{code}")
     suspend fun validateTariffInvite(
-        @Path("code") code: Code,
+        @Path("code") code: String,
     ): Response<ID>?
 
     @GET("plans/members/{code}")
@@ -124,35 +124,36 @@ interface ApiService {
 
     @DELETE("games/{id}")
     suspend fun deleteGame(
-        @Path("id") id: ID,
+        @Path("id") id: String,
         @Header(tokenHeaderName) token: String,
     ): Response<Status>?
 
     @GET("games/created/{page}")
     suspend fun getMyGames(
-        @Path("page") page: Page,
+        @Path("page") page: String,
         @Header(tokenHeaderName) token: String,
     ): Response<List<GameBasic>>?
 
     @GET("games/all/{page}")
     suspend fun getParticipatedGames(
-        @Path("page") page: Page,
+        @Path("page") page: String,
         @Header(tokenHeaderName) token: String,
     ): Response<List<GameBasic>>?
 
     @POST("games/{code}")
     suspend fun addToGame(
-        @Path("code") code: Code,
+        @Path("code") code: String,
+        @Header(tokenHeaderName) token: String,
     ): Response<Status>?
 
     @GET("validate/game/{code}")
     suspend fun validateGameInvite(
-        @Path("code") code: Code,
+        @Path("code") code: String,
     ): Response<GameCreated>?
 
     @GET("games/{id}")
     suspend fun getGameByID(
-        @Path("id") id: ID,
+        @Path("id") id: String,
         @Header(tokenHeaderName) token: String,
     ): Response<GameCreated>?
 }
