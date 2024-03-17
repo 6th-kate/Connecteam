@@ -18,8 +18,6 @@ import ru.hse.connecteam.features.main.domain.UserDomainModel
 import ru.hse.connecteam.shared.models.game.GameStatus
 import ru.hse.connecteam.shared.models.game.SimpleGame
 import ru.hse.connecteam.shared.models.game.SimplePlayer
-import ru.hse.connecteam.shared.models.response.ResponseInfo
-import ru.hse.connecteam.shared.models.response.StatusInfo
 import ru.hse.connecteam.shared.models.tariffs.TariffModel
 import ru.hse.connecteam.shared.models.user.UserModel
 import ru.hse.connecteam.shared.services.api.ApiClient
@@ -27,7 +25,6 @@ import ru.hse.connecteam.shared.services.api.CreateGame
 import ru.hse.connecteam.shared.services.api.GameCreated
 import ru.hse.connecteam.shared.services.api.ID
 import ru.hse.connecteam.shared.services.api.UserByIdData
-import ru.hse.connecteam.shared.services.api.UserPersonal
 import ru.hse.connecteam.shared.services.datastore.AuthenticationService
 import ru.hse.connecteam.shared.services.datastore.UserStatePreferences
 import ru.hse.connecteam.shared.services.user.TariffService

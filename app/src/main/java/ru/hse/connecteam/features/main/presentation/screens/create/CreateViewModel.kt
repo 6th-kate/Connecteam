@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.main.domain.GameStaticRepository
 import ru.hse.connecteam.shared.utils.STANDARD_BACKEND_DATE
 import ru.hse.connecteam.shared.utils.getDate
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,10 +40,10 @@ class CreateViewModel @Inject constructor(
                 }
             }
             repository.getUserFlow().collectLatest { user ->
-                if (user == null) {
-                    nameValue = ""
+                nameValue = if (user == null) {
+                    ""
                 } else {
-                    nameValue = "${user.firstName} ${user.surname}"
+                    "${user.firstName} ${user.surname}"
                 }
             }
         }

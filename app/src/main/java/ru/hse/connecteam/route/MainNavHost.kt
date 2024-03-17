@@ -11,7 +11,6 @@ import ru.hse.connecteam.features.main.presentation.screens.create.CreateScreen
 import ru.hse.connecteam.features.main.presentation.screens.gameinvite.InviteScreen
 import ru.hse.connecteam.features.main.presentation.screens.gameinviteloading.LoadingGameInviteScreen
 import ru.hse.connecteam.features.main.presentation.screens.gamelist.GameListScreen
-import ru.hse.connecteam.features.main.presentation.screens.gamelist.components.GameList
 import ru.hse.connecteam.features.main.presentation.screens.loading.LoadingScreen
 import ru.hse.connecteam.features.main.presentation.screens.tariffinvite.TariffInviteScreen
 import ru.hse.connecteam.features.main.presentation.screens.tariffinviteloading.LoadingTariffInviteScreen
