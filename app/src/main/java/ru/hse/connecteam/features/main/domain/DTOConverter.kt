@@ -10,6 +10,10 @@ class DTOConverter {
             return GameDomainModel(name = game.name)
         }
 
+        fun convertForCreator(game: GameCreated): GameCreatedDomainModel {
+            return GameCreatedDomainModel(id = game.id, invitationCode = game.invitation_code)
+        }
+
         fun convert(owner: UserByIdData): TariffDomainModel {
             return TariffDomainModel(ownerFullName = "${owner.first_name} ${owner.second_name}")
         }

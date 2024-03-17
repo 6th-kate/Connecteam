@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import ru.hse.connecteam.features.main.data.GameStaticRepositoryImpl
@@ -27,7 +28,7 @@ import ru.hse.connecteam.ui.theme.ConnecteamTheme
 @Composable
 fun GameListScreen(
     navController: NavController,
-    viewModel: GameListViewModel
+    viewModel: GameListViewModel = hiltViewModel()
 ) {
     Scaffold(topBar = { TransparentAppBar(title = "") }) { paddingValues ->
         Column(
@@ -74,13 +75,9 @@ fun GameListScreen(
 @Composable
 fun GameListPreview() {
     ConnecteamTheme(darkTheme = true) {
-        // A surface container using the 'background' color from the theme
-        val viewModel by remember {
-            mutableStateOf(GameListViewModel(repository = GameStaticRepositoryImpl()))
-        }
         val navController = rememberNavController()
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            GameListScreen(navController, viewModel)
+            GameListScreen(navController)
         }
     }
 }

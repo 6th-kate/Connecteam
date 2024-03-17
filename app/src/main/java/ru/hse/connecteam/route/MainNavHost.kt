@@ -10,6 +10,8 @@ import androidx.navigation.navigation
 import ru.hse.connecteam.features.main.presentation.screens.create.CreateScreen
 import ru.hse.connecteam.features.main.presentation.screens.gameinvite.InviteScreen
 import ru.hse.connecteam.features.main.presentation.screens.gameinviteloading.LoadingGameInviteScreen
+import ru.hse.connecteam.features.main.presentation.screens.gamelist.GameListScreen
+import ru.hse.connecteam.features.main.presentation.screens.gamelist.components.GameList
 import ru.hse.connecteam.features.main.presentation.screens.loading.LoadingScreen
 import ru.hse.connecteam.features.main.presentation.screens.tariffinvite.TariffInviteScreen
 import ru.hse.connecteam.features.main.presentation.screens.tariffinviteloading.LoadingTariffInviteScreen
@@ -44,6 +46,9 @@ fun MainNavHost(
         }
         composable("${NavigationItem.TariffPurchase.route}/{tariff}") {
             TariffPurchaseScreen(navController = navController)
+        }
+        composable(NavigationItem.GameList.route) {
+            GameListScreen(navController = navController)
         }
         navigation(NavigationItem.Profile.route, "profile") {
             composable(NavigationItem.Profile.route) {

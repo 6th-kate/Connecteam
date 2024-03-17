@@ -11,6 +11,7 @@ import ru.hse.connecteam.shared.models.tariffs.TariffModel
 import ru.hse.connecteam.shared.services.api.ApiClient
 import ru.hse.connecteam.shared.services.api.TariffData
 import ru.hse.connecteam.shared.services.datastore.AuthenticationService
+import ru.hse.connecteam.shared.utils.STANDARD_BACKEND_DATE
 import java.text.ParseException
 import java.util.Date
 import javax.inject.Inject
@@ -68,7 +69,7 @@ class TariffService @Inject constructor(
         return try {
             val currentLocale =
                 ConfigurationCompat.getLocales(Resources.getSystem().configuration).get(0)
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", currentLocale).parse(time)
+            SimpleDateFormat(STANDARD_BACKEND_DATE, currentLocale).parse(time)
         } catch (e: ParseException) {
             null
         }

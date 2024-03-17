@@ -1,6 +1,7 @@
 package ru.hse.connecteam.route
 
 enum class Screen {
+    GAME_LIST,
     GAME_INVITE_LOADING_UNAUTH,
     GAME_INVITE_UNAUTH,
     TARIFF_INVITE_LOADING_UNAUTH,
@@ -32,6 +33,7 @@ object DeeplinkUri {
 }
 
 sealed class NavigationItem(val route: String) {
+    data object GameList : NavigationItem(Screen.GAME_LIST.name)
     data object Loading : NavigationItem(Screen.LOADING.name)
     data object GameInviteLoadingAuth : NavigationItem(Screen.GAME_INVITE_LOADING_AUTH.name)
     data object GameInviteAuth : NavigationItem(Screen.GAME_INVITE_AUTH.name)

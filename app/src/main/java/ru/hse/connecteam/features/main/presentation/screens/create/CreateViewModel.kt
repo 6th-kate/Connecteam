@@ -4,12 +4,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import ru.hse.connecteam.features.main.domain.GameStaticRepository
+import ru.hse.connecteam.shared.utils.STANDARD_BACKEND_DATE
+import ru.hse.connecteam.shared.utils.getDate
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class CreateViewModel @Inject constructor(
-    // TODO: add repository
+    private val repository: GameStaticRepository
 ) : ViewModel() {
     var hasTariff by mutableStateOf(false)
         private set
@@ -19,12 +26,27 @@ class CreateViewModel @Inject constructor(
         private set
     var createEnabled by mutableStateOf(false)
         private set
+    var shouldShowAlert by mutableStateOf(false)
+        private set
+    var alertText by mutableStateOf("Ошибка")
+        private set
 
     init {
-        hasTariff = true
-        if (!hasTariff) {
-            inputDisabled = true
-            createEnabled = false
+        viewModelScope.launch {
+            repository.getTariffFlow().collectLatest { tariff ->
+                hasTariff = tariff != null
+                if (!hasTariff) {
+                    inputDisabled = true
+                    createEnabled = false
+                }
+            }
+            repository.getUserFlow().collectLatest { user ->
+                if (user == null) {
+                    nameValue = ""
+                } else {
+                    nameValue = "${user.firstName} ${user.surname}"
+                }
+            }
         }
     }
 
@@ -32,14 +54,40 @@ class CreateViewModel @Inject constructor(
         private set
     var dateValue by mutableStateOf("")
         private set
+    private var actualDate: Long? by mutableStateOf(null)
     var nameValue by mutableStateOf("")
         private set
     var gameTitleValue by mutableStateOf("")
         private set
 
+    var subject by mutableStateOf("Приглашение в игру")
+        private set
+    var linkText by mutableStateOf("")
+        private set
+
     fun onCreate() {
-        inputDisabled = true
-        created = true
+        if (hasTariff && validateForm()) {
+            inputDisabled = true
+            created = true
+            viewModelScope.launch {
+                val game = repository.createGame(
+                    gameTitleValue,
+                    date = getDate(actualDate!!, STANDARD_BACKEND_DATE)
+                )
+                if (game == null) {
+                    alertText = "Ошибка! Не вышло создать игру."
+                    shouldShowAlert = true
+                } else {
+                    linkText =
+                        "Пользователь $nameValue приглашает Вас " +
+                                "принять участие в игре $gameTitleValue, " +
+                                "которая пройдет $dateValue. " +
+                                "Присоединяйтесь по ссылке " +
+                                "http://connecteam.ru/invite/game/${game.invitationCode}"
+                    created = true
+                }
+            }
+        }
     }
 
     fun updateName(value: String) {
@@ -49,6 +97,11 @@ class CreateViewModel @Inject constructor(
 
     fun updateDate(value: String) {
         dateValue = value
+        createEnabled = validateForm()
+    }
+
+    fun updateDate(value: Long?) {
+        actualDate = value
         createEnabled = validateForm()
     }
 
@@ -65,7 +118,12 @@ class CreateViewModel @Inject constructor(
         createEnabled = validateForm()
     }
 
+    fun stopAlert() {
+        shouldShowAlert = false
+    }
+
     private fun validateForm(): Boolean {
-        return dateValue.isNotEmpty() && nameValue.isNotEmpty() && gameTitleValue.isNotEmpty()
+        return dateValue.isNotEmpty() && nameValue.isNotEmpty() &&
+                gameTitleValue.isNotEmpty() && actualDate != null
     }
 }

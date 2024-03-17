@@ -26,12 +26,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 import ru.hse.connecteam.ui.theme.DefaultWhite
 
 @Composable
-fun BottomNavBar() {
+fun BottomNavBar(navController: NavController) {
     Box(
         modifier = Modifier
             .height(118.dp)
@@ -72,13 +75,17 @@ fun BottomNavBar() {
                     imageVector = Icons.Outlined.SportsEsports,
                     contentDescription = "Игры",
                     tint = DefaultWhite,
-                    modifier = Modifier.size(38.dp)
+                    modifier = Modifier
+                        .size(38.dp)
+                        .clickable { navController.navigate(NavigationItem.GameList.route) }
                 )
                 Icon(
                     imageVector = Icons.Outlined.PermIdentity,
                     contentDescription = "Профиль",
                     tint = DefaultWhite,
-                    modifier = Modifier.size(38.dp)
+                    modifier = Modifier
+                        .size(38.dp)
+                        .clickable { navController.navigate(NavigationItem.Profile.route) }
                 )
             }
         }
@@ -94,7 +101,7 @@ fun BottomBarPreview() {
         Surface(
             modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
         ) {
-            Scaffold(bottomBar = { BottomNavBar() }) {}
+            Scaffold(bottomBar = { BottomNavBar(rememberNavController()) }) {}
         }
     }
 }

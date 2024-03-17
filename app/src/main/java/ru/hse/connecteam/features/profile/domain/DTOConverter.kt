@@ -7,6 +7,7 @@ import ru.hse.connecteam.shared.models.tariffs.TariffInfo
 import ru.hse.connecteam.shared.models.user.UserModel
 import ru.hse.connecteam.shared.services.api.TariffData
 import ru.hse.connecteam.shared.services.api.UserData
+import ru.hse.connecteam.shared.utils.STANDARD_BACKEND_DATE
 import java.text.ParseException
 import java.util.Date
 
@@ -66,7 +67,7 @@ class DTOConverter {
             return try {
                 val currentLocale =
                     ConfigurationCompat.getLocales(Resources.getSystem().configuration).get(0)
-                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", currentLocale).parse(time)
+                SimpleDateFormat(STANDARD_BACKEND_DATE, currentLocale).parse(time)
             } catch (e: ParseException) {
                 null
             }
