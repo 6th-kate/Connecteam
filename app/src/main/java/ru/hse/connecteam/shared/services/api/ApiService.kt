@@ -36,12 +36,6 @@ interface ApiService {
         @Header(tokenHeaderName) token: String
     ): Response<UserData>?
 
-    @PATCH("users/change-access")
-    suspend fun changeAccess(
-        @Header(tokenHeaderName) token: String,
-        @Body change: AccessChange
-    ): Response<Void>?
-
     @PATCH("users/change-password")
     suspend fun changePassword(
         @Header(tokenHeaderName) token: String,

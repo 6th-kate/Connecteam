@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
-import ru.hse.connecteam.Greeting
 import ru.hse.connecteam.features.main.presentation.screens.create.CreateScreen
 import ru.hse.connecteam.features.main.presentation.screens.gameinvite.InviteScreen
 import ru.hse.connecteam.features.main.presentation.screens.gameinviteloading.LoadingGameInviteScreen

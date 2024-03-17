@@ -10,7 +10,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ru.hse.connecteam.features.auth.data.ServerAuthRepository
 import ru.hse.connecteam.features.auth.domain.AuthRepository
 import ru.hse.connecteam.shared.utils.CustomCallback
 import ru.hse.connecteam.shared.utils.CustomVoidCallback

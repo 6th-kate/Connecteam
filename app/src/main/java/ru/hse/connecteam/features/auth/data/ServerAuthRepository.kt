@@ -5,11 +5,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.hse.connecteam.features.auth.domain.AuthRepository
+import ru.hse.connecteam.features.auth.domain.DTOConverter
 import ru.hse.connecteam.features.auth.domain.GameDomainModel
 import ru.hse.connecteam.features.auth.domain.TariffDomainModel
-import ru.hse.connecteam.features.auth.domain.DTOConverter
 import ru.hse.connecteam.shared.services.api.ApiClient
-import ru.hse.connecteam.shared.services.api.Code
 import ru.hse.connecteam.shared.services.api.CodeVerification
 import ru.hse.connecteam.shared.services.api.Email
 import ru.hse.connecteam.shared.services.api.GameCreated
