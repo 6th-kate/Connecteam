@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.hse.connecteam.route.NavigationItem
-import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
 import ru.hse.connecteam.ui.components.containers.TariffContainer
 import ru.hse.connecteam.ui.theme.FilledButtonLabel
@@ -70,11 +69,6 @@ fun MyTariff(
                 OutlinedGradientButton(
                     text = "Сменить тариф",
                     onClick = { navController.navigate("${NavigationItem.TariffList.route}/${true}") })
-                //GradientFilledButton(text = "Продлить тариф",
-                //    onClick = {
-                //        TODO("remove elongate tariff screen")
-                //    }
-                //)
             } else {
                 Text(
                     "Вы являетесь участником этого тарифа",
@@ -85,7 +79,7 @@ fun MyTariff(
                     textAlign = TextAlign.Start
                 )
                 OutlinedGradientButton(text = "Покинуть тариф",
-                    onClick = { TODO("nav to leave tariff screen") })
+                    onClick = { viewModel.onDeleteFromTariff() })
             }
         }
     }

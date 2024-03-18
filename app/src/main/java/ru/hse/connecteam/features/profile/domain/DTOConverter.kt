@@ -4,8 +4,10 @@ import android.content.res.Resources
 import android.icu.text.SimpleDateFormat
 import androidx.core.os.ConfigurationCompat
 import ru.hse.connecteam.shared.models.tariffs.TariffInfo
+import ru.hse.connecteam.shared.models.tariffs.TariffParticipant
 import ru.hse.connecteam.shared.models.user.UserModel
 import ru.hse.connecteam.shared.services.api.TariffData
+import ru.hse.connecteam.shared.services.api.TariffMember
 import ru.hse.connecteam.shared.services.api.UserData
 import ru.hse.connecteam.shared.utils.STANDARD_BACKEND_DATE
 import java.text.ParseException
@@ -14,11 +16,24 @@ import java.util.Date
 
 class DTOConverter {
     companion object {
+        fun convert(participant: TariffMember?): TariffParticipant? {
+            if (participant == null) {
+                return null
+            }
+            return TariffParticipant(
+                userId = participant.id,
+                name = participant.first_name,
+                surname = participant.second_name,
+                email = participant.email,
+            )
+        }
+
         fun convert(userData: UserData?): UserDomainModel? {
             if (userData == null) {
                 return null
             }
             return UserDomainModel(
+                userData.id,
                 userData.first_name,
                 userData.second_name,
                 null,
@@ -36,6 +51,7 @@ class DTOConverter {
                 return null
             }
             return UserDomainModel(
+                userData.id,
                 userData.firstName,
                 userData.surname,
                 null,
@@ -58,6 +74,7 @@ class DTOConverter {
                 toDateTime(tariffData.expiry_date),
                 isMine = tariffData.holder_id == tariffData.user_id,
                 //null,
+                invitationCode = tariffData.invitation_code,
                 confirmed = tariffData.status.lowercase().contains("active")
             )
             // TODO("add participants")

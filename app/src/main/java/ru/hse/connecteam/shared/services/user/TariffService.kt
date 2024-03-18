@@ -51,7 +51,8 @@ class TariffService @Inject constructor(
             tariffInfo,
             endDate = toDateTime(tariffData.expiry_date),
             isMine = tariffData.holder_id == tariffData.user_id,
-            participants = null
+            participants = null,
+            invitationCode = tariffData.invitation_code
             // TODO: ADD PARTICIPANTS CALL
         )
     }
