@@ -7,5 +7,6 @@ data class TariffModel(
     val invitationCode: String,
     val endDate: Date?,
     val isMine: Boolean,
+    val status: TariffStatus,
     val participants: List<TariffParticipant>?
 )

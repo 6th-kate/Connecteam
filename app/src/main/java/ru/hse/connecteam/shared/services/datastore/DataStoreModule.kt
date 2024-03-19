@@ -18,10 +18,13 @@ import dagger.hilt.components.SingletonComponent
 import io.github.osipxd.security.crypto.createEncrypted
 import ru.hse.connecteam.features.auth.data.ServerAuthRepository
 import ru.hse.connecteam.features.auth.domain.AuthRepository
+import ru.hse.connecteam.features.main.data.GameStaticRepositoryImpl
+import ru.hse.connecteam.features.main.domain.GameStaticRepository
 import ru.hse.connecteam.features.profile.data.ServerProfileRepository
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.tariffs.data.ServerTariffRepository
 import ru.hse.connecteam.features.tariffs.domain.TariffDataRepository
+import ru.hse.connecteam.shared.services.user.TariffService
 import ru.hse.connecteam.shared.services.user.UserService
 import javax.inject.Qualifier
 import javax.inject.Singleton
@@ -64,14 +67,33 @@ class DataStoreModule {
     @Provides
     fun provideProfileRepository(
         authenticationService: AuthenticationService,
-        userService: UserService
+        userService: UserService,
+        tariffService: TariffService
     ): ProfileDataRepository {
-        return ServerProfileRepository(authenticationService, userService)
+        return ServerProfileRepository(authenticationService, userService, tariffService)
     }
 
     @Provides
-    fun provideTariffRepository(authenticationService: AuthenticationService): TariffDataRepository {
-        return ServerTariffRepository(authenticationService)
+    fun provideTariffRepository(
+        authenticationService: AuthenticationService,
+        tariffService: TariffService
+    ): TariffDataRepository {
+        return ServerTariffRepository(authenticationService, tariffService)
+    }
+
+    @Provides
+    fun provideGameStaticRepository(
+        authenticationService: AuthenticationService,
+        userStatePreferences: UserStatePreferences,
+        userService: UserService,
+        tariffService: TariffService
+    ): GameStaticRepository {
+        return GameStaticRepositoryImpl(
+            userService,
+            tariffService,
+            authenticationService,
+            userStatePreferences
+        )
     }
 
     @Singleton

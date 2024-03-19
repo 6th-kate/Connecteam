@@ -79,15 +79,16 @@ fun GameItem(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = formatter.format(game.date),
+                        text = if (game.date != null) formatter.format(game.date) else "",
                         style = SpanButtonWhiteLabel,
                     )
                     Text(
-                        text = game.status.desc,
+                        text = game.status?.desc ?: "",
                         style = when (game.status) {
                             GameStatus.NOT_STARTED -> DefaultRedLabel17
                             GameStatus.IN_PROCESS -> OutlinedButtonLabel
                             GameStatus.FINISHED -> SpanButtonGrayLabel
+                            null -> DefaultRedLabel17
                         }
                     )
                 }
@@ -102,9 +103,13 @@ fun GameItemPreview() {
     ConnecteamTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column {
-                GameItem(game = SimpleGame("Игра1", GameStatus.IN_PROCESS, Date()), onClick = {})
-                GameItem(game = SimpleGame("Игра2", GameStatus.FINISHED, Date()), onClick = {})
-                GameItem(game = SimpleGame("Игра3", GameStatus.NOT_STARTED, Date()), onClick = {})
+                GameItem(
+                    game = SimpleGame("", "Игра1", GameStatus.IN_PROCESS, Date()),
+                    onClick = {})
+                GameItem(game = SimpleGame("", "Игра2", GameStatus.FINISHED, Date()), onClick = {})
+                GameItem(
+                    game = SimpleGame("", "Игра3", GameStatus.NOT_STARTED, Date()),
+                    onClick = {})
             }
         }
     }

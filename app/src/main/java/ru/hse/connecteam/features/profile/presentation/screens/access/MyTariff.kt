@@ -11,9 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.hse.connecteam.route.NavigationItem
+import ru.hse.connecteam.shared.models.tariffs.TariffStatus
 import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
 import ru.hse.connecteam.ui.components.containers.TariffContainer
 import ru.hse.connecteam.ui.theme.FilledButtonLabel
@@ -23,7 +23,7 @@ import ru.hse.connecteam.ui.theme.SmallGrayLabel
 @Composable
 fun MyTariff(
     navController: NavController,
-    viewModel: MyTariffViewModel = hiltViewModel()
+    viewModel: MyTariffViewModel
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,13 +46,18 @@ fun MyTariff(
                 textAlign = TextAlign.Start
             )
             TariffContainer(tariff = viewModel.tariffInfo!!)
-            if (viewModel.hasParticipants) {
+            if (viewModel.hasParticipants && viewModel.isMyTariff!!) {
                 OutlinedGradientButton(
                     text = "Участники тарифа",
                     onClick = { navController.navigate(NavigationItem.TariffParticipants.route) })
             }
             Text(
-                text = "Доступен до: ${viewModel.endDate}",
+                text = when (viewModel.tariffStatus) {
+                    TariffStatus.ON_CONFIRM -> "Ожидаем одобрение тарифа администратором..."
+                    TariffStatus.ACTIVE -> "Доступен до: ${viewModel.endDate}"
+                    TariffStatus.EXPIRED -> "Действие Вашего тарифа закончилось"
+                    null -> "Тариф недоступен"
+                },
                 style = SmallGrayLabel,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -65,11 +70,7 @@ fun MyTariff(
             verticalArrangement = Arrangement.Bottom,
             modifier = Modifier.fillMaxWidth()
         ) {
-            if (viewModel.isMyTariff!!) {
-                OutlinedGradientButton(
-                    text = "Сменить тариф",
-                    onClick = { navController.navigate("${NavigationItem.TariffList.route}/${true}") })
-            } else {
+            if ((viewModel.tariffStatus == TariffStatus.ACTIVE) && !viewModel.isMyTariff!!) {
                 Text(
                     "Вы являетесь участником этого тарифа",
                     style = OutlinedButtonLabel,
@@ -80,6 +81,13 @@ fun MyTariff(
                 )
                 OutlinedGradientButton(text = "Покинуть тариф",
                     onClick = { viewModel.onDeleteFromTariff() })
+            } else {
+                OutlinedGradientButton(
+                    text = if (
+                        viewModel.tariffStatus == TariffStatus.ON_CONFIRM ||
+                        viewModel.tariffStatus == TariffStatus.ACTIVE
+                    ) "Сменить тариф" else "Выбрать тариф",
+                    onClick = { navController.navigate(NavigationItem.TariffList.route) })
             }
         }
     }

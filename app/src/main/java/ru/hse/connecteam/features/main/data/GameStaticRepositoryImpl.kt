@@ -4,9 +4,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.hse.connecteam.features.main.domain.DTOConverter
@@ -76,8 +76,9 @@ class GameStaticRepositoryImpl @Inject constructor(
                     "Bearer $token",
                 )
                 launch(Dispatchers.Main) {
-                    val gameList = response?.body()
-                    if (response == null || !response.isSuccessful || gameList == null) {
+                    val responseData = response?.body()
+                    val gameList = responseData?.data
+                    if (response == null || !response.isSuccessful || responseData == null || gameList == null) {
                         if (response != null && response.code() == 401) {
                             authenticationService.onLogout()
                         }
@@ -103,8 +104,9 @@ class GameStaticRepositoryImpl @Inject constructor(
                     "Bearer $token",
                 )
                 launch(Dispatchers.Main) {
-                    val gameList = response?.body()
-                    if (response == null || !response.isSuccessful || gameList == null) {
+                    val responseData = response?.body()
+                    val gameList = responseData?.data
+                    if (response == null || !response.isSuccessful || responseData == null || gameList == null) {
                         if (response != null && response.code() == 401) {
                             authenticationService.onLogout()
                         }
@@ -210,12 +212,11 @@ class GameStaticRepositoryImpl @Inject constructor(
 
     override suspend fun checkGameInvite(): String? = suspendCoroutine { continuation ->
         CoroutineScope(Dispatchers.IO).launch {
-            val response = userStatePreferences.getGameInvite().last()
-            launch(Dispatchers.Main) {
-                if (response.isEmpty()) {
+            userStatePreferences.getGameInvite().collectLatest {
+                if (it.isEmpty()) {
                     continuation.resume(null)
                 } else {
-                    continuation.resume(response)
+                    continuation.resume(it)
                 }
             }
         }
@@ -223,12 +224,11 @@ class GameStaticRepositoryImpl @Inject constructor(
 
     override suspend fun checkTariffInvite(): String? = suspendCoroutine { continuation ->
         CoroutineScope(Dispatchers.IO).launch {
-            val response = userStatePreferences.getTariffInvite().last()
-            launch(Dispatchers.Main) {
-                if (response.isEmpty()) {
+            userStatePreferences.getTariffInvite().collectLatest {
+                if (it.isEmpty()) {
                     continuation.resume(null)
                 } else {
-                    continuation.resume(response)
+                    continuation.resume(it)
                 }
             }
         }

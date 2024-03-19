@@ -29,7 +29,7 @@ fun ProfileScreen(
 ) {
     Scaffold(topBar = {
         TransparentAppBar(
-            title = "", hasNavIcon = false, navController = navController
+            title = "", navController = navController
         )
     }) { innerPadding ->
         Column(

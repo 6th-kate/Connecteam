@@ -96,7 +96,7 @@ interface ApiService {
     suspend fun getTariffMembers(
         @Path("code") code: String,
         @Header(tokenHeaderName) token: String,
-    ): Response<List<TariffMember>>?
+    ): Response<Data<TariffMember>>?
 
     @POST("plans/join/{code}")
     suspend fun joinTariff(
@@ -116,23 +116,17 @@ interface ApiService {
         @Body createGame: CreateGame
     ): Response<GameCreated>?
 
-    @DELETE("games/{id}")
-    suspend fun deleteGame(
-        @Path("id") id: String,
-        @Header(tokenHeaderName) token: String,
-    ): Response<Status>?
-
     @GET("games/created/{page}")
     suspend fun getMyGames(
         @Path("page") page: String,
         @Header(tokenHeaderName) token: String,
-    ): Response<List<GameBasic>>?
+    ): Response<Data<GameBasic>>?
 
     @GET("games/all/{page}")
     suspend fun getParticipatedGames(
         @Path("page") page: String,
         @Header(tokenHeaderName) token: String,
-    ): Response<List<GameBasic>>?
+    ): Response<Data<GameBasic>>?
 
     @POST("games/{code}")
     suspend fun addToGame(

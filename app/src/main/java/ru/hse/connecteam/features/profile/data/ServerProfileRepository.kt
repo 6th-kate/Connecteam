@@ -186,8 +186,9 @@ class ServerProfileRepository @Inject constructor(
                     "Bearer $token",
                 )
                 launch(Dispatchers.Main) {
-                    val participantList = response?.body()
-                    if (response == null || !response.isSuccessful || participantList == null) {
+                    val responseData = response?.body()
+                    val participantList = responseData?.data
+                    if (response == null || !response.isSuccessful || responseData == null || participantList == null) {
                         if (response != null && response.code() == 401) {
                             authenticationService.onLogout()
                         }

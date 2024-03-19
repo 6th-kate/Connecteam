@@ -63,7 +63,7 @@ fun TariffListScreen(
             OutlinedGradientButton(text = "Назад", onClick = { navController.popBackStack() })
             SmallClickableText(
                 text = "Отказаться от тарифа",
-                onClick = { navController.popBackStack() })
+                onClick = { viewModel.discontinueTariff() })
         } else {
             SmallClickableText(
                 text = "Продолжить без тарифа",

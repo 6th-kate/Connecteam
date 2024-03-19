@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
+import ru.hse.connecteam.features.game.presentation.screens.GameScreen
 import ru.hse.connecteam.features.main.presentation.screens.create.CreateScreen
 import ru.hse.connecteam.features.main.presentation.screens.gameinvite.InviteScreen
 import ru.hse.connecteam.features.main.presentation.screens.gameinviteloading.LoadingGameInviteScreen
@@ -30,7 +31,7 @@ import ru.hse.connecteam.features.tariffs.presentation.tarifflist.TariffListScre
 fun MainNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination: String = NavigationItem.Profile.route,
+    startDestination: String = NavigationItem.Loading.route,
 ) {
     NavHost(
         modifier = modifier,
@@ -40,7 +41,7 @@ fun MainNavHost(
         composable(NavigationItem.Loading.route) {
             LoadingScreen(navController = navController)
         }
-        composable("${NavigationItem.TariffList.route}/{hasTariff}") {
+        composable(NavigationItem.TariffList.route) {
             TariffListScreen(navController = navController)
         }
         composable("${NavigationItem.TariffPurchase.route}/{tariff}") {
@@ -48,6 +49,9 @@ fun MainNavHost(
         }
         composable(NavigationItem.GameList.route) {
             GameListScreen(navController = navController)
+        }
+        composable(NavigationItem.Game.route) {
+            GameScreen(navController = navController)
         }
         navigation(NavigationItem.Profile.route, "profile") {
             composable(NavigationItem.Profile.route) {

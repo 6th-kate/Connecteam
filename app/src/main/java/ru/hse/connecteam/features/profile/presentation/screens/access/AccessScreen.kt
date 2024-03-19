@@ -16,9 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import ru.hse.connecteam.ui.components.bars.TransparentAppBar
 import ru.hse.connecteam.features.tariffs.presentation.components.PayWall
-import ru.hse.connecteam.features.tariffs.presentation.components.PendingTariff
+import ru.hse.connecteam.ui.components.bars.TransparentAppBar
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
 @Composable
@@ -38,7 +37,8 @@ fun AccessScreen(
                 PayWall(navController = navController, message = "У вас ещё нет тарифа")
                 Spacer(modifier = Modifier.height(50.dp))
             }
-        } else if (!viewModel.confirmed) {
+        }
+        /*else if (!viewModel.confirmed) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -47,7 +47,8 @@ fun AccessScreen(
             ) {
                 PendingTariff(navController, tariffInfo = viewModel.tariffInfo)
             }
-        } else {
+        } */
+        else {
             Column(
                 modifier = Modifier
                     .fillMaxSize()

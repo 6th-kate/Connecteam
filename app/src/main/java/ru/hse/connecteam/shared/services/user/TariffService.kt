@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 import ru.hse.connecteam.shared.models.tariffs.TariffInfo
 import ru.hse.connecteam.shared.models.tariffs.TariffModel
+import ru.hse.connecteam.shared.models.tariffs.TariffStatus
 import ru.hse.connecteam.shared.services.api.ApiClient
 import ru.hse.connecteam.shared.services.api.TariffData
 import ru.hse.connecteam.shared.services.datastore.AuthenticationService
@@ -44,7 +45,8 @@ class TariffService @Inject constructor(
 
     private fun convert(tariffData: TariffData?): TariffModel? {
         val tariffInfo = toTariffInfo(tariffData?.plan_type)
-        if (tariffData == null || tariffInfo == null) {
+        val tariffStatus = toTariffStatus(tariffData?.status)
+        if (tariffData == null || tariffInfo == null || tariffStatus == null) {
             return null
         }
         return TariffModel(
@@ -52,7 +54,8 @@ class TariffService @Inject constructor(
             endDate = toDateTime(tariffData.expiry_date),
             isMine = tariffData.holder_id == tariffData.user_id,
             participants = null,
-            invitationCode = tariffData.invitation_code
+            invitationCode = tariffData.invitation_code,
+            status = tariffStatus
             // TODO: ADD PARTICIPANTS CALL
         )
     }
@@ -62,6 +65,15 @@ class TariffService @Inject constructor(
             "basic" -> TariffInfo.SIMPLE
             "advanced" -> TariffInfo.ADVANCED
             "premium" -> TariffInfo.WIDE
+            else -> null
+        }
+    }
+
+    private fun toTariffStatus(tariffStatus: String?): TariffStatus? {
+        return when (tariffStatus) {
+            "on_confirm" -> TariffStatus.ON_CONFIRM
+            "active" -> TariffStatus.ACTIVE
+            "expired" -> TariffStatus.EXPIRED
             else -> null
         }
     }

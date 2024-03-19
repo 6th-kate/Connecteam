@@ -27,7 +27,7 @@ class LoadingViewModel @Inject constructor(
         if (!initialized) {
             viewModelScope.launch {
                 val gameInvite = repository.checkGameInvite()
-                val tariffInvite = repository.checkGameInvite()
+                val tariffInvite = repository.checkTariffInvite()
 
                 if (gameInvite.isNullOrEmpty() && tariffInvite.isNullOrEmpty()) {
                     movePath = NavigationItem.CreateGame.route

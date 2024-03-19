@@ -26,9 +26,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.delay
 import ru.hse.connecteam.R
 import ru.hse.connecteam.ui.components.buttons.GradientFilledButton
 import ru.hse.connecteam.ui.components.buttons.OutlinedGradientButton
+import ru.hse.connecteam.ui.components.modals.SelfHidingBottomAlert
 import ru.hse.connecteam.ui.theme.BaseGradientBrush
 import ru.hse.connecteam.ui.theme.BigGradientLabel
 import ru.hse.connecteam.ui.theme.BigWhiteLabel37
@@ -51,6 +53,9 @@ fun TariffPurchaseScreen(
     ) {
         LaunchedEffect(viewModel.shouldReturn) {
             if (viewModel.shouldReturn) {
+                delay(2000)
+                viewModel.stopAlert()
+                navController.popBackStack()
                 navController.popBackStack()
             }
         }
@@ -112,6 +117,9 @@ fun TariffPurchaseScreen(
                 text = "Отмена",
                 onClick = { navController.popBackStack() },
             )
+        }
+        if (viewModel.shouldShowAlert) {
+            SelfHidingBottomAlert(viewModel.alertText)
         }
     }
 }

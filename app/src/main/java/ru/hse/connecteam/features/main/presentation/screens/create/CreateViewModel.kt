@@ -29,6 +29,8 @@ class CreateViewModel @Inject constructor(
         private set
     var alertText by mutableStateOf("Ошибка")
         private set
+    var nameValue by mutableStateOf("")
+        private set
 
     init {
         viewModelScope.launch {
@@ -39,6 +41,8 @@ class CreateViewModel @Inject constructor(
                     createEnabled = false
                 }
             }
+        }
+        viewModelScope.launch {
             repository.getUserFlow().collectLatest { user ->
                 nameValue = if (user == null) {
                     ""
@@ -54,8 +58,6 @@ class CreateViewModel @Inject constructor(
     var dateValue by mutableStateOf("")
         private set
     private var actualDate: Long? by mutableStateOf(null)
-    var nameValue by mutableStateOf("")
-        private set
     var gameTitleValue by mutableStateOf("")
         private set
 

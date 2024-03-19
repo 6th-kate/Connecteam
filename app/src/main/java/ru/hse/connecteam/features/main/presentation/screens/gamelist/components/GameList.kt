@@ -1,6 +1,5 @@
 package ru.hse.connecteam.features.main.presentation.screens.gamelist.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,8 @@ fun GameList(
     items: List<SimpleGame>,
     paginationState: PaginationState,
     canPaginate: Boolean,
-    addData: () -> Unit
+    addData: () -> Unit,
+    onGameClick: () -> Unit,
 ) {
     val lazyColumnListState = rememberLazyListState()
 
@@ -36,14 +36,6 @@ fun GameList(
     }
 
     LaunchedEffect(key1 = shouldStartPaginate.value) {
-        Log.i("conn_info", "canPaginate $canPaginate")
-        Log.i("conn_info", "totalItemsCount ${lazyColumnListState.layoutInfo.totalItemsCount}")
-        Log.i(
-            "conn_info",
-            "visibleItemsInfo ${lazyColumnListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index}"
-        )
-        Log.i("conn_info", "shouldStartPaginate ${shouldStartPaginate.value}")
-        Log.i("conn_info", "paginationState $paginationState")
         if (shouldStartPaginate.value && paginationState == PaginationState.IDLE)
             addData()
     }
@@ -53,20 +45,7 @@ fun GameList(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(items = items) { item ->
-            GameItem(game = item, onClick = {
-                Log.i("conn_info", "canPaginate $canPaginate")
-                Log.i(
-                    "conn_info",
-                    "totalItemsCount ${lazyColumnListState.layoutInfo.totalItemsCount}"
-                )
-                Log.i(
-                    "conn_info",
-                    "visibleItemsInfo ${lazyColumnListState.layoutInfo.visibleItemsInfo.lastOrNull()?.index}"
-                )
-                Log.i("conn_info", "shouldStartPaginate ${shouldStartPaginate.value}")
-                Log.i("conn_info", "paginationState $paginationState")
-
-            })
+            GameItem(game = item, onClick = { onGameClick() })
         }
         item(
             key = paginationState,

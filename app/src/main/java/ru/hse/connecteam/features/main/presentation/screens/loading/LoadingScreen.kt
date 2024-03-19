@@ -16,8 +16,10 @@ fun LoadingScreen(
     viewModel: LoadingViewModel = hiltViewModel()
 ) {
     LaunchedEffect(viewModel.shouldMove) {
-        navController.navigate(viewModel.movePath) {
-            popUpTo(0)
+        if (viewModel.shouldMove) {
+            navController.navigate(viewModel.movePath) {
+                popUpTo(0)
+            }
         }
     }
     Box(modifier = Modifier.fillMaxSize()) {

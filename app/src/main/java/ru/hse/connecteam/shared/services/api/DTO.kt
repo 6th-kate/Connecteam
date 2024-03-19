@@ -96,7 +96,7 @@ data class TariffData(
 )
 
 data class TariffRequest(
-    val duration: String,
+    val duration: Int,
     val plan_type: String,
 )
 
@@ -121,19 +121,11 @@ data class TrialData(
     val is_trial: String,
 )
 
-data class Code(
-    val code: String,
-)
-
 data class TariffMember(
     val id: String,
     val first_name: String,
     val second_name: String,
     val email: String,
-)
-
-data class UserId(
-    val user_id: String,
 )
 
 data class JoinTariffData(
@@ -157,10 +149,6 @@ data class CreateGame(
     val start_date: String,
 )
 
-data class Page(
-    val page: String
-)
-
 data class GameCreated(
     val id: String,
     val name: String,
@@ -176,4 +164,8 @@ data class GameBasic(
     val start_date: String,
     val status: String,
     val invitation_code: String,
+)
+
+data class Data<T>(
+    val data: List<T>
 )

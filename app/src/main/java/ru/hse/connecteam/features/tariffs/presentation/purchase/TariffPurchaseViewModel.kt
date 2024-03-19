@@ -6,7 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.tariffs.domain.TariffDataRepository
+import ru.hse.connecteam.shared.models.response.StatusInfo
 import ru.hse.connecteam.shared.models.tariffs.TariffInfo
 import javax.inject.Inject
 
@@ -30,11 +34,29 @@ class TariffPurchaseViewModel @Inject constructor(
         TariffInfo.SIMPLE
     }
 
+    var alertText by mutableStateOf("Ошибка")
+        private set
+    var shouldShowAlert by mutableStateOf(false)
+        private set
+
+    fun stopAlert() {
+        shouldShowAlert = false
+    }
+
     fun purchase() {
         if (purchaseButtonEnabled) {
             purchaseButtonEnabled = false
             purchaseButtonText = "Отправляем заявку..."
-
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = repository.purchasePlan(tariffInfo)
+                alertText = if (response.status == StatusInfo.OK) {
+                    "Заявка на тариф принята, ожидаем одобрения администратором"
+                } else {
+                    "Ошибка! Тариф не был оформлен..."
+                }
+                shouldShowAlert = true
+                shouldReturn = true
+            }
         }
     }
 }

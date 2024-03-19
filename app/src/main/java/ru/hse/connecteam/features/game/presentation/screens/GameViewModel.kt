@@ -1,8 +1,11 @@
 package ru.hse.connecteam.features.game.presentation.screens
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import ru.hse.connecteam.features.game.domain.PlayerDomainModel
@@ -10,8 +13,10 @@ import ru.hse.connecteam.features.game.domain.SelectableTopicDomainModel
 import ru.hse.connecteam.features.game.domain.state.GameState
 import ru.hse.connecteam.features.game.domain.state.GameTopics
 import ru.hse.connecteam.features.game.domain.state.Loading
+import javax.inject.Inject
 
-class GameViewModel {
+@HiltViewModel
+class GameViewModel @Inject constructor() : ViewModel() {
     private val _gameStateFlow = MutableStateFlow<GameState>(Loading("Загружаем игру..."))
     val gameStateFlow: StateFlow<GameState> get() = _gameStateFlow
 
@@ -23,6 +28,9 @@ class GameViewModel {
         _gameStateFlow.value = Loading("Загружаем игру...")
     }
 
+    val players: List<PlayerDomainModel> = mutableStateListOf()
+
+
     // TopBars start
 
     var roundCount: Int? by mutableStateOf(null)
@@ -31,13 +39,10 @@ class GameViewModel {
     var roundNumber: Int? by mutableStateOf(null)
         private set
 
-    var asOwner: Boolean by mutableStateOf(false)
+    var asOwner: Boolean by mutableStateOf(true)
         private set
 
-    var gameTitle: String by mutableStateOf("Загружаем")
-        private set
-
-    var players: List<PlayerDomainModel> = mutableListOf()
+    var gameTitle: String by mutableStateOf("Загружаем...")
         private set
 
     fun deletePlayer(player: PlayerDomainModel) {
@@ -81,7 +86,7 @@ class GameViewModel {
                 (gameStateFlow.value as GameTopics).topics.forEach {
                     if (chosenTopicsCount >= maxChosenTopicsNumber) {
                         if (!it.selected) {
-                            it.enabled = false
+                            it.selected = false
                         }
                     } else {
                         it.enabled = true

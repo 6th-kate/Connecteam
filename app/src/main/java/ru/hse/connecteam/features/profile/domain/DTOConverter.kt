@@ -5,6 +5,7 @@ import android.icu.text.SimpleDateFormat
 import androidx.core.os.ConfigurationCompat
 import ru.hse.connecteam.shared.models.tariffs.TariffInfo
 import ru.hse.connecteam.shared.models.tariffs.TariffParticipant
+import ru.hse.connecteam.shared.models.tariffs.TariffStatus
 import ru.hse.connecteam.shared.models.user.UserModel
 import ru.hse.connecteam.shared.services.api.TariffData
 import ru.hse.connecteam.shared.services.api.TariffMember
@@ -66,7 +67,8 @@ class DTOConverter {
 
         fun convert(tariffData: TariffData?): TariffDomainModel? {
             val tariffInfo = toTariffInfo(tariffData?.plan_type)
-            if (tariffData == null || tariffInfo == null) {
+            val tariffStatus = toTariffStatus(tariffData?.status)
+            if (tariffData == null || tariffInfo == null || tariffStatus == null) {
                 return null
             }
             return TariffDomainModel(
@@ -75,7 +77,7 @@ class DTOConverter {
                 isMine = tariffData.holder_id == tariffData.user_id,
                 //null,
                 invitationCode = tariffData.invitation_code,
-                confirmed = tariffData.status.lowercase().contains("active")
+                status = tariffStatus
             )
             // TODO("add participants")
         }
@@ -87,6 +89,15 @@ class DTOConverter {
                 SimpleDateFormat(STANDARD_BACKEND_DATE, currentLocale).parse(time)
             } catch (e: ParseException) {
                 null
+            }
+        }
+
+        private fun toTariffStatus(tariffStatus: String?): TariffStatus? {
+            return when (tariffStatus) {
+                "on_confirm" -> TariffStatus.ON_CONFIRM
+                "active" -> TariffStatus.ACTIVE
+                "expired" -> TariffStatus.EXPIRED
+                else -> null
             }
         }
 

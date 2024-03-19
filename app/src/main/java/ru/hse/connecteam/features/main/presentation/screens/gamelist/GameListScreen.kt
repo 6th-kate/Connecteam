@@ -25,7 +25,9 @@ fun GameListScreen(
     navController: NavController,
     viewModel: GameListViewModel = hiltViewModel()
 ) {
-    Scaffold(topBar = { TransparentAppBar(title = "") }) { paddingValues ->
+    Scaffold(topBar = {
+        TransparentAppBar(title = "", navController = navController)
+    }) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -41,7 +43,8 @@ fun GameListScreen(
                         items = viewModel.myGamesList,
                         paginationState = viewModel.listStateMyGames,
                         canPaginate = viewModel.canPaginateMyGames,
-                        addData = { viewModel.getMyGames() }
+                        addData = { viewModel.getMyGames() },
+                        onGameClick = { viewModel.onGameClick() }
                     )
                 } else PayWall(
                     navController = navController,
@@ -52,7 +55,8 @@ fun GameListScreen(
                     items = viewModel.participatedGamesList,
                     paginationState = viewModel.listStateParticipatedGame,
                     canPaginate = viewModel.canPaginateParticipatedGames,
-                    addData = { viewModel.getParticipatedGames() }
+                    addData = { viewModel.getParticipatedGames() },
+                    onGameClick = { viewModel.onGameClick() }
                 )
             }
         }

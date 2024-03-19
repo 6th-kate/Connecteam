@@ -34,7 +34,7 @@ fun PayWall(navController: NavController, message: String) {
         Spacer(modifier = Modifier.height(20.dp))
         GradientFilledButton(
             text = "Выбрать тариф",
-            onClick = { navController.navigate("${NavigationItem.TariffList.route}/${false}") },
+            onClick = { navController.navigate(NavigationItem.TariffList.route) },
         )
     }
 }

@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import ru.hse.connecteam.features.game.domain.state.Evaluation
 import ru.hse.connecteam.features.game.domain.state.GameTopics
 import ru.hse.connecteam.features.game.domain.state.Loading
@@ -26,7 +28,10 @@ import ru.hse.connecteam.features.game.presentation.components.states.RoundTopic
 import ru.hse.connecteam.features.game.presentation.components.states.SumResults
 
 @Composable
-fun GameScreen(viewModel: GameViewModel) {
+fun GameScreen(
+    navController: NavController,
+    viewModel: GameViewModel = hiltViewModel()
+) {
     val gameState by viewModel.gameStateFlow.collectAsState()
     Column {
         PlayersDropDown(
@@ -42,6 +47,7 @@ fun GameScreen(viewModel: GameViewModel) {
                 maxRoundCount = viewModel.roundCount ?: 0
             )
         }
+
         when (gameState) {
             is Loading -> Loading(
                 state = gameState as Loading

@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import ru.hse.connecteam.features.profile.domain.ProfileDataRepository
 import ru.hse.connecteam.features.profile.domain.TariffDomainModel
 import ru.hse.connecteam.shared.models.tariffs.TariffInfo
+import ru.hse.connecteam.shared.models.tariffs.TariffStatus
 import java.util.Locale
 import javax.inject.Inject
 
@@ -20,17 +21,46 @@ import javax.inject.Inject
 class MyTariffViewModel @Inject constructor(
     private val repository: ProfileDataRepository,
 ) : ViewModel() {
-    private var initialized: Boolean = false
-    private var tariffModel: TariffDomainModel? = null
+    private var initialized: Boolean by mutableStateOf(false)
+    private var tariffModel: TariffDomainModel? by mutableStateOf(null)
     private var myID by mutableStateOf("")
+
+    val hasTariff: Boolean
+        get() = tariffModel != null
+
+    val tariffStatus: TariffStatus?
+        get() = tariffModel?.status
+    val tariffInfo: TariffInfo?
+        get() = tariffModel?.tariffInfo
+    val hasParticipants: Boolean
+        get() = tariffModel?.tariffInfo?.hasParticipants == true
+    val isMyTariff: Boolean?
+        get() = tariffModel?.isMine
+    val endDate: String
+        get() =
+            if (tariffModel != null)
+                SimpleDateFormat(
+                    "dd.MM.yyyy",
+                    Locale.getDefault()
+                ).format(
+                    tariffModel?.endDate
+                ) else ""
+
 
     init {
         if (!initialized) {
             CoroutineScope(Dispatchers.IO).launch {
-                val tariff = repository.getTariff()
-                CoroutineScope(Dispatchers.Main).launch {
-                    tariffModel = tariff
-                    initialized = true
+                repository.getTariffFlow().collectLatest { tariff ->
+                    if (tariff != null) {
+                        tariffModel = TariffDomainModel(
+                            tariff.tariffInfo,
+                            tariff.endDate,
+                            tariff.isMine,
+                            tariff.invitationCode,
+                            tariff.status
+                        )
+                        initialized = true
+                    }
                 }
                 repository.getUserFlow().collectLatest { user ->
                     if (user != null) {
@@ -41,29 +71,14 @@ class MyTariffViewModel @Inject constructor(
         }
     }
 
-    val hasTariff: Boolean = tariffModel != null
-    val confirmed: Boolean = tariffModel?.confirmed == true
-    val tariffInfo: TariffInfo? = tariffModel?.tariffInfo
-    val hasParticipants: Boolean = tariffModel?.tariffInfo?.hasParticipants == true
-    val isMyTariff: Boolean? = tariffModel?.isMine
-    val endDate: String =
-        if (tariffModel != null)
-            SimpleDateFormat(
-                "dd.MM.yyyy",
-                Locale.getDefault()
-            ).format(
-                tariffModel?.endDate
-            ) else ""
-
     fun onDeleteFromTariff() {
         // TODO("fix this")
-        /*
-        if (myID.isNotEmpty()) {
+        /*if (myID.isNotEmpty()) {
             CoroutineScope(Dispatchers.IO).launch {
                 val response = repository.deleteParticipant(myID)
                 if (response.status == StatusInfo.OK) {
                     withContext(Dispatchers.Main) {
-                        if (participants.isNullOrEmpty() || participants.contains(null)) {
+                        if (response.isNullOrEmpty() || participants.contains(null)) {
                             errorText = "Не удалось загрузить участников тарифа"
                             showError = true
                         } else {
