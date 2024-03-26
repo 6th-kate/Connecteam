@@ -1,6 +1,7 @@
 package ru.hse.connecteam.features.game.domain
 
 data class PlayerDomainModel(
+    val id: String,
     val online: Boolean = false,
     val name: String,
     val surname: String,

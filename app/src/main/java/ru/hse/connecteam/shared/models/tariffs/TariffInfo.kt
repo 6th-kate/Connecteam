@@ -3,6 +3,7 @@ package ru.hse.connecteam.shared.models.tariffs
 enum class TariffInfo {
     SIMPLE {
         override val jsonName: String = "basic"
+        override val maxQuestionsNumber: Int = 3
         override val possibilities: String =
             "- Возможность создания игры\n" +
                     "- Наличие трех тем с вопросами\n" +
@@ -14,6 +15,7 @@ enum class TariffInfo {
     },
     ADVANCED {
         override val jsonName: String = "advanced"
+        override val maxQuestionsNumber: Int = 5
         override val possibilities: String =
             "- Возможность создания игры\n" +
                     "- 5 тем с вопросами\n" +
@@ -26,6 +28,7 @@ enum class TariffInfo {
     },
     WIDE {
         override val jsonName: String = "premium"
+        override val maxQuestionsNumber: Int = 10
         override val possibilities: String =
             "- Возможность создания игры\n" +
                     "- Возможность добавления авторизованных пользователей" +
@@ -41,6 +44,7 @@ enum class TariffInfo {
 
 
     abstract val jsonName: String
+    abstract val maxQuestionsNumber: Int
     abstract val possibilities: String
     abstract val tariffName: String
     abstract val standardCost: Int

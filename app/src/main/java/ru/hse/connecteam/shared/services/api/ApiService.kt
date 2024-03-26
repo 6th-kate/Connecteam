@@ -36,6 +36,11 @@ interface ApiService {
         @Header(tokenHeaderName) token: String
     ): Response<UserData>?
 
+    @GET("topics/")
+    suspend fun getTopics(
+        @Header(tokenHeaderName) token: String
+    ): Response<Data<Topic>>?
+
     @PATCH("users/change-password")
     suspend fun changePassword(
         @Header(tokenHeaderName) token: String,
@@ -143,5 +148,5 @@ interface ApiService {
     suspend fun getGameByID(
         @Path("id") id: String,
         @Header(tokenHeaderName) token: String,
-    ): Response<GameCreated>?
+    ): Response<GameBasic>?
 }

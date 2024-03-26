@@ -83,6 +83,11 @@ data class CompanyData(
     val company_info: String,
 )
 
+data class Topic(
+    val id: String,
+    val title: String,
+)
+
 data class TariffData(
     val id: String,
     val expiry_date: String,

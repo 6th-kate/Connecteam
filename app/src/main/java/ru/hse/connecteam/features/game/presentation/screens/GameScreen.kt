@@ -33,6 +33,7 @@ fun GameScreen(
     viewModel: GameViewModel = hiltViewModel()
 ) {
     val gameState by viewModel.gameStateFlow.collectAsState()
+
     Column {
         PlayersDropDown(
             asOwner = viewModel.asOwner,

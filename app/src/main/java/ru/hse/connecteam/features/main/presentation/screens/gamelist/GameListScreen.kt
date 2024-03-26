@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import ru.hse.connecteam.features.main.presentation.screens.gamelist.components.GameList
 import ru.hse.connecteam.features.main.presentation.screens.gamelist.components.GamesTabRow
 import ru.hse.connecteam.features.tariffs.presentation.components.PayWall
+import ru.hse.connecteam.route.NavigationItem
 import ru.hse.connecteam.ui.components.bars.TransparentAppBar
 import ru.hse.connecteam.ui.theme.ConnecteamTheme
 
@@ -44,7 +45,9 @@ fun GameListScreen(
                         paginationState = viewModel.listStateMyGames,
                         canPaginate = viewModel.canPaginateMyGames,
                         addData = { viewModel.getMyGames() },
-                        onGameClick = { viewModel.onGameClick() }
+                        onGameClick = {
+                            navController.navigate("${NavigationItem.Game.route}/${it.id}")
+                        }
                     )
                 } else PayWall(
                     navController = navController,
@@ -56,7 +59,9 @@ fun GameListScreen(
                     paginationState = viewModel.listStateParticipatedGame,
                     canPaginate = viewModel.canPaginateParticipatedGames,
                     addData = { viewModel.getParticipatedGames() },
-                    onGameClick = { viewModel.onGameClick() }
+                    onGameClick = {
+                        navController.navigate("${NavigationItem.Game.route}/${it.id}")
+                    }
                 )
             }
         }

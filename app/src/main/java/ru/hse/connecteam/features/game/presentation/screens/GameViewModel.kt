@@ -1,26 +1,44 @@
 package ru.hse.connecteam.features.game.presentation.screens
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import ru.hse.connecteam.features.game.data.GameRepositoryImpl
 import ru.hse.connecteam.features.game.domain.PlayerDomainModel
 import ru.hse.connecteam.features.game.domain.SelectableTopicDomainModel
+import ru.hse.connecteam.features.game.domain.state.Evaluation
 import ru.hse.connecteam.features.game.domain.state.GameState
 import ru.hse.connecteam.features.game.domain.state.GameTopics
 import ru.hse.connecteam.features.game.domain.state.Loading
+import ru.hse.connecteam.features.game.domain.state.NextQuestion
+import ru.hse.connecteam.features.game.domain.state.Question
+import ru.hse.connecteam.features.game.domain.state.RoundEnded
+import ru.hse.connecteam.features.game.domain.state.RoundTopics
+import ru.hse.connecteam.shared.services.websocket.dto.BaseMessage
 import javax.inject.Inject
 
 @HiltViewModel
-class GameViewModel @Inject constructor() : ViewModel() {
+class GameViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val repository: GameRepositoryImpl
+) : ViewModel() {
+    private val gameId = savedStateHandle.get<String>("id")
+
     private val _gameStateFlow = MutableStateFlow<GameState>(Loading("Загружаем игру..."))
     val gameStateFlow: StateFlow<GameState> get() = _gameStateFlow
 
-    fun setGameState(gameState: GameState) {
+    private fun setGameState(gameState: GameState) {
         _gameStateFlow.value = gameState
     }
 
@@ -29,7 +47,6 @@ class GameViewModel @Inject constructor() : ViewModel() {
     }
 
     val players: List<PlayerDomainModel> = mutableStateListOf()
-
 
     // TopBars start
 
@@ -46,11 +63,11 @@ class GameViewModel @Inject constructor() : ViewModel() {
         private set
 
     fun deletePlayer(player: PlayerDomainModel) {
-
+        // TODO: Implement
     }
 
     fun onExit() {
-
+        repository.exit()
     }
 
     // TopBars end
@@ -60,14 +77,13 @@ class GameViewModel @Inject constructor() : ViewModel() {
     var topicsChooseEnabled: Boolean by mutableStateOf(false)
         private set
 
-    private var chosenTopicsCount: Int by mutableStateOf(0)
+    private var chosenTopicsCount: Int by mutableIntStateOf(0)
 
-    private var maxChosenTopicsNumber: Int by mutableStateOf(0)
+    private var maxChosenTopicsNumber: Int by mutableIntStateOf(0)
 
     private fun resetGameTopics() {
         topicsChooseEnabled = false
         chosenTopicsCount = 0
-        maxChosenTopicsNumber = 0
     }
 
     fun onTopicTap(topic: SelectableTopicDomainModel) {
@@ -99,7 +115,13 @@ class GameViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onTopicsChosen() {
-
+        if (gameStateFlow.value is GameTopics && topicsChooseEnabled) {
+            if (repository.sendTopics((gameStateFlow.value as GameTopics).topics)) {
+                setGameState(Loading("Отправляем темы..."))
+            } else {
+                // TODO(EXCEPTIONS)
+            }
+        }
     }
 
     // Game topics selection end
@@ -107,7 +129,9 @@ class GameViewModel @Inject constructor() : ViewModel() {
     // Round topics selection start
 
     fun onRoundTopicTap(topic: SelectableTopicDomainModel) {
-
+        if (gameStateFlow.value is RoundTopics) {
+            repository.startRound(topic)
+        }
     }
 
     // Round topics selection end
@@ -115,7 +139,9 @@ class GameViewModel @Inject constructor() : ViewModel() {
     // NextQuestion start
 
     fun onNextQuestionContinue() {
-
+        if (gameStateFlow.value is NextQuestion) {
+            repository.startQuestion()
+        }
     }
 
     // NextQuestion end
@@ -123,7 +149,11 @@ class GameViewModel @Inject constructor() : ViewModel() {
     // Question start
 
     fun onFinishQuestion() {
-        TODO("Send question finish to server, then reset")
+        if (gameStateFlow.value is Question) {
+            if (repository.finishQuestion()) {
+                resetTimer()
+            }
+        }
     }
 
     private fun resetTimer() {
@@ -136,14 +166,14 @@ class GameViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    var questionTimerSeconds: Int by mutableStateOf(180)
+    var questionTimerSeconds: Int by mutableIntStateOf(180)
         private set
 
     // Question end
 
     // Evaluation start
 
-    var starCount: Int by mutableStateOf(0)
+    var starCount: Int by mutableIntStateOf(0)
         private set
 
     var evaluationContinueEnabled: Boolean by mutableStateOf(false)
@@ -155,7 +185,18 @@ class GameViewModel @Inject constructor() : ViewModel() {
     }
 
     fun onEvaluationContinue() {
-        TODO("Send eval to server, then reset")
+        if (gameStateFlow.value is Evaluation && evaluationContinueEnabled) {
+            if (repository.endRate(
+                    (gameStateFlow.value as Evaluation).player.id.toInt(),
+                    starCount
+                )
+            ) {
+                setGameState(Loading("Ожидаем оценки других игроков..."))
+                resetEvaluation()
+            } else {
+                // TODO(EXCEPTIONS)
+            }
+        }
     }
 
     private fun resetEvaluation() {
@@ -168,7 +209,9 @@ class GameViewModel @Inject constructor() : ViewModel() {
     // RoundEnded start
 
     fun onRoundEndedContinue() {
-
+        if (gameStateFlow.value is RoundEnded) {
+            //setGameState()
+        }
     }
 
     fun onRoundEndedShowResults() {
@@ -197,4 +240,31 @@ class GameViewModel @Inject constructor() : ViewModel() {
 
     // PlayerResults end
 
+    init {
+        if (gameId == null) {
+            setGameState(Loading("Ошибка!\nНе удалось найти игру"))
+        } else {
+            CoroutineScope(Dispatchers.IO).launch {
+                val game = repository.getGame(gameId)
+                val initializedWS = repository.init(gameId)
+                val maxTopics = repository.getMaxTopicsCount()
+                if (game != null && initializedWS && maxTopics != null) {
+                    asOwner = game.isMine
+                    gameTitle = game.name
+                    maxChosenTopicsNumber = maxTopics
+                    repository.getIncomingMessagesFlow().collectLatest {
+                        handleMessage(it)
+                    }
+                    setGameState(Loading("Ожидаем подключения..."))
+                } else {
+                    setGameState(Loading("Ошибка!\nНе удалось найти игру"))
+                }
+            }
+        }
+    }
+
+    /// TODO(domain models instead of DTOs)
+    private fun handleMessage(message: BaseMessage) {
+
+    }
 }

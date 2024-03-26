@@ -50,7 +50,7 @@ fun MainNavHost(
         composable(NavigationItem.GameList.route) {
             GameListScreen(navController = navController)
         }
-        composable(NavigationItem.Game.route) {
+        composable("${NavigationItem.Game.route}/{id}") {
             GameScreen(navController = navController)
         }
         navigation(NavigationItem.Profile.route, "profile") {

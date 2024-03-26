@@ -64,6 +64,7 @@ fun NextQuestionPreview() {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Column {
                 val me = PlayerDomainModel(
+                    "1",
                     true,
                     "Player",
                     "Playerson3",
@@ -74,6 +75,7 @@ fun NextQuestionPreview() {
                 PlayersDropDown(
                     asOwner = true, gameTitle = "Игра 1", players = listOf(
                         PlayerDomainModel(
+                            "1",
                             true,
                             "Player",
                             "Playerson2",
@@ -83,6 +85,7 @@ fun NextQuestionPreview() {
                         ),
                         me,
                         PlayerDomainModel(
+                            "1",
                             false,
                             "Player",
                             "Playerson4",
@@ -91,6 +94,7 @@ fun NextQuestionPreview() {
                             isGameOwner = false
                         ),
                         PlayerDomainModel(
+                            "1",
                             true,
                             "Player",
                             "Playerson5",
@@ -104,7 +108,10 @@ fun NextQuestionPreview() {
                 NextQuestion(
                     state = NextQuestion(
                         player = me,
-                        topic = TopicDomainModel("Longlogngoggnonbfdklsmfhsdvfgrbhbrhyfbdh topic")
+                        topic = TopicDomainModel(
+                            "1",
+                            "Longlogngoggnonbfdklsmfhsdvfgrbhbrhyfbdh topic"
+                        )
                     )
                 )
             }

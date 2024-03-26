@@ -60,21 +60,21 @@ fun GameTopicsPreview() {
     ConnecteamTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             val items = listOf(
-                SelectableTopicDomainModel(TopicDomainModel("topic 1")),
+                SelectableTopicDomainModel(TopicDomainModel("1", "topic 1")),
                 SelectableTopicDomainModel(
-                    TopicDomainModel("topic 1vxfjk;dngjk;fnlj,."),
+                    TopicDomainModel("1", "topic 1vxfjk;dngjk;fnlj,."),
                     selected = true
                 ),
                 SelectableTopicDomainModel(
-                    TopicDomainModel("topic 1nfdlk;nmk;"),
+                    TopicDomainModel("1", "topic 1nfdlk;nmk;"),
                     selected = true
                 ),
                 SelectableTopicDomainModel(
-                    TopicDomainModel("topic 1"),
+                    TopicDomainModel("1", "topic 1"),
                     enabled = false
                 ),
                 SelectableTopicDomainModel(
-                    TopicDomainModel("topic 1fbdm;klg"),
+                    TopicDomainModel("1", "topic 1fbdm;klg"),
                     enabled = false,
                     selected = true
                 )
@@ -83,6 +83,7 @@ fun GameTopicsPreview() {
                 PlayersDropDown(
                     asOwner = true, gameTitle = "Игра 1", players = listOf(
                         PlayerDomainModel(
+                            "1",
                             true,
                             "Player",
                             "Playerson2",
@@ -91,6 +92,7 @@ fun GameTopicsPreview() {
                             isGameOwner = false
                         ),
                         PlayerDomainModel(
+                            "1",
                             true,
                             "Player",
                             "Playerson3",
@@ -99,6 +101,7 @@ fun GameTopicsPreview() {
                             isGameOwner = true
                         ),
                         PlayerDomainModel(
+                            "1",
                             false,
                             "Player",
                             "Playerson4",
@@ -107,6 +110,7 @@ fun GameTopicsPreview() {
                             isGameOwner = false
                         ),
                         PlayerDomainModel(
+                            "1",
                             true,
                             "Player",
                             "Playerson5",

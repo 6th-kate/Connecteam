@@ -46,19 +46,19 @@ fun RoundTopicsPreview() {
     ConnecteamTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             val items = listOf(
-                SelectableTopicDomainModel(TopicDomainModel("topic 1")),
+                SelectableTopicDomainModel(TopicDomainModel("1", "topic 1")),
                 SelectableTopicDomainModel(
-                    TopicDomainModel("topic 1vxfjk;dngjk;fnlj,."),
+                    TopicDomainModel("1", "topic 1vxfjk;dngjk;fnlj,."),
                 ),
                 SelectableTopicDomainModel(
-                    TopicDomainModel("topic 1nfdlk;nmk;"),
+                    TopicDomainModel("1", "topic 1nfdlk;nmk;"),
                 ),
                 SelectableTopicDomainModel(
-                    TopicDomainModel("topic 1"),
+                    TopicDomainModel("1", "topic 1"),
                     enabled = false
                 ),
                 SelectableTopicDomainModel(
-                    TopicDomainModel("topic 1fbdm;klg"),
+                    TopicDomainModel("1", "topic 1fbdm;klg"),
                     enabled = false,
                 )
             )
@@ -66,6 +66,7 @@ fun RoundTopicsPreview() {
                 PlayersDropDown(
                     asOwner = true, gameTitle = "Игра 1", players = listOf(
                         PlayerDomainModel(
+                            "1",
                             true,
                             "Player",
                             "Playerson2",
@@ -74,6 +75,7 @@ fun RoundTopicsPreview() {
                             isGameOwner = false
                         ),
                         PlayerDomainModel(
+                            "1",
                             true,
                             "Player",
                             "Playerson3",
@@ -82,6 +84,7 @@ fun RoundTopicsPreview() {
                             isGameOwner = true
                         ),
                         PlayerDomainModel(
+                            "1",
                             false,
                             "Player",
                             "Playerson4",
@@ -90,6 +93,7 @@ fun RoundTopicsPreview() {
                             isGameOwner = false
                         ),
                         PlayerDomainModel(
+                            "1",
                             true,
                             "Player",
                             "Playerson5",

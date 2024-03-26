@@ -179,8 +179,4 @@ class GameListViewModel @Inject constructor(
         initialized = false
         super.onCleared()
     }
-
-    fun onGameClick(){
-
-    }
 }

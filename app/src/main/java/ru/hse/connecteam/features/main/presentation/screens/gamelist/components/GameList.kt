@@ -23,7 +23,7 @@ fun GameList(
     paginationState: PaginationState,
     canPaginate: Boolean,
     addData: () -> Unit,
-    onGameClick: () -> Unit,
+    onGameClick: (SimpleGame) -> Unit,
 ) {
     val lazyColumnListState = rememberLazyListState()
 
@@ -45,7 +45,7 @@ fun GameList(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         items(items = items) { item ->
-            GameItem(game = item, onClick = { onGameClick() })
+            GameItem(game = item, onClick = { onGameClick(item) })
         }
         item(
             key = paginationState,
